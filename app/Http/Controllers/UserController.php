@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redis;
 
 class UserController extends Controller
 {
@@ -14,7 +16,12 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::all();
+        return [
+            'title' => 'List Akun',
+            'users' => $users,
+            'token' => csrf_token()
+        ];
     }
 
     /**
@@ -35,7 +42,22 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'username' => 'required|unique:users',
+            'email' => 'required|email',
+            'role' => 'required',
+            'password' => 'required|confirmed',
+        ]);
+
+        $user = new User();
+        $user->name = $request->name;
+        $user->username = $request->username;
+        $user->email = $request->email;
+        $user->role = $request->role;
+        $user->password = Hash::make($request->password);
+        $user->save();
+        return redirect('/user');
     }
 
     /**
@@ -44,9 +66,10 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
+
     public function show(User $user)
     {
-        //
+        return $user;
     }
 
     /**
@@ -55,9 +78,9 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function edit(User $user, Request $request)
     {
-        //
+        return $user->find($request->id);
     }
 
     /**
@@ -69,7 +92,20 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'username' => 'required',
+            'email' => 'required|email',
+            'role' => 'required',
+        ]);
+        
+        $user->where('id', $request->id)->update([
+            'name' => $request->name,
+            'username' => $request->username,
+            'email' => $request->email,
+        ]);
+
+        return redirect('/user');
     }
 
     /**
@@ -78,8 +114,10 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(Request $request)
     {
-        //
+        $user = User::find($request->id);
+        $user->delete();
+        return redirect('/user');
     }
 }

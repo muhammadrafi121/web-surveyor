@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Admin',
             'username' => 'admin',
             'email' => 'test@example.com',
+            'role' => 'admin',
             'password' => Hash::make('123456'),
         ]);
     }
