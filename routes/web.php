@@ -18,6 +18,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/map', function () {
+    return view('map');
+});
+
 Route::get('/user', [UserController::class, 'index']);
 Route::get('/user/{user}', [UserController::class, 'show']);
 Route::post('/user', [UserController::class, 'store']);
