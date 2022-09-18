@@ -8,4 +8,29 @@ use Illuminate\Database\Eloquent\Model;
 class Land extends Model
 {
     use HasFactory;
+
+    public function plants()
+    {
+        return $this->hasMany(Plant::class);
+    }
+
+    public function dailyreports()
+    {
+        return $this->hasOne(DailyReport::class);
+    }
+
+    public function tower()
+    {
+        return $this->belongsTo(Tower::class);
+    }
+
+    public function row()
+    {
+        return $this->belongsTo(Row::class);
+    }
+
+    public function owner()
+    {
+        return $this->belongsTo(LandOwner::class);
+    }
 }

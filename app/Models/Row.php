@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Tower extends Model
+class Row extends Model
 {
     use HasFactory;
 
@@ -14,9 +14,14 @@ class Tower extends Model
         return $this->hasMany(Land::class);
     }
 
-    public function row()
+    public function firsttowers()
     {
-        return $this->hasOne(Row::class);
+        return $this->belongsToMany(Tower::class, 'tower1_id');
+    }
+    
+    public function secondtowers()
+    {
+        return $this->belongsToMany(Tower::class, 'tower2_id');
     }
 
     public function location()

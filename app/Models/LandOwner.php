@@ -9,7 +9,16 @@ class LandOwner extends Model
 {
     use HasFactory;
 
-    public function lands() {
+    protected $fillable = [
+        'name',
+        'village',
+        'district',
+        'regency',
+        'province',
+    ];
+
+    public function lands()
+    {
         return $this->hasMany(Land::class);
     }
 }

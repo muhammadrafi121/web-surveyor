@@ -13,8 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('land_towers', function (Blueprint $table) {
+        Schema::create('daily_reports', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('location_id')->references('id')->on('locations');
+            $table->foreignId('land_id')->references('id')->on('lands');
+            $table->foreignId('team_id')->references('id')->on('teams');
+            $table->time('time_start');
+            $table->time('time_end');
             $table->timestamps();
         });
     }
@@ -26,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('land_towers');
+        Schema::dropIfExists('daily_reports');
     }
 };

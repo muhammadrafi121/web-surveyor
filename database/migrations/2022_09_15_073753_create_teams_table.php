@@ -13,17 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('towers', function (Blueprint $table) {
+        Schema::create('teams', function (Blueprint $table) {
             $table->id();
-            $table->string('no');
-            $table->string('type');
-            $table->decimal('lat');
-            $table->decimal('long');
-            $table->string('village');
-            $table->string('district');
-            $table->string('regency');
-            $table->string('province');
-            $table->text('description');
+            $table->foreignId('inventory_id')->references('id')->on('inventories');
+            $table->string('name');
             $table->timestamps();
         });
     }
@@ -35,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('towers');
+        Schema::dropIfExists('teams');
     }
 };

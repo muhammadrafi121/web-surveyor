@@ -5,7 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class LandTower extends Model
+class Facility extends Model
 {
     use HasFactory;
+
+    public function dailyreport()
+    {
+        return $this->belongsTo(DailyReport::class);
+    }
 }
