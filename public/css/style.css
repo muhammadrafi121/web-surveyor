@@ -1,0 +1,108 @@
+* {
+  /* border: 1px solid red; */
+  padding: 0;
+  margin: 0;
+  color: #1f2041;
+}
+body {
+  min-height: 100vh;
+  width: 100vw;
+}
+.vh-50 {
+  height: 50vh;
+}
+.bg-login-image {
+  background: url(/img/loginimage.png);
+  background-position: center;
+  background-size: cover;
+}
+.bg-blue {
+  background-color: #1f2041 !important;
+}
+.bg-blue-charcoal {
+  background-color: #4b3f72 !important;
+}
+.bg-blue-sapphire {
+  background-color: #19647e !important;
+}
+.bg-green-blue {
+  background-color: #119da4 !important;
+}
+.bg-white {
+  background-color: #fff !important;
+}
+.bg-yellow {
+  background-color: #ffc857 !important;
+}
+.card {
+  min-height: 28.875em;
+  max-width: 31.875em;
+  background-color: #fff;
+  box-shadow: 0px 27px 97px rgba(0, 0, 0, 0.08);
+  transition: 0.3s;
+}
+.card:hover {
+  transform: scale(1.03);
+  box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.2);
+}
+.btn {
+  padding: 0.8125em 2.4375em;
+}
+.card-laporan {
+  min-height: 13.1875em;
+  max-width: 20.875em;
+  background-color: #fff;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  transition: 0.3s;
+}
+.card-laporan:hover {
+  transform: scale(1.03);
+}
+.card-body span h1,
+.card-body span h5,
+.card-body span h6,
+.card-body span p {
+  color: #ffc857;
+  margin: 0;
+}
+.card-body span h5 {
+  font-weight: 600;
+}
+.card-body span h1 {
+  font-size: 5rem;
+  font-weight: bold;
+}
+.card-body span h6 {
+  position: relative;
+  top: 60px;
+  height: 16px;
+}
+.btn-sm {
+  width: 167px;
+  height: 40px;
+  padding: 1px 1rem 0;
+  border-radius: 0;
+}
+.btn-sm span {
+  margin: auto 0;
+}
+.form-control {
+  border: 1px solid #1f2041;
+}
+select.form-select {
+  background-image: linear-gradient(45deg, transparent 50%, rgb(31, 32, 65) 50%), linear-gradient(135deg, rgb(31, 32, 65) 50%, transparent 50%);
+  background-position: calc(100% - 20px) calc(1em + 2px), calc(100% - 15px) calc(1em + 2px), calc(100% - 0.5em) 0.5em;
+  background-size: 5px 5px, 5px 5px, 1.5em 1.5em;
+  background-repeat: no-repeat;
+  border: 1px solid #1f2041;
+}
+.table-bordered,
+tr,
+td,
+th {
+  border: 1px solid #1f2041 !important;
+  font-weight: 700;
+}
+td a {
+  color: #1f2041;
+}
