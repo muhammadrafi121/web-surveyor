@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Land;
 use App\Models\LandOwner;
+use App\Models\Plant;
 use Illuminate\Http\Request;
 
 class LandController extends Controller
@@ -17,7 +18,6 @@ class LandController extends Controller
     {
         $lands = Land::with('owner');
         return [
-            'token' => csrf_token(),
             'lands' => $lands,
         ];
     }
@@ -27,7 +27,7 @@ class LandController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         //
     }
@@ -96,7 +96,19 @@ class LandController extends Controller
      */
     public function edit(Land $land, Request $request)
     {
-        return $land->with(['owner', 'plants'])->find($request->id);
+        $tower = $land->tower;
+        $row = $land->row;
+        if ($tower) {
+            return view('inputtower', [
+                'tower' => $tower,
+                'land' => $land,
+            ]);
+        } else {
+            return view('inputrow', [
+                'row' => $row,
+                'land' => $land,
+            ]);
+        }
     }
 
     /**
@@ -108,48 +120,63 @@ class LandController extends Controller
      */
     public function update(Request $request, Land $land)
     {
-        $request->validate([
-            'owner_name' => 'required',
-            'village' => 'required',
-            'district' => 'required',
-            'regency' => 'required',
-            'province' => 'required',
-            'type' => 'required',
-            'area' => 'required',
-            'location_id' => 'required',
-        ]);
+        // $request->validate([
+        //     'owner_name' => 'required',
+        //     'village' => 'required',
+        //     'district' => 'required',
+        //     'regency' => 'required',
+        //     'province' => 'required',
+        //     'type' => 'required',
+        //     'area' => 'required',
+        //     'location_id' => 'required',
+        // ]);
 
-        $owner_input = [
-            'name' => $request->owner_name,
-            'village' => $request->village,
-            'district' => $request->district,
-            'regency' => $request->regency,
-            'province' => $request->province,
+        // $owner_input = [
+        //     'name' => $request->owner_name,
+        //     'village' => $request->village,
+        //     'district' => $request->district,
+        //     'regency' => $request->regency,
+        //     'province' => $request->province,
+        // ];
+
+        // $land_input = [
+        //     'location_id' => $request->location_id,
+        //     'type' => $request->type,
+        //     'area' => $request->area,
+        //     'description' => $request->description,
+        // ];
+
+        // if ($request->row_id) {
+        //     $land_input['row_id'] = $request->row_id;
+        // }
+
+        // if ($request->tower_id) {
+        //     $land_input['tower_id'] = $request->tower_id;
+        // }
+
+        // if ($request->owner_id) {
+        //     $owner = LandOwner::find('id', $request->owner_id);
+        // } else {
+        //     $owner = LandOwner::create($owner_input);
+        // }
+
+        // $land = $owner->lands()->where('id', $request->id)->update($land_input);
+
+        $plantData = [
+            'land_id' => $request->land_id,
+            'name' => $request->namatanaman,
+            'age' => $request->umur,
+            'height' => $request->tinggi,
+            'diameter' => $request->diameter,
+            'total' => $request->jumlah,
+            'description' => $request->keterangan,
         ];
 
-        $land_input = [
-            'location_id' => $request->location_id,
-            'type' => $request->type,
-            'area' => $request->area,
-            'description' => $request->description,
-        ];
+        $plant = Plant::create($plantData);
 
-        if ($request->row_id) {
-            $land_input['row_id'] = $request->row_id;
-        }
+        // dd($plant);
 
-        if ($request->tower_id) {
-            $land_input['tower_id'] = $request->tower_id;
-        }
-
-        if ($request->owner_id) {
-            $owner = LandOwner::find('id', $request->owner_id);
-        } else {
-            $owner = LandOwner::create($owner_input);
-        }
-
-        $land = $owner->lands()->where('id', $request->id)->update($land_input);
-        return redirect('/land');
+        return redirect('/land/' . $plant->land_id . '/edit');
     }
 
     /**

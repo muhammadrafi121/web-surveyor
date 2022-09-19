@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('dailyreport_id')->references('id')->on('daily_reports');
             $table->string('name');
             $table->integer('total');
-            $table->enum('status', ['tersedia', 'tidak tersedia']);
+            $table->enum('status', ['Ada', 'Tidak ada']);
             $table->timestamps();
         });
     }

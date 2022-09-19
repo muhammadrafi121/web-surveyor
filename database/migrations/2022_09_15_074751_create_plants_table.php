@@ -16,12 +16,12 @@ return new class extends Migration
         Schema::create('plants', function (Blueprint $table) {
             $table->id();
             $table->foreignId('land_id')->references('id')->on('lands');
-            $table->string('name');
-            $table->integer('age');
-            $table->integer('height');
-            $table->integer('diameter');
-            $table->integer('total');
-            $table->text('description');
+            $table->string('name')->nullable();
+            $table->integer('age')->nullable();
+            $table->integer('height')->nullable();
+            $table->integer('diameter')->nullable();
+            $table->integer('total')->nullable();
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }

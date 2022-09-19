@@ -16,9 +16,9 @@ return new class extends Migration
         Schema::create('towers', function (Blueprint $table) {
             $table->id();
             $table->string('no');
-            $table->string('type');
-            $table->string('lat');
-            $table->string('long');
+            $table->string('type')->nullable();
+            $table->string('lat')->nullable();
+            $table->string('long')->nullable();
             $table->foreignId('location_id')->references('id')->on('locations');
             $table->text('description')->nullable();
             $table->timestamps();

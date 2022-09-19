@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('rows', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('tower1_id')->references('id')->on('towers');
-            $table->foreignId('tower2_id')->references('id')->on('towers');
+            $table->foreignId('tower1_id')->nullable()->references('id')->on('towers');
+            $table->foreignId('tower2_id')->nullable()->references('id')->on('towers');
             $table->foreignId('location_id')->references('id')->on('locations');
             $table->timestamps();
         });

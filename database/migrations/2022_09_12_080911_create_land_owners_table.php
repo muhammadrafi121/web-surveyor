@@ -16,10 +16,10 @@ return new class extends Migration
         Schema::create('land_owners', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('village');
-            $table->string('district');
-            $table->string('regency');
-            $table->string('province');
+            $table->string('village')->nullable();
+            $table->string('district')->nullable();
+            $table->string('regency')->nullable();
+            $table->string('province')->nullable();
             $table->string('ktp')->nullable();
             $table->string('kk')->nullable();
             $table->string('sph')->nullable();

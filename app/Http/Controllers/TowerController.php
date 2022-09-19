@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Inventory;
+use App\Models\Land;
+use App\Models\LandOwner;
+use App\Models\Location;
 use App\Models\Tower;
 use Illuminate\Http\Request;
 
@@ -16,7 +20,6 @@ class TowerController extends Controller
     {
         $towers = Tower::all();
         return [
-            'token' => csrf_token(),
             'towers' => $towers,
         ];
     }
@@ -28,7 +31,12 @@ class TowerController extends Controller
      */
     public function create()
     {
-        //
+        $inventories = Inventory::all();
+        $locations = Location::where('inventory_id', $inventories->first()->id)->get();
+        return view('towerbaru', [
+            'inventories' => $inventories,
+            'locations' => $locations
+        ]);
     }
 
     /**
@@ -40,22 +48,15 @@ class TowerController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'no' => 'required',
-            'lat' => 'required',
-            'long' => 'required',
-            'type' => 'required',
-            'location_id' => 'required',
+            'jalur' => 'required',
+            'tapak' => 'required',
         ]);
 
         $tower = new Tower();
-        $tower->location_id = $request->location_id;
-        $tower->no = $request->no;
-        $tower->type = $request->type;
-        $tower->lat = $request->lat;
-        $tower->long = $request->long;
-        $tower->description = $request->description;
+        $tower->location_id = $request->jalur;
+        $tower->no = $request->tapak;
         $tower->save();
-        return redirect('/tower');
+        return redirect('/tower/' . $tower->id . '/edit');
     }
 
     /**
@@ -77,7 +78,11 @@ class TowerController extends Controller
      */
     public function edit(Tower $tower, Request $request)
     {
-        return $tower->find($request->id);
+        $land = Land::find($request->land);
+        return view('inputtower', [
+            'tower' => $tower,
+            'land' => $land,
+        ]);
     }
 
     /**
@@ -89,22 +94,47 @@ class TowerController extends Controller
      */
     public function update(Request $request, Tower $tower)
     {
-        $request->validate([
-            'no' => 'required',
-            'lat' => 'required',
-            'type' => 'required',
-            'long' => 'required',
-            'location_id' => 'required',
-        ]);
-        $tower->where('id', $request->id)->update([
-            'no' => $request->no,
+        // $request->validate([
+        //     'notower' => 'required',
+        //     'lat' => 'required',
+        //     'towertype' => 'required',
+        //     'long' => 'required',
+        // ]);
+
+        $dataTower = [
+            'no' => $request->notower,
             'lat' => $request->lat,
             'long' => $request->long,
-            'type' => $request->type,
-            'location_id' => $request->location_id,
+            'type' => $request->towertype,
             'description' => $request->description,
-        ]);
-        return redirect('/tower');
+        ];
+
+        $dataOwner = [
+            "name" => $request->nama,
+            "village" => $request->desa,
+            "district" => $request->kecamatan,
+            "regency" => $request->kabupaten,
+        ];
+
+        $dataLahan = [
+            "tower_id" => $request->tower_id,
+            "type" => $request->jenistanah,
+            "area" => $request->luas
+        ];
+
+        $owner = LandOwner::updateOrInsert(
+            [
+                "name" => $request->nama,
+                "village" => $request->desa,
+                "district" => $request->kecamatan,
+            ],
+            $dataOwner
+        )->get()[0];
+
+        $land = $owner->lands()->create($dataLahan);
+
+        $tower->where('id', $request->tower_id)->update($dataTower);
+        return redirect()->action([TowerController::class, 'edit'], ['tower' => $tower, 'land' => $land]);
     }
 
     /**

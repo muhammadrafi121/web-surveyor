@@ -9,6 +9,10 @@ class Land extends Model
 {
     use HasFactory;
 
+    protected $guarded = [
+        'id'
+    ];
+
     public function plants()
     {
         return $this->hasMany(Plant::class);
@@ -31,6 +35,6 @@ class Land extends Model
 
     public function owner()
     {
-        return $this->belongsTo(LandOwner::class);
+        return $this->belongsTo(LandOwner::class, 'land_owner_id');
     }
 }

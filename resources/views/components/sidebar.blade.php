@@ -1,7 +1,7 @@
 <ul class="navbar-nav bg-white sidebar accordion" id="accordionSidebar">
         <!-- Sidebar - Brand -->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-          <img src="img/apple-logo.png" width="33px" alt="" />
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/dashboard">
+          <img src="/img/apple-logo.png" width="33px" alt="" />
         </a>
 
         <!-- Divider -->
@@ -9,7 +9,7 @@
 
         <!-- Nav Item - Dashboard -->
         <li class="nav-item">
-          <a class="nav-link active" href="index.html">
+          <a class="nav-link active" href="/dashboard">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a
           >
@@ -26,8 +26,8 @@
           </a>
           <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-green-blue py-2 collapse-inner">
-              <a class="collapse-item active" href="databaru.html">Input Data ROW</a>
-              <a class="collapse-item" href="cards.html">Input Tapak Tower</a>
+              <a class="collapse-item active" href="/row/create">Input Data ROW</a>
+              <a class="collapse-item" href="/tower/create">Input Tapak Tower</a>
               <a class="collapse-item" href="cards.html">Input Daily Report</a>
             </div>
           </div>

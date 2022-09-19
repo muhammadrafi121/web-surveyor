@@ -17,12 +17,12 @@ return new class extends Migration
     {
         Schema::create('lands', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('row_id')->references('id')->on('rows')->nullable();
-            $table->foreignId('tower_id')->references('id')->on('towers')->nullable();
-            $table->foreignId('owner_id')->references('id')->on('land_owners');
+            $table->foreignId('row_id')->nullable()->references('id')->on('rows');
+            $table->foreignId('tower_id')->nullable()->references('id')->on('towers');
+            $table->foreignId('land_owner_id')->references('id')->on('land_owners');
             $table->string('type');
             $table->integer('area');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }
