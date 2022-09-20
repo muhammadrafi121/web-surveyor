@@ -31,6 +31,13 @@ Route::get('/map', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 });
+
+// nyoba page daiily
+Route::get('/dailyreport', function () {
+    return view('inputdaily');
+});
+
+
 // Route::get('/tower', function () {
 //     return view('towerbaru');
 // });
