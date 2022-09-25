@@ -13,13 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('daily_reports', function (Blueprint $table) {
+        Schema::create('towers', function (Blueprint $table) {
             $table->id();
+            $table->string('no');
+            $table->string('type')->nullable();
+            $table->string('lat')->nullable();
+            $table->string('long')->nullable();
+            $table->foreignId('user_id')->nullable()->references('id')->on('users');
             $table->foreignId('location_id')->references('id')->on('locations');
-            $table->foreignId('team_id')->references('id')->on('teams');
-            $table->foreignId('user_id')->references('id')->on('users');
-            $table->time('time_start')->nullable();
-            $table->time('time_end')->nullable();
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('daily_reports');
+        Schema::dropIfExists('towers');
     }
 };

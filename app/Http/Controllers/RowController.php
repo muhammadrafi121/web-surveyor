@@ -19,9 +19,11 @@ class RowController extends Controller
     public function index()
     {
         $rows = Row::all();
-        return [
+        
+        return view('listrow', [
+            'title' => 'Data ROW',
             'rows' => $rows,
-        ];
+        ]);
     }
 
     /**
@@ -53,6 +55,7 @@ class RowController extends Controller
 
         $row = new Row();
         $row->location_id = $request->jalur;
+        $row->user_id = auth()->user()->id;
         $row->save();
         return redirect('/row/' . $row->id . '/edit');
     }
@@ -134,7 +137,7 @@ class RowController extends Controller
         $land = $owner->lands()->create($dataLahan);
 
         $row->where('id', $request->row_id)->update($dataRow);
-        return redirect()->action([RowController::class, 'edit'], ['row' => $row, 'land' => $land]);
+        return redirect()->action([PlantController::class, 'create'], ['land' => $land]);
     }
 
     /**

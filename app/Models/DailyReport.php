@@ -9,6 +9,8 @@ class DailyReport extends Model
 {
     use HasFactory;
 
+    protected $guarded = ['id'];
+
     public function activities()
     {
         return $this->hasMany(Activity::class);
@@ -18,10 +20,20 @@ class DailyReport extends Model
     {
         return $this->hasMany(Facility::class);
     }
+    
+    public function manPowers()
+    {
+        return $this->hasMany(ManPower::class);
+    }
 
     public function team()
     {
         return $this->belongsTo(Team::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function lands()

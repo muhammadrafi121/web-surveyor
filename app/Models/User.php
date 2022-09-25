@@ -20,6 +20,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'username',
+        'team_id',
         'role',
         'email',
         'password',
@@ -47,5 +48,15 @@ class User extends Authenticatable
     public function team()
     {
         return $this->hasOne(Team::class);
+    }
+    
+    public function towers()
+    {
+        return $this->hasMany(Tower::class);
+    }
+    
+    public function rows()
+    {
+        return $this->hasMany(Row::class);
     }
 }

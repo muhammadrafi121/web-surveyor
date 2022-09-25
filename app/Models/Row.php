@@ -14,18 +14,23 @@ class Row extends Model
         return $this->hasMany(Land::class);
     }
 
-    public function firsttowers()
+    public function firsttower()
     {
-        return $this->belongsToMany(Tower::class, 'tower1_id');
+        return $this->belongsTo(Tower::class, 'tower1_id');
     }
     
-    public function secondtowers()
+    public function secondtower()
     {
-        return $this->belongsToMany(Tower::class, 'tower2_id');
+        return $this->belongsTo(Tower::class, 'tower2_id');
     }
 
     public function location()
     {
         return $this->belongsTo(Location::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

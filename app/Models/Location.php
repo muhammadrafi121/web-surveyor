@@ -9,6 +9,8 @@ class Location extends Model
 {
     use HasFactory;
 
+    protected $guarded = ['id'];
+
     public function rows()
     {
         return $this->hasMany(Location::class);

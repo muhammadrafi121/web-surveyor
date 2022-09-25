@@ -4,7 +4,7 @@
     <div class="container-fluid">
             <!-- Page Heading -->
             <div class="row d-sm-flex flex-column justify-content-between mb-4 px-lg-4">
-              <h2 class="h2 mb-3 font-weight-bold">Data Baru</h2>
+              <h2 class="h2 mb-3 font-weight-bold">Data ROW Baru</h2>
               {{-- <p class="font-weight-light mt-lg-3 d-none d-xl-block d-lg-block d-md-block d-xl-none">Silahkan melakukan input data sesuai dengan kebutuhan yang akan digunakan. Anda dapat memilih salah satu dari moel input data berikut ini :</p> --}}
             </div>
             <div class="row">

@@ -23,15 +23,6 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(1)->create();
 
-        // user admin
-        User::factory()->create([
-            'name' => 'Admin',
-            'username' => 'admin',
-            'email' => 'test@example.com',
-            'role' => 'Administrator',
-            'password' => Hash::make('123456'),
-        ]);
-
         // data inventarisasi
         Inventory::create([
             'id' => 1,
@@ -413,6 +404,25 @@ class DatabaseSeeder extends Seeder
             'team_id' => 6,
             'name' => 'M Rifqi Cahaydi',
             'position' => 'Ast Surveyor'
+        ]);
+
+        // user admin
+        User::factory()->create([
+            'name' => 'Admin',
+            'username' => 'admin',
+            'email' => 'test@example.com',
+            'role' => 'Administrator',
+            'password' => Hash::make('123456'),
+        ]);
+
+        // user surveyor tim 1 INV 1
+        User::factory()->create([
+            'name' => 'Tim 1',
+            'username' => 'tim1',
+            'team_id' => 1,
+            'email' => 'tim1@example.com',
+            'role' => 'Surveyor',
+            'password' => Hash::make('123456'),
         ]);
     }
 }

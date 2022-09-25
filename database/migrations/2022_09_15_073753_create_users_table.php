@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('team_id')->nullable()->references('id')->on('teams');
             $table->string('name');
-            $table->string('username');
+            $table->string('username')->unique();
             $table->string('email')->unique();
             $table->enum('role', ['Administrator', 'Surveyor', 'Client']);
             $table->timestamp('email_verified_at')->nullable();

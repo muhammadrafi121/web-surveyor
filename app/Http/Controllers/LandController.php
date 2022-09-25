@@ -17,9 +17,10 @@ class LandController extends Controller
     public function index()
     {
         $lands = Land::with('owner');
-        return [
+        return view('listland', [
+            'title' => 'Data Lahan',
             'lands' => $lands,
-        ];
+        ]);
     }
 
     /**
@@ -96,19 +97,7 @@ class LandController extends Controller
      */
     public function edit(Land $land, Request $request)
     {
-        $tower = $land->tower;
-        $row = $land->row;
-        if ($tower) {
-            return view('inputtower', [
-                'tower' => $tower,
-                'land' => $land,
-            ]);
-        } else {
-            return view('inputrow', [
-                'row' => $row,
-                'land' => $land,
-            ]);
-        }
+        //
     }
 
     /**
@@ -161,22 +150,6 @@ class LandController extends Controller
         // }
 
         // $land = $owner->lands()->where('id', $request->id)->update($land_input);
-
-        $plantData = [
-            'land_id' => $request->land_id,
-            'name' => $request->namatanaman,
-            'age' => $request->umur,
-            'height' => $request->tinggi,
-            'diameter' => $request->diameter,
-            'total' => $request->jumlah,
-            'description' => $request->keterangan,
-        ];
-
-        $plant = Plant::create($plantData);
-
-        // dd($plant);
-
-        return redirect('/land/' . $plant->land_id . '/edit');
     }
 
     /**

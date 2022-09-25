@@ -19,9 +19,11 @@ class TowerController extends Controller
     public function index()
     {
         $towers = Tower::all();
-        return [
+        
+        return view('listtower', [
+            'title' => 'Data Tapak Tower',
             'towers' => $towers,
-        ];
+        ]);
     }
 
     /**
@@ -34,6 +36,7 @@ class TowerController extends Controller
         $inventories = Inventory::all();
         $locations = Location::where('inventory_id', $inventories->first()->id)->get();
         return view('towerbaru', [
+            'title' => 'Data Tapak Tower',
             'inventories' => $inventories,
             'locations' => $locations
         ]);
@@ -55,6 +58,7 @@ class TowerController extends Controller
         $tower = new Tower();
         $tower->location_id = $request->jalur;
         $tower->no = $request->tapak;
+        $tower->user_id = auth()->user()->id;
         $tower->save();
         return redirect('/tower/' . $tower->id . '/edit');
     }
@@ -80,6 +84,7 @@ class TowerController extends Controller
     {
         $land = Land::find($request->land);
         return view('inputtower', [
+            'title' => 'Data Tapak Tower',
             'tower' => $tower,
             'land' => $land,
         ]);
@@ -134,7 +139,7 @@ class TowerController extends Controller
         $land = $owner->lands()->create($dataLahan);
 
         $tower->where('id', $request->tower_id)->update($dataTower);
-        return redirect()->action([TowerController::class, 'edit'], ['tower' => $tower, 'land' => $land]);
+        return redirect()->action([PlantController::class, 'create'], ['land' => $land]);
     }
 
     /**

@@ -5,19 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Inventory extends Model
+class ManPower extends Model
 {
     use HasFactory;
 
     protected $guarded = ['id'];
-
-    public function locations()
+    
+    public function dailyreport()
     {
-        return $this->hasMany(Location::class);
-    }
-
-    public function teams()
-    {
-        return $this->hasMany(Team::class);
+        return $this->belongsTo(DailyReport::class);
     }
 }

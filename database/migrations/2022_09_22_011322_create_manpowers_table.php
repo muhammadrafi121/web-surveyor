@@ -13,14 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('towers', function (Blueprint $table) {
+        Schema::create('man_powers', function (Blueprint $table) {
             $table->id();
-            $table->string('no');
-            $table->string('type')->nullable();
-            $table->string('lat')->nullable();
-            $table->string('long')->nullable();
-            $table->foreignId('location_id')->references('id')->on('locations');
-            $table->text('description')->nullable();
+            $table->foreignId('dailyreport_id')->references('id')->on('daily_reports');
+            $table->string('name');
+            $table->integer('total');
+            $table->enum('status', ['Hadir', 'Tidak hadir']);
             $table->timestamps();
         });
     }
@@ -32,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('towers');
+        Schema::dropIfExists('manpowers');
     }
 };
