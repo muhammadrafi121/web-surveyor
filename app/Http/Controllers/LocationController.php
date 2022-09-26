@@ -20,6 +20,7 @@ class LocationController extends Controller
             'title' => 'Data Jalur',
             'inventories' => Inventory::all(),
             'locations' => Location::all(),
+            'script' => 'location',
         ]);
     }
 
@@ -46,7 +47,7 @@ class LocationController extends Controller
             'name' => $request->name,
         ]);
 
-        return redirect('/location');
+        return redirect('/location')->with('message', 'Input Data Jalur Berhasil');
     }
 
     /**
@@ -80,7 +81,17 @@ class LocationController extends Controller
      */
     public function update(Request $request, Location $location)
     {
-        //
+        $request->validate([
+            'wilayah' => 'required',
+            'name' => 'required',
+        ]);
+
+        $location->where('id', $request->id)->update([
+            'inventory_id' => $request->wilayah,
+            'name' => $request->name
+        ]);
+
+        return redirect('/location')->with('message', 'Update Data Jalur Berhasil');
     }
 
     /**

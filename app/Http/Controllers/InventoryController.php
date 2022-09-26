@@ -18,6 +18,7 @@ class InventoryController extends Controller
         return view('listinv', [
             'title' => 'Data Inventory',
             'inventories' => Inventory::all(),
+            'script' => 'inventory'
         ]);
     }
 
@@ -43,7 +44,7 @@ class InventoryController extends Controller
             'name' => $request->name,
         ]);
 
-        return redirect('/inventory');
+        return redirect('/inventory')->with('message', 'Input Data Inventory Berhasil');
     }
 
     /**
@@ -77,7 +78,15 @@ class InventoryController extends Controller
      */
     public function update(Request $request, Inventory $inventory)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+        ]);
+
+        $inventory->where('id', $request->id)->update([
+            'name' => $request->name
+        ]);
+
+        return redirect('/inventory')->with('message', 'Update Data Inventory Berhasil');
     }
 
     /**

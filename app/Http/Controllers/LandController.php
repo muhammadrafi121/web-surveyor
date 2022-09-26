@@ -6,6 +6,7 @@ use App\Models\Land;
 use App\Models\LandOwner;
 use App\Models\Plant;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class LandController extends Controller
 {
@@ -20,6 +21,7 @@ class LandController extends Controller
         return view('listland', [
             'title' => 'Data Lahan',
             'lands' => $lands,
+            'script' => 'land'
         ]);
     }
 
@@ -158,8 +160,9 @@ class LandController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Land $land)
     {
-        //
+        DB::table('lands')->where('id', $land->id)->delete();
+        return redirect('/land')->with('message', 'Hapus Data Lahan Berhasil');
     }
 }

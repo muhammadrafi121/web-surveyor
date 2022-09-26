@@ -1,7 +1,11 @@
 @extends('layouts.main')
 
 @section('content')
-    <div id="map" style="height: 600px;"></div>
+    <div class="container-fluid">
+        <div class="row">
+            <div id="map" class="col-md-12" style="height: 550px;"></div>
+        </div>
+    </div>
 
     <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
         integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
@@ -16,7 +20,7 @@
         });
         var points = [];
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
+            maxZoom: 25,
             attribution: '© OpenStreetMap'
         }).addTo(map);
 

@@ -37,13 +37,10 @@ Route::get('/map', function () {
 
 Route::get('/dashboard', function () {
     return view('dashboard', [
-        'title' => 'Dashboard'
+        'title' => 'Dashboard',
+        'script' => 'dashboard',
     ]);
-});
-
-Route::get('/listdata', function () {
-    return view('listdata');
-});
+})->middleware('auth');
 
 // route user
 Route::resource('user', UserController::class)->middleware('auth');

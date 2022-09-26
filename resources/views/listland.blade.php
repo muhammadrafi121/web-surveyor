@@ -90,9 +90,14 @@
                                         <td>{{ $land->owner->name }}</td>
                                         <td>{{ $land->type }}</td>
                                         <td>{{ $land->area }}</td>
-                                        <td>{{ $land->team->name }}</td>
+                                        <td>{{ $land->user->name }}</td>
                                         <td>
-                                            <a href="">Cetak</a> | <a href="">Lihat</a> | <a href="">Edit</a> | <a href="">Hapus</a>
+                                            <a href="">Cetak</a> | <a href="">Lihat</a> | <a href="">Edit</a> | 
+                                            <form action="/land/{{ $land->id }}" method="POST">
+                                                @method('delete')
+                                                @csrf
+                                                <button type="submit">Hapus</button>
+                                            </form>
                                         </td>
                                         <td>
                                             <a href="">Tambah</a>

@@ -7,7 +7,9 @@ use App\Models\Land;
 use App\Models\LandOwner;
 use App\Models\Location;
 use App\Models\Row;
+use App\Models\Tower;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RowController extends Controller
 {
@@ -19,10 +21,16 @@ class RowController extends Controller
     public function index()
     {
         $rows = Row::all();
-        
+        $inventories = Inventory::all();
+        $locations = Location::where('inventory_id', $inventories->first()->id)->get();
+        $towers = Tower::where('location_id', $locations->first()->id)->get();
         return view('listrow', [
             'title' => 'Data ROW',
             'rows' => $rows,
+            'inventories' => $inventories,
+            'locations' => $locations,
+            'towers' => $towers,
+            'script' => 'row',
         ]);
     }
 
@@ -33,12 +41,12 @@ class RowController extends Controller
      */
     public function create()
     {
-        $inventories = Inventory::all();
-        $locations = Location::where('inventory_id', $inventories->first()->id)->get();
-        return view('rowbaru', [
-            'inventories' => $inventories,
-            'locations' => $locations
-        ]);
+        // $inventories = Inventory::all();
+        // $locations = Location::where('inventory_id', $inventories->first()->id)->get();
+        // return view('rowbaru', [
+        //     'inventories' => $inventories,
+        //     'locations' => $locations
+        // ]);
     }
 
     /**
@@ -51,13 +59,17 @@ class RowController extends Controller
     {
         $request->validate([
             'jalur' => 'required',
+            'notower1' => 'required',
+            'notower2' => 'required',
         ]);
 
         $row = new Row();
         $row->location_id = $request->jalur;
+        $row->tower1_id = $request->notower1;
+        $row->tower2_id = $request->notower2;
         $row->user_id = auth()->user()->id;
         $row->save();
-        return redirect('/row/' . $row->id . '/edit');
+        return redirect('/row')->with('message', 'Input Data RoW Berhasil');
     }
 
     /**
@@ -68,7 +80,7 @@ class RowController extends Controller
      */
     public function show(Row $row)
     {
-        return $row;
+        // return $row;
     }
 
     /**
@@ -79,11 +91,11 @@ class RowController extends Controller
      */
     public function edit(Row $row, Request $request)
     {
-        $land = Land::find($request->land);
-        return view('inputrow', [
-            'row' => $row,
-            'land' => $land,
-        ]);
+        // $land = Land::find($request->land);
+        // return view('inputrow', [
+        //     'row' => $row,
+        //     'land' => $land,
+        // ]);
     }
 
     /**
@@ -95,49 +107,20 @@ class RowController extends Controller
      */
     public function update(Request $request, Row $row)
     {
-        // $request->validate([
-        //     'tower1_id' => 'required',
-        //     'tower2_id' => 'required',
-        //     'location_id' => 'required',
-        // ]);
-        // $row->where('id', $request->id)->update([
-        //     'tower1_id' => $request->tower1_id,
-        //     'tower2_id' => $request->tower2_id,
-        //     'location_id' => $request->location_id,
-        // ]);
-        // return redirect('/row');
+        $request->validate([
+            'jalur' => 'required',
+            'notower1' => 'required',
+            'notower2' => 'required',
+        ]);
 
-        $dataRow = [
+        $row->where('id', $request->id)->update([
             'tower1_id' => $request->notower1,
             'tower2_id' => $request->notower2,
-        ];
+            'location_id' => $request->jalur,
+            'user_id' => auth()->user()->id,
+        ]);
 
-        $dataOwner = [
-            "name" => $request->nama,
-            "village" => $request->desa,
-            "district" => $request->kecamatan,
-            "regency" => $request->kabupaten,
-        ];
-
-        $dataLahan = [
-            "row_id" => $request->row_id,
-            "type" => $request->jenistanah,
-            "area" => $request->luas
-        ];
-
-        $owner = LandOwner::updateOrInsert(
-            [
-                "name" => $request->nama,
-                "village" => $request->desa,
-                "district" => $request->kecamatan,
-            ],
-            $dataOwner
-        )->get()[0];
-
-        $land = $owner->lands()->create($dataLahan);
-
-        $row->where('id', $request->row_id)->update($dataRow);
-        return redirect()->action([PlantController::class, 'create'], ['land' => $land]);
+        return redirect('/row')->with('message', 'Update Data RoW Berhasil');
     }
 
     /**
@@ -146,10 +129,9 @@ class RowController extends Controller
      * @param  \App\Models\Row  $row
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Row $row, Request $request)
+    public function destroy(Row $row)
     {
-        $row = Row::find($request->id);
-        $row->delete();
-        return redirect('/row');
+        DB::table('rows')->where('id', $row->id)->delete();
+        return redirect('/row')->with('message', 'Hapus Data RoW Berhasil');
     }
 }
