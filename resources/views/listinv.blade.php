@@ -3,8 +3,22 @@
 @section('content')
     <div class="container-fluid">
         @if (session('message'))
-            <div class="alert alert-success">
-                {{ session('message') }}
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body d-flex flex-column">
+                    <img src="img/alert.png" alt="" srcset="" class="m-auto w-50" />
+                    <h2 class="mx-auto mt-4 font-weight-bold">{{ session('message') }}</h2>
+                    <div class="col-md-5 col-sm-12 d-flex justify-content-evenly mx-auto my-3">
+                      <a href="http://" class="btn btn-primary mx-auto">Lihat Data</a>
+                      <a href="http://" class="btn btn-primary bg-blue mx-auto">Cetak</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
         @endif
         <!-- Page Heading -->
