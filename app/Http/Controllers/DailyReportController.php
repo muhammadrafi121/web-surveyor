@@ -23,6 +23,7 @@ class DailyReportController extends Controller
         return view('listreport', [
             'title' => 'Data Daily Report',
             'reports' => DailyReport::all(),
+            'script' => 'dailyreport'
         ]);
     }
 

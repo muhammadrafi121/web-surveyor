@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AjaxController;
 use App\Http\Controllers\DailyReportController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\LandController;
 use App\Http\Controllers\LocationController;
@@ -31,16 +32,12 @@ Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth');
 
 Route::get('/map', function () {
     return view('map', [
-        'title' => 'Peta'
+        'title' => 'Peta',
+        'script' => 'map'
     ]);
-});
+})->middleware('can:isAdmin');
 
-Route::get('/dashboard', function () {
-    return view('dashboard', [
-        'title' => 'Dashboard',
-        'script' => 'dashboard',
-    ]);
-})->middleware('auth');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth');
 
 // route user
 Route::resource('user', UserController::class)->middleware('auth');
