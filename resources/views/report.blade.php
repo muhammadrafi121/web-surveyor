@@ -1,6 +1,6 @@
 @extends('layouts.main')
     @section('content')
-{{-- <div class="container-fluid">
+        {{-- <div class="container-fluid">
             <!-- Page Heading -->
             <div class="d-sm-flex flex-column justify-content-between mb-4 px-lg-4">
               <h2 class="h2 mb-3 font-weight-bold">Selamat Datang di Aplikasi Monitoring SI</h2>
@@ -133,4 +133,4 @@
               </div>
             </div>
           </div>
-    @endsection
+          @endsection
