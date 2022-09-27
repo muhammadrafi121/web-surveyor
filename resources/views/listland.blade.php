@@ -178,5 +178,4 @@
             </div>
             <!-- modal end 2 -->
           </div>
-    <!-- /.container-fluid -->
 @endsection

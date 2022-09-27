@@ -37,4 +37,9 @@ class Land extends Model
     {
         return $this->belongsTo(LandOwner::class, 'land_owner_id');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
