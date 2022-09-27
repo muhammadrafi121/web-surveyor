@@ -58,11 +58,17 @@ class TowerController extends Controller
         $request->validate([
             'jalur' => 'required',
             'tapak' => 'required',
+            'lat' => 'required',
+            'long' => 'required',
+            'type' => 'required',
         ]);
 
         $tower = new Tower();
         $tower->location_id = $request->jalur;
         $tower->no = $request->tapak;
+        $tower->lat = $request->lat;
+        $tower->long = $request->long;
+        $tower->type = $request->type;
         $tower->user_id = auth()->user()->id;
         $tower->save();
         return redirect('/tower')->with('message', 'Input Data Tapak Tower Berhasil');
@@ -107,11 +113,17 @@ class TowerController extends Controller
         $request->validate([
             'jalur' => 'required',
             'tapak' => 'required',
+            'lat' => 'required',
+            'long' => 'required',
+            'type' => 'required',
         ]);
 
         $dataTower = [
             'no' => $request->tapak,
             'location_id' => $request->jalur,
+            'lat' => $request->lat,
+            'long' => $request->long,
+            'type' => $request->type,
             'user_id' => auth()->user()->id,
         ];
 

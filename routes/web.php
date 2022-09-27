@@ -65,3 +65,5 @@ Route::resource('location', LocationController::class)->middleware('auth');
 
 // route ajax
 Route::get('/ajax/inventory', [AjaxController::class, 'inventory'])->middleware('auth');
+
+Route::get('/ajax/location', [AjaxController::class, 'location'])->middleware('auth');

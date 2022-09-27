@@ -55,4 +55,7 @@ function edit(data) {
     $('#wilayah2').val(data.location.inventory_id);
     $('#jalur2').val(data.location_id);
     $('#tapak2').val(data.no);
+    $('#lat2').val(data.lat);
+    $('#long2').val(data.long);
+    $('#type2').val(data.type);
 }
