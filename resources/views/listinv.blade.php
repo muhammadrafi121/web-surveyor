@@ -2,8 +2,8 @@
 
 @section('content')
     <div class="container-fluid">
-        @if (session('message'))
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+       @if (session('message'))
+          <div id="none" onclick="myFunction()" style="position: fixed; z-index: 1; padding-top: 100px; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4); ">
               <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                   <div class="modal-header">
@@ -20,6 +20,11 @@
                 </div>
               </div>
             </div>
+            <script>
+            function myFunction() {
+            document.getElementById("none").style.display = "none";
+            }
+            </script>
         @endif
         <!-- Page Heading -->
         <div class="d-sm-flex flex-column justify-content-between mb-4 px-lg-4">
