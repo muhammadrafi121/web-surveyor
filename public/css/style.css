@@ -46,7 +46,7 @@ body {
     box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.2);
 }
 .btn {
-    padding: 0.8125em 2.4375em;
+    padding: 0.4em 1.8em;
 }
 .card-laporan {
     min-height: 13.1875em;
@@ -88,6 +88,10 @@ body {
 }
 .form-control {
     border: 1px solid #1f2041;
+}
+select,
+input {
+    color: #1f2041 !important;
 }
 select.form-select {
     background-image: linear-gradient(

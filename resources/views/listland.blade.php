@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('content')
-    <div class="container-fluid">
+   <div class="container-fluid">
             <!-- Page Heading -->
             <div class="d-sm-flex flex-column justify-content-between mb-4 px-lg-4">
               <h2 class="h2 mb-3 font-weight-bold">Data Lahan</h2>
@@ -178,4 +178,5 @@
             </div>
             <!-- modal end 2 -->
           </div>
+
 @endsection
