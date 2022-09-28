@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Inventory;
 use App\Models\Land;
 use App\Models\LandOwner;
+use App\Models\Location;
 use App\Models\Plant;
+use App\Models\Row;
+use App\Models\Tower;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -17,10 +21,20 @@ class LandController extends Controller
      */
     public function index()
     {
-        $lands = Land::with('owner');
+
+        $inventories = Inventory::all();
+        $locations = Location::where('inventory_id', $inventories->first()->id)->get();
+        $towers = Tower::where('location_id', $locations->first()->id)->get();
+        $rows = Row::where('location_id', $locations->first()->id)->get();
+        $lands = Land::all();
+        // dd($lands);
         return view('listland', [
             'title' => 'Data Lahan',
             'lands' => $lands,
+            'inventories' => $inventories,
+            'locations' => $locations,
+            'towers' => $towers,
+            'rows' => $rows,
             'script' => 'land'
         ]);
     }
@@ -43,41 +57,51 @@ class LandController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'owner_name' => 'required',
-            'village' => 'required',
-            'district' => 'required',
-            'regency' => 'required',
-            'province' => 'required',
-            'type' => 'required',
-            'area' => 'required',
-            'location_id' => 'required',
-        ]);
+        $rules = [
+            'nama' => 'required',
+            'desa' => 'required',
+            'kecamatan' => 'required',
+            'kabupaten' => 'required',
+            'jenis' => 'required',
+            'luas' => 'required',
+        ];
+
+        $request->validate($rules);
 
         $owner_input = [
-            'name' => $request->owner_name,
-            'village' => $request->village,
-            'district' => $request->district,
-            'regency' => $request->regency,
-            'province' => $request->province,
+            'name' => $request->nama,
+            'village' => $request->desa,
+            'district' => $request->kecamatan,
+            'regency' => $request->kabupaten,
         ];
 
         $land_input = [
-            'location_id' => $request->location_id,
-            'owner_id' => $request->owner_id,
-            'type' => $request->type,
-            'area' => $request->area,
-            'description' => $request->description,
+            'type' => $request->jenis,
+            'area' => $request->luas,
+            'user_id' => auth()->user()->id,
         ];
 
-        if ($request->owner_id) {
-            $owner = LandOwner::find('id', $request->owner_id);
-        } else {
+        if ($request->row) $land_input['row_id'] = $request->row;
+        if ($request->tower) $land_input['tower_id'] = $request->tower;
+
+        $owner = LandOwner::where('name', $request->nama)
+        ->where('village', $request->desa)
+        ->where('district', $request->kecamatan)
+        ->where('regency', $request->kabupaten)->get()[0];
+
+        $owner = collect($owner);
+
+        // dd($owner['id']);
+
+        if ($owner->isEmpty()) {
             $owner = LandOwner::create($owner_input);
+            $land = $owner->lands()->create($land_input);
+        } else {
+            $land_input['land_owner_id'] = $owner['id'];
+            $land = Land::create($land_input);
         }
 
-        $land = $owner->lands()->create($land_input);
-        return redirect('/land');
+        return redirect('/land')->with('message', 'Input Data Lahan Berhasil');
     }
 
     /**

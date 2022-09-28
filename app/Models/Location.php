@@ -13,7 +13,7 @@ class Location extends Model
 
     public function rows()
     {
-        return $this->hasMany(Location::class);
+        return $this->hasMany(Row::class);
     }
 
     public function towers()

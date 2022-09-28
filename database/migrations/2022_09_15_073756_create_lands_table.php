@@ -22,6 +22,7 @@ return new class extends Migration
             $table->foreignId('land_owner_id')->references('id')->on('land_owners');
             $table->string('type');
             $table->integer('area');
+            $table->string('attachment')->nullable();
             $table->text('description')->nullable();
             $table->timestamps();
         });

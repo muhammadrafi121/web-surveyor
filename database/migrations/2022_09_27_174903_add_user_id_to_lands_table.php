@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('lands', function (Blueprint $table) {
-            //
+            $table->foreignId('user_id')->references('id')->on('users');
         });
     }
 
@@ -26,7 +26,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('lands', function (Blueprint $table) {
-            $table->foreignId('user_id')->references('id')->on('users');
+            //
         });
     }
 };

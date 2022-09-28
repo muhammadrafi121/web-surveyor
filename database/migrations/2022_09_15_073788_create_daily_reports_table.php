@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreignId('user_id')->references('id')->on('users');
             $table->time('time_start')->nullable();
             $table->time('time_end')->nullable();
+            $table->string('attachment')->nullable();
             $table->timestamps();
         });
     }
