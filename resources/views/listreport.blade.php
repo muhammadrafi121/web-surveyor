@@ -1,110 +1,55 @@
 @extends('layouts.main')
 
 @section('content')
-    <div class="container-fluid">
-        <!-- Page Heading -->
-        <div class="d-sm-flex flex-column justify-content-between mb-4 px-lg-4">
-            <h2 class="h2 mb-3 font-weight-bold">{{ $title }}</h2>
-            {{-- <p class="font-weight-light mt-lg-3 d-none d-xl-block d-lg-block d-md-block d-xl-none">Berikut adalah data
-                lengkap laporan harian yang telah berhasil disi oleh petugas lapangan. Dari sini admin dapat mengubah , mengedit,
-                menambah dan menghapus data yang sudah diinputkan</p> --}}
-        </div>
-        <!-- page card -->
+       <div class="container-fluid">
+            <!-- Page Heading -->
+            <div class="d-sm-flex flex-column justify-content-between mb-4 px-lg-4">
+              <h2 class="h2 mb-3 font-weight-bold">Data daily Report</h2>
 
-        <div class="row">
-            <!-- DataTales Example -->
-            <div class="shadow mb-4">
-                <div class="card-body">
-                    <!-- <div class="row">
-                        <div class="col-md-6">
-                        <div class="container">
-                            <form class="d-flex m-0" role="search">
-                            <h6>cari :</h6>
-                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                            </form>
-                        </div>
-                        </div>
-                        <div class="col-md-6 d-flex mb-3">
-                        <label class="col-4 d-sm-none d-md-block d-none d-sm-block p-sm-0 h-100"> <h6 class="h6 font-weight-bold mt-lg-2">Filter berasarkan :</h6></label>
-                        <select class="col-4 form-select form-control ml-n3" id="kategori">
-                            <option selected>Kategori</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                        </select>
-                        <select class="col-4 form-select form-control ml-3" id="penginput">
-                            <option selected>Penginput</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                        </select>
-                        </div>
-                    </div> -->
-                    <div class="row mb-3 d-sm-flex">
-                        {{-- <div class="col-md-4 col-sm-12">
-                            <h6 class="mt-2 font-weight-bold">INV : {{ $towers[0]->location->inventory->name }}</h6>
-                        </div>
-                        <div class="col-md-4 col-sm-12">
-                            <h6 class="mt-2 font-weight-bold">JALUR : {{ $towers[0]->location->name }}</h6>
-                        </div>
-                        <div class="col-md-4 col-sm-12">
-                            <h6 class="mt-2 font-weight-bold">TAPAK : {{ $towers[0]->no }}</h6>
-                        </div> --}}
-                        <!-- <div class="col-md-6 d-flex">
-                        <div class="col-md-3 d-sm-none d-md-block d-none d-sm-block"><h6 class="mt-2 font-weight-bold">cari :</h6></div>
-                        <div class="col-md-6 col-sm-12"><input class="form-control" type="search" placeholder="Search" aria-label="Search" /></div>
-                        </div>
-                        <div class="col-md-6 col-sm-12 d-flex">
-                        <label class="col-md-4 d-sm-none d-md-block d-none d-sm-block"> <h6 class="h6 font-weight-bold mt-lg-2">Filter berasarkan :</h6></label>
-                        <select class="col-md-4 col-sm-12 form-select form-control ml-lg-n2" id="kategori">
-                            <option selected>Kategori</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                        </select>
-                        <select class="col-md-4 col-sm-12 form-select form-control ml-lg-2" id="penginput">
-                            <option selected>Penginput</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                        </select>
-                        </div> -->
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
-                            <thead>
-                                <tr>
-                                    <th>Ruas Jalur</th>
-                                    {{-- <th>No Tower</th> --}}
-                                    <th>Tanggal Input</th>
-                                    <th>Penginput</th>
-                                    <th>Tindakan</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                @foreach ($reports as $report)
-                                    <tr>
-                                        <td>{{ $report->location->name }}</td>
-                                        {{-- <td>{{ $report->firsttower->no }} - {{ $report->secondtower->no }}</td> --}}
-                                        <td>{{ $report->created_at->format('d M Y') }}</td>
-                                        <td>{{ $report->team->name }}</td>
-                                        <td>
-                                            <a href="">Cetak</a> | <a href="">Lihat</a> | <a href="">Edit</a> | <a href="">Hapus</a>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+              <div class="row d-flex flex-row justify-content-between">
+                <div class="col-md-2 col-sm-12">
+                  <button class="btn btn-outline-primary font-weight-bold" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap"><i class="fas fa-plus mr-2"></i>Tambah</button>
                 </div>
+                <div class="col-md-4 col-sm-12 d-flex flex-column flex-lg-row mt-3 mt-md-0 mt-lg-0 mt-xl-0">
+                  <p class="my-auto">Filter Berdasarkan :</p>
+                  <select class="col-md-6 col-sm-12 form-select form-control ml-lg-2 my-auto" id="penginput">
+                    <option selected>Semua Jalur</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                  </select>
+                </div>
+              </div>
             </div>
-        </div>
-    </div>
-    <!-- /.container-fluid -->
-@endsection
-<!-- modal start -->
-            {{-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <!-- page card -->
+
+            <div class="row">
+              <!-- DataTales Example -->
+              <div class="shadow mb-4">
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+                      <thead>
+                        <tr>
+                          <th>Tanggal</th>
+                          <th>Tim</th>
+                          <th class="text-center">Tindakan</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>20 - 08 - 2022</td>
+                          <td>Tim A</td>
+                          <td class="text-center"><a href="">Cetak</a>| <a href="">Lihat</a>| <a href="">Edit</a>| <a href="">Hapus</a></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- modal start -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                   <div class="modal-header">
@@ -277,5 +222,7 @@
                   </div>
                 </div>
               </div>
-            </div> --}}
+            </div>
             <!-- modal end -->
+          </div>
+@endsection
