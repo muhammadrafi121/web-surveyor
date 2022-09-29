@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Inventory;
+use App\Models\Land;
 use App\Models\Location;
 use App\Models\Row;
 use App\Models\Tower;
@@ -28,5 +29,10 @@ class AjaxController extends Controller
     public function tower(Request $request)
     {
         return Tower::with(['location.inventory'])->where('id', $request->id)->get();
+    }
+
+    public function land(Request $request)
+    {
+        return Land::with(['tower', 'row'])->where('id', $request->id)->get();
     }
 }

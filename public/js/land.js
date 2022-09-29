@@ -8,6 +8,12 @@ const tower2_2 = $('#notower2_2');
 
 $(document).ready(function() {
 
+    $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
     $('#wilayah').on('change', function() {
         $.ajax({
             url: APP_URL + '/ajax/inventory/',
@@ -56,54 +62,6 @@ $(document).ready(function() {
         });
     });
 
-    $('#wilayah2').on('change', function() {
-        $.ajax({
-            url: APP_URL + '/ajax/inventory/',
-            data: {
-                id: $(this).val()
-            },
-            success: function(d) {
-                var html = '';
-                for (var i = 0; i < d[0].locations.length; i++) {
-                    html += '<option value="' + d[0].locations[i].id + '">' + d[0].locations[i].name + '</option>'
-                }
-                jalur2.html(html);
-
-                $.ajax({
-                    url: APP_URL + '/ajax/location/',
-                    data: {
-                        id: d[0].locations[0].id
-                    },
-                    success: function(d) {
-                        var html = '';
-                        for (var i = 0; i < d[0].towers.length; i++) {
-                            html += '<option value="' + d[0].towers[i].id + '">' + d[0].towers[i].no + '</option>'
-                        }
-                        tower1_2.html(html);
-                        tower2_2.html(html);
-                    }
-                });
-            }
-        });
-    });
-
-    $('#jalur2').on('change', function() {
-        $.ajax({
-            url: APP_URL + '/ajax/location/',
-            data: {
-                id: $(this).val()
-            },
-            success: function(d) {
-                var html = '';
-                for (var i = 0; i < d[0].towers.length; i++) {
-                    html += '<option value="' + d[0].towers[i].id + '">' + d[0].towers[i].no + '</option>'
-                }
-                tower1_2.html(html);
-                tower2_2.html(html);
-            }
-        });
-    });
-
     $('#tipe').on('change', function() {
         if ($(this).val() == 'row') {
             var optHtml = '';
@@ -143,6 +101,84 @@ $(document).ready(function() {
     });
 });
 
+function tambah() {
+    $('#exampleModal').modal('show');
+    $('.modal-title').text('Input Data Lahan');
+    $('#pilihan').html('');
+    $('#form-action').attr('action', '/land/');
+    $('input[name="_method"]').val('POST');
+}
+
+function edit(data) {
+    $('#exampleModal').modal('show');
+    $('.modal-title').text('Update Data Lahan');
+
+    $.ajax({
+        url: APP_URL + '/ajax/land/',
+        data: {
+            id: data.id
+        },
+        success: function(d) {
+            var html = '';
+            for (var i = 0; i < d[0].locations.length; i++) {
+                html += '<option value="' + d[0].locations[i].id + '">' + d[0].locations[i].name + '</option>'
+            }
+            jalur2.html(html);
+        }
+    });
+    if (data.row_id) {
+        $('#tipe').val('row');
+        var optHtml = '';
+        var html = '<h6 class="font-weight-light mt-n2">Pilih ROW</h6><select class="form-select form-control" id="row" name="row"></select>';
+        $('#pilihan').html(html);
+        $.ajax({
+            url: APP_URL + '/ajax/location/',
+            data: {
+                id: jalur.val()
+            },
+            success: function(d) {
+                for (var i = 0; i < d[0].rows.length; i++) {
+                    var tmp= '<option value="' + d[0].rows[i].id + '">' + d[0].rows[i].firsttower.no + '-' + d[0].rows[i].secondtower.no + '</option>';
+                    optHtml += tmp;
+                    $('#row').html(optHtml);
+                    $('#row').val(data.row_id);
+                }
+            }
+        });
+    }
+    if (data.tower_id) {
+        $('#tipe').val('tower');
+        var optHtml = '';
+        var html = '<h6 class="font-weight-light mt-n2">Pilih Tapak Tower</h6><select class="form-select form-control" id="tower" name="tower"></select>';
+        $('#pilihan').html(html);
+        $.ajax({
+            url: APP_URL + '/ajax/location/',
+            data: {
+                id: jalur.val()
+            },
+            success: function(d) {
+                for (var i = 0; i < d[0].towers.length; i++) {
+                    var tmp = '<option value="' + d[0].towers[i].id + '">' + d[0].towers[i].no + '</option>';
+                    optHtml += tmp;
+                    $('#tower').html(optHtml);
+                    $('#tower').val(data.tower_id);
+                }
+            }
+        });
+    }
+
+    $('#form-action').attr('action', '/land/' + data.id);
+    $('#id-edit').val(data.id);
+    $('input[name="_method"]').val('PUT');
+    $('#owner-id').val(data.owner.id);
+    $('#nama').val(data.owner.name);
+    $('#desa').val(data.owner.village);
+    $('#kecamatan').val(data.owner.district);
+    $('#kabupaten').val(data.owner.regency);
+    $('#jenis').val(data.type);
+    $('#luas').val(data.area);
+}
+
 function saveData() {
     if ($('#tower').val()) {
         $('#tower-row').attr('name', 'tower');
@@ -173,26 +209,4 @@ function saveData() {
             }
         });
     }
-}
-
-function edit(data) {
-    $.ajax({
-        url: APP_URL + '/ajax/inventory/',
-        data: {
-            id: data.location.inventory_id
-        },
-        success: function(d) {
-            var html = '';
-            for (var i = 0; i < d[0].locations.length; i++) {
-                html += '<option value="' + d[0].locations[i].id + '">' + d[0].locations[i].name + '</option>'
-            }
-            jalur2.html(html);
-        }
-    });
-    $('#form-edit').attr('action', '/row/' + data.id);
-    $('#id-edit').val(data.id);
-    $('#wilayah2').val(data.location.inventory_id);
-    $('#jalur2').val(data.location_id);
-    $('#notower1_2').val(data.tower1_id);
-    $('#notower2_2').val(data.tower2_id);
 }

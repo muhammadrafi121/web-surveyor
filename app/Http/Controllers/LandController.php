@@ -21,7 +21,6 @@ class LandController extends Controller
      */
     public function index()
     {
-
         $inventories = Inventory::all();
         $locations = Location::where('inventory_id', $inventories->first()->id)->get();
         $towers = Tower::where('location_id', $locations->first()->id)->get();
@@ -35,7 +34,7 @@ class LandController extends Controller
             'locations' => $locations,
             'towers' => $towers,
             'rows' => $rows,
-            'script' => 'land'
+            'script' => 'land',
         ]);
     }
 
@@ -81,13 +80,18 @@ class LandController extends Controller
             'user_id' => auth()->user()->id,
         ];
 
-        if ($request->row) $land_input['row_id'] = $request->row;
-        if ($request->tower) $land_input['tower_id'] = $request->tower;
+        if ($request->row) {
+            $land_input['row_id'] = $request->row;
+        }
+        if ($request->tower) {
+            $land_input['tower_id'] = $request->tower;
+        }
 
         $owner = LandOwner::where('name', $request->nama)
-        ->where('village', $request->desa)
-        ->where('district', $request->kecamatan)
-        ->where('regency', $request->kabupaten)->get()[0];
+            ->where('village', $request->desa)
+            ->where('district', $request->kecamatan)
+            ->where('regency', $request->kabupaten)
+            ->get();
 
         $owner = collect($owner);
 
@@ -97,7 +101,7 @@ class LandController extends Controller
             $owner = LandOwner::create($owner_input);
             $land = $owner->lands()->create($land_input);
         } else {
-            $land_input['land_owner_id'] = $owner['id'];
+            $land_input['land_owner_id'] = $owner[0]['id'];
             $land = Land::create($land_input);
         }
 
@@ -176,6 +180,42 @@ class LandController extends Controller
         // }
 
         // $land = $owner->lands()->where('id', $request->id)->update($land_input);
+
+        $rules = [
+            'nama' => 'required',
+            'desa' => 'required',
+            'kecamatan' => 'required',
+            'kabupaten' => 'required',
+            'jenis' => 'required',
+            'luas' => 'required',
+        ];
+
+        $request->validate($rules);
+
+        $owner_input = [
+            'name' => $request->nama,
+            'village' => $request->desa,
+            'district' => $request->kecamatan,
+            'regency' => $request->kabupaten,
+        ];
+
+        $land_input = [
+            'type' => $request->jenis,
+            'area' => $request->luas,
+            'user_id' => auth()->user()->id,
+        ];
+
+        if ($request->row) {
+            $land_input['row_id'] = $request->row;
+        }
+        if ($request->tower) {
+            $land_input['tower_id'] = $request->tower;
+        }
+        
+        LandOwner::where('id', $request->owner_id)->update($owner_input);
+        Land::where('id', $request->id)->update($land_input);
+        
+        return redirect('/land')->with('message', 'Update Data Lahan Berhasil');
     }
 
     /**
@@ -186,7 +226,12 @@ class LandController extends Controller
      */
     public function destroy(Land $land)
     {
-        DB::table('lands')->where('id', $land->id)->delete();
+        // DB::table('lands')
+        //     ->where('id', $land->id)
+        //     ->delete();
+
+        // dd($land);
+        $land->delete();
         return redirect('/land')->with('message', 'Hapus Data Lahan Berhasil');
     }
 }

@@ -2,6 +2,31 @@
 
 @section('content')
     <div class="container-fluid">
+        @if (session('message'))
+            <div id="none" onclick="myFunction()"
+                style="position: fixed; z-index: 1; padding-top: 100px; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4); ">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body d-flex flex-column">
+                            <img src="img/alert.png" alt="" srcset="" class="m-auto w-50" />
+                            <h2 class="mx-auto mt-4 font-weight-bold">{{ session('message') }}</h2>
+                            <div class="col-md-5 col-sm-12 d-flex justify-content-evenly mx-auto my-3">
+                                <a href="http://" class="btn btn-primary mx-auto">Lihat Data</a>
+                                <a href="http://" class="btn btn-primary bg-blue mx-auto">Cetak</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script>
+                function myFunction() {
+                    document.getElementById("none").style.display = "none";
+                }
+            </script>
+        @endif
         <!-- Page Heading -->
         <div class="d-sm-flex flex-column justify-content-between mb-4 px-lg-4">
             <h2 class="h2 mb-3 font-weight-bold">Data Lahan</h2>
@@ -9,8 +34,7 @@
             <div class="row d-flex flex-column flex-lg-row justify-content-between">
                 <div class="d-flex flex-row col-md-8 col-sm-12">
                     <div class="col-md-3 col-sm-12">
-                        <button class="btn btn-outline-primary font-weight-bold" data-bs-toggle="modal"
-                            data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap"><i
+                        <button class="btn btn-outline-primary font-weight-bold" onclick="tambah()"><i
                                 class="fas fa-plus mr-2"></i>Tambah</button>
                     </div>
                     <div class="col-md-3 col-sm-12">
@@ -62,7 +86,12 @@
                                         <td>{{ $land->area }}</td>
                                         <td>{{ $land->user->name }}</td>
                                         <td><a href="">Cetak</a>| <a href="">Lihat</a>| <a
-                                                href="" data-bs-toggle="modal" data-bs-target="#exampleModal3">Edit</a>| <a href="">Hapus</a></td>
+                                                href="javascript:void(0)" onclick="edit({{ $land }})">Edit</a>| 
+                                                <form action="/land/{{ $land->id }}" method="POST">
+                                                    @method('delete')
+                                                    @csrf
+                                                    <button type="submit">Hapus</button>
+                                                </form>
                                         <td>
                                             <button class="btn-sm btn-outline-primary font-weight-bold bg-yellow"
                                                 data-bs-toggle="modal" data-bs-target="#exampleModal"
@@ -132,7 +161,8 @@
         </div>
         <!-- modal end -->
         <!-- modal start 2 -->
-        <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel3" aria-hidden="true">
+        <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel3"
+            aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header d-flex flex-column">
@@ -142,14 +172,17 @@
                         <h6 id="row-tower">ROW : T.71 - T.72</h6>
                         <h5 class="modal-title font-weight-bold" id="exampleModalLabel3">Form Lahan</h5>
                     </div>
-                    <form action="/land" method="POST">
-                        @csrf
-                        <div class="modal-body">
+                    <div class="modal-body">
+                        <form action="/land" method="POST" id="form-action">
+                            @method('PUT')
+                            @csrf
                             <input type="hidden" id="tower-row">
+                            <input type="hidden" id="id-edit" name="id">
+                            <input type="hidden" id="owner-id" name="owner_id">
                             <div class="form-group mb-4">
                                 <h6 class="font-weight-light mt-n2">Nama</h6>
-                                <input type="text" class="form-control" name="nama" placeholder="Nama Pemilik"
-                                    required />
+                                <input type="text" class="form-control" id="nama" name="nama"
+                                    placeholder="Nama Pemilik" required />
                             </div>
                             {{-- <div class="form-group mb-4">
                                 <h6 class="font-weight-light mt-n2">Alamat</h6>
@@ -157,35 +190,35 @@
                             </div> --}}
                             <div class="form-group mb-4">
                                 <h6 class="font-weight-light mt-n2">Desa</h6>
-                                <input type="text" class="form-control" name="desa" placeholder="Desa / Kelurahan"
-                                    required />
+                                <input type="text" class="form-control" id="desa" name="desa"
+                                    placeholder="Desa / Kelurahan" required />
                             </div>
                             <div class="form-group mb-4">
                                 <h6 class="font-weight-light mt-n2">Kecamatan</h6>
-                                <input type="text" class="form-control" name="kecamatan" placeholder="Kecamatan"
-                                    required />
+                                <input type="text" class="form-control" id="kecamatan" name="kecamatan"
+                                    placeholder="Kecamatan" required />
                             </div>
                             <div class="form-group mb-4">
                                 <h6 class="font-weight-light mt-n2">Kabupaten</h6>
-                                <input type="text" class="form-control" name="kabupaten" placeholder="Kabupaten"
-                                    required />
+                                <input type="text" class="form-control" id="kabupaten" name="kabupaten"
+                                    placeholder="Kabupaten" required />
                             </div>
                             <div class="form-group mb-4">
                                 <h6 class="font-weight-light mt-n2">Jenis Tanah</h6>
-                                <input type="text" class="form-control" name="jenis" placeholder="Jenis Tanah"
-                                    required />
+                                <input type="text" class="form-control" id="jenis" name="jenis"
+                                    placeholder="Jenis Tanah" required />
                             </div>
                             <div class="form-group mb-4">
                                 <h6 class="font-weight-light mt-n2">Luas Tanah</h6>
-                                <input type="text" class="form-control" name="luas" placeholder="Luas Tanah"
-                                    required />
+                                <input type="text" class="form-control" id="luas" name="luas"
+                                    placeholder="Luas Tanah" required />
                             </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary" data-bs-target="#exampleModalToggle3"
-                                data-bs-toggle="modal">Submit Data</button>
-                        </div>
-                    </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" data-bs-target="#exampleModalToggle3"
+                            data-bs-toggle="modal">Submit Data</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
