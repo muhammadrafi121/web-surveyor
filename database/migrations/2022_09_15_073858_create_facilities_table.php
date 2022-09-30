@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('facilities', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('dailyreport_id')->references('id')->on('daily_reports');
+            $table->foreignId('dailyreport_id')->constrained('daily_reports')->cascadeOnUpdate()->cascadeOnDelete();
             $table->string('name');
             $table->integer('total');
             $table->enum('status', ['Ada', 'Tidak ada']);

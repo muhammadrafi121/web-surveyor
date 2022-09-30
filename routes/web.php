@@ -68,4 +68,5 @@ Route::get('/ajax/inventory', [AjaxController::class, 'inventory'])->middleware(
 Route::get('/ajax/location', [AjaxController::class, 'location'])->middleware('auth');
 Route::get('/ajax/tower', [AjaxController::class, 'tower'])->middleware('auth');
 Route::get('/ajax/row', [AjaxController::class, 'row'])->middleware('auth');
+Route::get('/ajax/allrow', [AjaxController::class, 'allRow'])->middleware('auth');
 Route::get('/ajax/land', [AjaxController::class, 'land'])->middleware('auth');

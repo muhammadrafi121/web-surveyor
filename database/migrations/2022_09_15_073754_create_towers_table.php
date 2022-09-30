@@ -19,8 +19,8 @@ return new class extends Migration
             $table->string('type')->nullable();
             $table->string('lat')->nullable();
             $table->string('long')->nullable();
-            $table->foreignId('user_id')->nullable()->references('id')->on('users');
-            $table->foreignId('location_id')->references('id')->on('locations');
+            $table->foreignId('user_id')->nullable()->constrained('users')->cascadeOnUpdate()->nullOnDelete();
+            $table->foreignId('location_id')->constrained('locations')->cascadeOnDelete()->cascadeOnUpdate();
             $table->text('attachment')->nullable();
             $table->text('description')->nullable();
             $table->timestamps();

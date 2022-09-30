@@ -17,9 +17,10 @@ return new class extends Migration
     {
         Schema::create('lands', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('row_id')->nullable()->references('id')->on('rows');
-            $table->foreignId('tower_id')->nullable()->references('id')->on('towers');
-            $table->foreignId('land_owner_id')->references('id')->on('land_owners');
+            $table->foreignId('row_id')->nullable()->constrained('rows')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('tower_id')->nullable()->constrained('towers')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('land_owner_id')->constrained('land_owners')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('user_id')->nullable()->constrained('users')->cascadeOnUpdate()->nullOnDelete();
             $table->string('type');
             $table->integer('area');
             $table->string('attachment')->nullable();

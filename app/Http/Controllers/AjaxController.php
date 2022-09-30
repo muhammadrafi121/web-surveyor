@@ -26,6 +26,11 @@ class AjaxController extends Controller
         return Row::with(['firsttower', 'secondtower', 'location.inventory'])->where('id', $request->id)->get();
     }
 
+    public function allRow()
+    {
+        return Row::with(['firsttower', 'secondtower', 'location.inventory'])->get()->collect();
+    }
+
     public function tower(Request $request)
     {
         return Tower::with(['location.inventory'])->where('id', $request->id)->get();

@@ -133,7 +133,7 @@
                         <div class="form-group mb-4">
                             <label class="h5 font-weight-bold" for="name2">Inventory</label>
                             <input type="text" class="form-control" id="name2" name="name"
-                                placeholder="Inventory" value="{{ old('name', $inventory->name) }}">
+                                placeholder="Inventory" value="{{ old('name') }}">
                         </div>
                     </div>
                     <div class="modal-footer">
