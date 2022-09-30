@@ -95,3 +95,26 @@
         </div>
     </div>
 @endsection
+
+
+
+
+<!-- modal start delete account -->
+            {{-- <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title font-weight-bold" id="exampleModalLabel2">Hapus Akun</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <h2 class="my-5 text-center">Apakah Anda Yakin Ingin Menghapus Akun ?</h2>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Tidak</button>
+                    <button type="button" class="btn btn-primary">Ya</button>
+                  </div>
+                </div>
+              </div>
+            </div> --}}
+            <!-- modal end -->
