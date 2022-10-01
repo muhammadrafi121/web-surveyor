@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('activities', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('dailyreport_id')->constrained('daily_reports')->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignId('dailyreport_id')->references('id')->on('daily_reports');
             $table->text('activity');
             $table->timestamps();
         });

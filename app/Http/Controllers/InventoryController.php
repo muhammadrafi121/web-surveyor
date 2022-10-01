@@ -97,7 +97,7 @@ class InventoryController extends Controller
      */
     public function destroy(Inventory $inventory)
     {
-        $inventory->delete();
+        DB::table('inventories')->where('id', $inventory->id)->delete();
         return redirect('/inventory');
     }
 }

@@ -15,13 +15,12 @@ return new class extends Migration
     {
         Schema::create('daily_reports', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('location_id')->constrained('locations')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('team_id')->constrained('teams')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('user_id')->nullable()->constrained('users')->cascadeOnUpdate()->nullOnDelete();
+            $table->foreignId('location_id')->references('id')->on('locations');
+            $table->foreignId('team_id')->references('id')->on('teams');
+            $table->foreignId('user_id')->references('id')->on('users');
             $table->time('time_start')->nullable();
             $table->time('time_end')->nullable();
             $table->string('attachment')->nullable();
-            $table->string('weather')->nullable();
             $table->timestamps();
         });
     }

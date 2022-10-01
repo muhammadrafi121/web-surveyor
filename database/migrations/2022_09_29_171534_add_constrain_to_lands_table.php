@@ -13,13 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('man_powers', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('dailyreport_id')->references('id')->on('daily_reports');
-            $table->string('name');
-            $table->integer('total');
-            $table->enum('status', ['Hadir', 'Tidak hadir']);
-            $table->timestamps();
+        Schema::table('lands', function (Blueprint $table) {
+            $table->unsignedBigInteger('row_id')->constrained()->change();
+            $table->unsignedBigInteger('tower_id')->constrained()->change();
+            $table->unsignedBigInteger('land_owner_id')->constrained()->change();
         });
     }
 
@@ -30,6 +27,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('manpowers');
+        Schema::table('lands', function (Blueprint $table) {
+            //
+        });
     }
 };

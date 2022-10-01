@@ -13,13 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('man_powers', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('dailyreport_id')->references('id')->on('daily_reports');
-            $table->string('name');
-            $table->integer('total');
-            $table->enum('status', ['Hadir', 'Tidak hadir']);
-            $table->timestamps();
+        Schema::table('daily_reports', function (Blueprint $table) {
+            //
         });
     }
 
@@ -30,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('manpowers');
+        Schema::table('daily_reports', function (Blueprint $table) {
+            //
+        });
     }
 };
