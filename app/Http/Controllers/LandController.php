@@ -139,6 +139,48 @@ class LandController extends Controller
      */
     public function update(Request $request, Land $land)
     {
+        // $request->validate([
+        //     'owner_name' => 'required',
+        //     'village' => 'required',
+        //     'district' => 'required',
+        //     'regency' => 'required',
+        //     'province' => 'required',
+        //     'type' => 'required',
+        //     'area' => 'required',
+        //     'location_id' => 'required',
+        // ]);
+
+        // $owner_input = [
+        //     'name' => $request->owner_name,
+        //     'village' => $request->village,
+        //     'district' => $request->district,
+        //     'regency' => $request->regency,
+        //     'province' => $request->province,
+        // ];
+
+        // $land_input = [
+        //     'location_id' => $request->location_id,
+        //     'type' => $request->type,
+        //     'area' => $request->area,
+        //     'description' => $request->description,
+        // ];
+
+        // if ($request->row_id) {
+        //     $land_input['row_id'] = $request->row_id;
+        // }
+
+        // if ($request->tower_id) {
+        //     $land_input['tower_id'] = $request->tower_id;
+        // }
+
+        // if ($request->owner_id) {
+        //     $owner = LandOwner::find('id', $request->owner_id);
+        // } else {
+        //     $owner = LandOwner::create($owner_input);
+        // }
+
+        // $land = $owner->lands()->where('id', $request->id)->update($land_input);
+
         $rules = [
             'nama' => 'required',
             'desa' => 'required',
@@ -191,10 +233,5 @@ class LandController extends Controller
         // dd($land);
         $land->delete();
         return redirect('/land')->with('message', 'Hapus Data Lahan Berhasil');
-    }
-
-    public function print(Land $land)
-    {
-        return view('pdfdatalahan');
     }
 }
