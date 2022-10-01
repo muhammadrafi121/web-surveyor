@@ -210,3 +210,57 @@ function saveData() {
         });
     }
 }
+
+function setDetail(data) {
+    $.ajax({
+        url: APP_URL + '/ajax/land',
+        data: {
+            id: data.id
+        },
+        success: function(d) {
+            console.log(d);
+            $('#pemilik-detail').html('Nama Pemilik : ' + d.owner.name);
+            $('#desa-detail').html('Desa / Kelurahan : ' + d.owner.village);
+            $('#kecamatan-detail').html('Kecamatan : ' + d.owner.district);
+            $('#kabupaten-detail').html('Kabupaten : ' + d.owner.regency);
+        }
+    });
+
+    var daftarP = $('#detail-lahan').DataTable({
+        ajax: {
+            url: APP_URL + '/ajax/land?id=' + data.id,
+            type: 'GET',
+            data: function(d) { }
+        },
+        columns: [{
+            data: "type",
+            "targets": 0
+        },
+        {
+            data: "area",
+            "targets": 1
+        },
+        {
+            data: "type",
+            "targets": 2
+        },
+        {
+            data: "area",
+            "targets": 3
+        },
+        {
+            data: "area",
+            "targets": 4
+        },
+        {
+            data: "area",
+            "targets": 5
+        },
+        {
+            data: "area",
+            "targets": 6
+        },
+        ],
+        order: [2, 'asc']
+    });
+}

@@ -26,7 +26,6 @@ class LandController extends Controller
         $towers = Tower::where('location_id', $locations->first()->id)->get();
         $rows = Row::where('location_id', $locations->first()->id)->get();
         $lands = Land::all();
-        // dd($lands);
         return view('listland', [
             'title' => 'Data Lahan',
             'lands' => $lands,

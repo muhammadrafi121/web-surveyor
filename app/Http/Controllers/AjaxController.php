@@ -33,6 +33,6 @@ class AjaxController extends Controller
 
     public function land(Request $request)
     {
-        return Land::with(['tower', 'row'])->where('id', $request->id)->get();
+        return json_decode(Land::with(['tower', 'row', 'plants', 'owner'])->find($request->id));
     }
 }
