@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('rows', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('tower1_id')->nullable()->references('id')->on('towers');
-            $table->foreignId('tower2_id')->nullable()->references('id')->on('towers');
-            $table->foreignId('user_id')->nullable()->references('id')->on('users');
-            $table->foreignId('location_id')->references('id')->on('locations');
+            $table->foreignId('tower1_id')->nullable()->constrained('towers')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('tower2_id')->nullable()->constrained('towers')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete()->cascadeOnUpdate();
+            $table->foreignId('location_id')->constrained('locations')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('attachment')->nullable();
             $table->timestamps();
         });

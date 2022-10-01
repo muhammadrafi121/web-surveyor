@@ -128,181 +128,179 @@
         <!-- modal start 2 -->
         <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel3" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-scrollable">
-                <div class="modal-content">
+                <form class="modal-content" action="/dailyreport" method="POST">
                     <div class="modal-header">
                         <h5 class="modal-title font-weight-bold" id="exampleModalLabel">Input Data Daily Report</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="/dailyreport" method="POST">
-                            @method('POST')
-                            @csrf
-                            <input type="hidden" id="team-id" name="team_id">
-                            <div class="row bg-white d-flex shadow-lg py-5 pl-md-3">
-                                <div class="row d-sm-flex">
-                                    <div class="col-md-4 col-sm-12 mb-2">
-                                        <h6 class="font-weight-bold">INV :</h6>
-                                    </div>
-                                    <div class="col-md-4 col-sm-12 mb-2">
-                                        <h6 class="font-weight-bold">JALUR :</h6>
-                                    </div>
-                                    <div class="col-md-4 col-sm-12 mb-2">
-                                        <h6 class="font-weight-bold">TIM :</h6>
-                                    </div>
+                        @method('POST')
+                        @csrf
+                        <input type="hidden" id="jalur-id" name="jalur">
+                        <input type="hidden" id="tim-id" name="tim_id">
+                        <div class="row bg-white d-flex shadow-lg py-5 pl-md-3">
+                            <div class="row d-sm-flex">
+                                <div class="col-md-4 col-sm-12 mb-2">
+                                    <h6 class="font-weight-bold">INV :</h6>
                                 </div>
-                                <div class="col-md-6 mx-auto">
-                                    <div class="row form-group mb-4 col-sm-12">
-                                        <input type="date" class="form-control col-7" id="tanggal"
-                                            name="tanggal" />
-                                    </div>
-                                    <div class="row d-flex form-group mb-4 col-sm-12">
-                                        <select class="col-7 form-select form-control" id="cuaca" name="cuaca">
-                                            <option value="" disabled selected>Cuaca</option>
-                                            <option value="1">Cerah</option>
-                                            <option value="2">Hujan</option>
-                                        </select>
-                                    </div>
-                                    <h6 class="h6 font-weight-bold">Fasilitas Pekerjaan</h6>
-                                    <div class="row d-flex form-group mb-4 col-sm-12">
-                                        <label for="kordinator" class="col-md-4">Koordinator</label>
-                                        <label class="switch">
-                                            <input type="checkbox" id="koordinator" name="koordinator">
-                                            <span class="slider round"></span>
-                                        </label>
-                                    </div>
-                                    <div class="row d-flex form-group mb-4 col-sm-12">
-                                        <label for="surveyor1" class="col-md-4">Sorveyor 1</label>
-                                        <label class="switch">
-                                            <input type="checkbox" id="surveyor1" name="surveyor1">
-                                            <span class="slider round"></span>
-                                        </label>
-                                    </div>
-                                    <div class="row d-flex form-group mb-4 col-sm-12">
-                                        <label for="sorveyor2" class="col-md-4">Sorveyor 2</label>
-                                        <label class="switch">
-                                            <input type="checkbox" id="surveyor2" name="surveyor2">
-                                            <span class="slider round"></span>
-                                        </label>
-                                    </div>
-                                    <div class="row d-flex form-group mb-4 col-sm-12">
-                                        <label for="admin1" class="col-md-4">Admin 1</label>
-                                        <label class="switch">
-                                            <input type="checkbox" id="admin1" name="admin1">
-                                            <span class="slider round"></span>
-                                        </label>
-                                    </div>
-                                    <div class="row d-flex form-group mb-4 col-sm-12">
-                                        <label for="admin2" class="col-md-4">Admin 2</label>
-                                        <label class="switch">
-                                            <input type="checkbox" id="admin2" name="admin2">
-                                            <span class="slider round"></span>
-                                        </label>
-                                    </div>
-                                    <div class="row d-flex form-group mb-4 col-sm-12">
-                                        <label for="driver" class="col-md-4">Driver</label>
-                                        <label class="switch">
-                                            <input type="checkbox" id="driver" name="driver">
-                                            <span class="slider round"></span>
-                                        </label>
-                                    </div>
+                                <div class="col-md-4 col-sm-12 mb-2">
+                                    <h6 class="font-weight-bold">JALUR :</h6>
                                 </div>
-                                <div class="col-md-6 mx-auto">
-                                    <h6 class="h6 font-weight-bold">Fasilitas Pekerjaan</h6>
-                                    <div class="row d-flex form-group mb-4 col-sm-12">
-                                        <label for="gps" class="col-md-4">GPS Geodetic</label>
-                                        <label class="switch">
-                                            <input type="checkbox" id="gps" name="gps">
-                                            <span class="slider round"></span>
-                                        </label>
-                                    </div>
-                                    <div class="row d-flex form-group mb-4 col-sm-12">
-                                        <label for="laptop" class="col-md-4">Laptop</label>
-                                        <label class="switch">
-                                            <input type="checkbox" id="laptop" name="laptop">
-                                            <span class="slider round"></span>
-                                        </label>
-                                    </div>
-                                    <div class="row d-flex form-group mb-4 col-sm-12">
-                                        <label for="printer" class="col-md-4">Printer</label>
-                                        <label class="switch">
-                                            <input type="checkbox" id="printer" name="printer">
-                                            <span class="slider round"></span>
-                                        </label>
-                                    </div>
-                                    <div class="row d-flex form-group mb-4 col-sm-12">
-                                        <label for="kamera" class="col-md-4">Kamera Digital</label>
-                                        <label class="switch">
-                                            <input type="checkbox" id="kamera" name="kamera">
-                                            <span class="slider round"></span>
-                                        </label>
-                                    </div>
-                                    <div class="row d-flex form-group mb-4 col-sm-12">
-                                        <label for="scanner" class="col-md-4">Scanner</label>
-                                        <label class="switch">
-                                            <input type="checkbox" id="scanner" name="scanner">
-                                            <span class="slider round"></span>
-                                        </label>
-                                    </div>
-                                    <div class="row d-flex form-group mb-4 col-sm-12">
-                                        <label for="mobil" class="col-md-4">Mobil</label>
-                                        <label class="switch">
-                                            <input type="checkbox" id="mobil" name="mobil">
-                                            <span class="slider round"></span>
-                                        </label>
-                                    </div>
-                                    <div class="row d-flex form-group mb-4 col-sm-12">
-                                        <label for="motor" class="col-md-4">Motor</label>
-                                        <label class="switch">
-                                            <input type="checkbox" id="motor" name="motor">
-                                            <span class="slider round"></span>
-                                        </label>
-                                    </div>
-                                    <div class="row d-flex form-group mb-4 col-sm-12">
-                                        <label for="apd" class="col-md-4">APD</label>
-                                        <label class="switch">
-                                            <input type="checkbox" id="apd" name="apd">
-                                            <span class="slider round"></span>
-                                        </label>
-                                    </div>
-                                    <h6 class="h6 font-weight-bold">Material Pekerjaan</h6>
-                                    <div class="row d-flex form-group mb-4 col-sm-12">
-                                        <label for="atk" class="col-md-4">ATK</label>
-                                        <label class="switch">
-                                            <input type="checkbox" id="atk" name="atk">
-                                            <span class="slider round"></span>
-                                        </label>
-                                    </div>
-                                    <div class="row d-flex form-group mb-4 col-sm-12">
-                                        <label for="cat" class="col-md-4">Cat Pilox</label>
-                                        <label class="switch">
-                                            <input type="checkbox" id="cat" name="cat">
-                                            <span class="slider round"></span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 mx-auto">
-                                    <div class="row d-flex form-group mb-5 col-sm-12">
-                                        <label for="waktum" class="col-md-3">Waktu Mulai</label>
-                                        <input type="time" class="col-md-2 form-control" id="waktum" />
-                                    </div>
-                                    <div class="row d-flex form-group mb-5 col-sm-12">
-                                        <label for="waktus" class="col-md-3">Waktu Selesai</label>
-                                        <input type="time" class="col-md-2 form-control" id="waktus" />
-                                    </div>
-                                    <div class="row d-flex form-group mb-4 col-sm-12">
-                                        <label for="kegiatan" class="col-md-2">Kegiatan</label>
-                                        <input type="text" class="col-md-10 form-control" id="kegiatan"
-                                            placeholder="Text Area" />
-                                    </div>
+                                <div class="col-md-4 col-sm-12 mb-2">
+                                    <h6 class="font-weight-bold">TIM :</h6>
                                 </div>
                             </div>
-                        </form>
+                            <div class="col-md-6 mx-auto">
+                                <div class="row form-group mb-4 col-sm-12">
+                                    <input type="date" class="form-control col-7" id="tanggal" name="tanggal" />
+                                </div>
+                                <div class="row d-flex form-group mb-4 col-sm-12">
+                                    <select class="col-7 form-select form-control" id="cuaca" name="cuaca">
+                                        <option value="" disabled selected>Cuaca</option>
+                                        <option value="Cerah">Cerah</option>
+                                        <option value="Hujan">Hujan</option>
+                                    </select>
+                                </div>
+                                <h6 class="h6 font-weight-bold">Fasilitas Pekerjaan</h6>
+                                <div class="row d-flex form-group mb-4 col-sm-12">
+                                    <label for="kordinator" class="col-md-4">Koordinator</label>
+                                    <label class="switch">
+                                        <input type="checkbox" id="koordinator" name="koordinator">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div class="row d-flex form-group mb-4 col-sm-12">
+                                    <label for="surveyor1" class="col-md-4">Sorveyor 1</label>
+                                    <label class="switch">
+                                        <input type="checkbox" id="surveyor1" name="surveyor1">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div class="row d-flex form-group mb-4 col-sm-12">
+                                    <label for="sorveyor2" class="col-md-4">Sorveyor 2</label>
+                                    <label class="switch">
+                                        <input type="checkbox" id="surveyor2" name="surveyor2">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div class="row d-flex form-group mb-4 col-sm-12">
+                                    <label for="admin1" class="col-md-4">Admin 1</label>
+                                    <label class="switch">
+                                        <input type="checkbox" id="admin1" name="admin1">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div class="row d-flex form-group mb-4 col-sm-12">
+                                    <label for="admin2" class="col-md-4">Admin 2</label>
+                                    <label class="switch">
+                                        <input type="checkbox" id="admin2" name="admin2">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div class="row d-flex form-group mb-4 col-sm-12">
+                                    <label for="driver" class="col-md-4">Driver</label>
+                                    <label class="switch">
+                                        <input type="checkbox" id="driver" name="driver">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mx-auto">
+                                <h6 class="h6 font-weight-bold">Fasilitas Pekerjaan</h6>
+                                <div class="row d-flex form-group mb-4 col-sm-12">
+                                    <label for="gps" class="col-md-4">GPS Geodetic</label>
+                                    <label class="switch">
+                                        <input type="checkbox" id="gps" name="gps">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div class="row d-flex form-group mb-4 col-sm-12">
+                                    <label for="laptop" class="col-md-4">Laptop</label>
+                                    <label class="switch">
+                                        <input type="checkbox" id="laptop" name="laptop">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div class="row d-flex form-group mb-4 col-sm-12">
+                                    <label for="printer" class="col-md-4">Printer</label>
+                                    <label class="switch">
+                                        <input type="checkbox" id="printer" name="printer">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div class="row d-flex form-group mb-4 col-sm-12">
+                                    <label for="kamera" class="col-md-4">Kamera Digital</label>
+                                    <label class="switch">
+                                        <input type="checkbox" id="kamera" name="kamera">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div class="row d-flex form-group mb-4 col-sm-12">
+                                    <label for="scanner" class="col-md-4">Scanner</label>
+                                    <label class="switch">
+                                        <input type="checkbox" id="scanner" name="scanner">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div class="row d-flex form-group mb-4 col-sm-12">
+                                    <label for="mobil" class="col-md-4">Mobil</label>
+                                    <label class="switch">
+                                        <input type="checkbox" id="mobil" name="mobil">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div class="row d-flex form-group mb-4 col-sm-12">
+                                    <label for="motor" class="col-md-4">Motor</label>
+                                    <label class="switch">
+                                        <input type="checkbox" id="motor" name="motor">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div class="row d-flex form-group mb-4 col-sm-12">
+                                    <label for="apd" class="col-md-4">APD</label>
+                                    <label class="switch">
+                                        <input type="checkbox" id="apd" name="apd">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <h6 class="h6 font-weight-bold">Material Pekerjaan</h6>
+                                <div class="row d-flex form-group mb-4 col-sm-12">
+                                    <label for="atk" class="col-md-4">ATK</label>
+                                    <label class="switch">
+                                        <input type="checkbox" id="atk" name="atk">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div class="row d-flex form-group mb-4 col-sm-12">
+                                    <label for="cat" class="col-md-4">Cat Pilox</label>
+                                    <label class="switch">
+                                        <input type="checkbox" id="cat" name="cat">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mx-auto">
+                                <div class="row d-flex form-group mb-5 col-sm-12">
+                                    <label for="waktum" class="col-md-3">Waktu Mulai</label>
+                                    <input type="time" class="col-md-2 form-control" id="waktum" name="waktum" />
+                                </div>
+                                <div class="row d-flex form-group mb-5 col-sm-12">
+                                    <label for="waktus" class="col-md-3">Waktu Selesai</label>
+                                    <input type="time" class="col-md-2 form-control" id="waktus" name="waktus" />
+                                </div>
+                                <div class="row d-flex form-group mb-4 col-sm-12">
+                                    <label for="kegiatan" class="col-md-2">Kegiatan</label>
+                                    <input type="text" class="col-md-10 form-control" id="kegiatan" name="kegiatan"
+                                        placeholder="Text Area" />
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-bs-target="#exampleModalToggle3"
+                        <button type="submit" class="btn btn-primary" data-bs-target="#exampleModalToggle3"
                             data-bs-toggle="modal">Submit Data</button>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
         <!-- modal end -->

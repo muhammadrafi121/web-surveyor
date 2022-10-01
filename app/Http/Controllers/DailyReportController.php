@@ -58,15 +58,117 @@ class DailyReportController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'jalur' => 'required',
+        $dataReport = [
+            'location_id' => $request->jalur,
+            'date' => $request->tanggal,
+            'weather' => $request->cuaca,
+            'time_start' => $request->waktum,
+            'time_end' => $request->waktus,
+            'user_id' => auth()->user()->id,
+            'team_id' => $request->tim_id,
+        ];
+
+        $dataFasilitas = [
+            [
+                'name' => 'GPS Geodetic',
+                'total' => 1,
+                'status' => $request->gps == 'on' ? 1 : 0,
+            ],
+            [
+                'name' => 'Laptop',
+                'total' => 1,
+                'status' => $request->laptop == 'on' ? 1 : 0,
+            ],
+            [
+                'name' => 'Printer',
+                'total' => 1,
+                'status' => $request->printer == 'on' ? 1 : 0,
+            ],
+            [
+                'name' => 'Kamera Digital',
+                'total' => 1,
+                'status' => $request->kamera == 'on' ? 1 : 0,
+            ],
+            [
+                'name' => 'Scanner',
+                'total' => 1,
+                'status' => $request->scanner == 'on' ? 1 : 0,
+            ],
+            [
+                'name' => 'Mobil',
+                'total' => 1,
+                'status' => $request->mobil == 'on' ? 1 : 0,
+            ],
+            [
+                'name' => 'Motor',
+                'total' => 1,
+                'status' => $request->motor == 'on' ? 1 : 0,
+            ],
+            [
+                'name' => 'APD',
+                'total' => 1,
+                'status' => $request->apd == 'on' ? 1 : 0,
+            ],
+            [
+                'name' => 'ATK',
+                'total' => 1,
+                'status' => $request->atk == 'on' ? 1 : 0,
+            ],
+            [
+                'name' => 'Cat Pilox',
+                'total' => 1,
+                'status' => $request->cat == 'on' ? 1 : 0,
+            ],
+        ];
+
+        $dataManPower = [
+            [
+                'name' => 'Kordinator',
+                'total' => 1,
+                'status' => $request->kordinator == 'on' ? 1 : 0,
+            ],
+            [
+                'name' => 'Surveyor 1',
+                'total' => 1,
+                'status' => $request->surveyor1 == 'on' ? 1 : 0,
+            ],
+            [
+                'name' => 'Surveyor 2',
+                'total' => 1,
+                'status' => $request->surveyor2 == 'on' ? 1 : 0,
+            ],
+            [
+                'name' => 'Administrator 1',
+                'total' => 1,
+                'status' => $request->admin1 == 'on' ? 1 : 0,
+            ],
+            [
+                'name' => 'Administrator 2',
+                'total' => 1,
+                'status' => $request->admin2 == 'on' ? 1 : 0,
+            ],
+            [
+                'name' => 'Driver',
+                'total' => 1,
+                'status' => $request->driver == 'on' ? 1 : 0,
+            ],
+        ];
+
+        $dailyreport = DailyReport::create($dataReport);
+
+        foreach ($dataFasilitas as $fasilitas) {
+            $dailyreport->facilities()->create($fasilitas);
+        }
+
+        foreach ($dataManPower as $manPower) {
+            $dailyreport->manPowers()->create($manPower);
+        }
+        
+        $dailyreport->activities()->create([
+            'activity' => $request->kegiatan,
         ]);
 
-        $dailyreport = new DailyReport();
-        $dailyreport->location_id = $request->jalur;
-        $dailyreport->team_id = auth()->user()->team_id;
-        $dailyreport->save();
-        return redirect('/dailyreport/' . $dailyreport->id . '/edit');
+        return redirect('/dailyreport')->with('message', 'Input Data Daily Report Berhasil');
     }
 
     /**

@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('plants', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('land_id')->references('id')->on('lands');
+            $table->foreignId('land_id')->constrained('lands')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('name')->nullable();
             $table->integer('age')->nullable();
             $table->integer('height')->nullable();

@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('facilities', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('dailyreport_id')->references('id')->on('daily_reports');
+            $table->foreignId('daily_report_id')->constrained('daily_reports')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('name');
             $table->integer('total');
-            $table->enum('status', ['Ada', 'Tidak ada']);
+            $table->integer('status');
             $table->timestamps();
         });
     }

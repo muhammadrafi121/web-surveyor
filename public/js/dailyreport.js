@@ -25,3 +25,8 @@ $(document).ready(function() {
         });
     });
 });
+
+function saveData() {
+    $('#jalur-id').val($('#jalur').val());
+    $('#tim-id').val($('#tim').val());
+}
