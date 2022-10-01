@@ -70,7 +70,9 @@
                                     <td>{{ $location->name }}</td>
                                     <td>{{ $location->created_at }}</td>
                                     <td>
-                                        <a href="">Cetak</a> | <a href="">Lihat</a> | <a
+                                        <a href="">Cetak</a> | <a href="" data-bs-toggle="modal"
+                                        data-bs-target="#modal-{{ $location->id }}"
+                                        data-bs-whatever="@getbootstrap">Lihat</a> | <a
                                             href="javascript:void(0)" data-toggle="modal" data-target="#exampleModal2"
                                             onclick="edit({{ $location }})">Edit</a> |
                                         <form action="/location/{{ $location->id }}" method="POST">
@@ -161,4 +163,79 @@
             </div>
         </div>
     </div>
+
+    @foreach ($locations as $location)
+        <div class="modal fade" id="modal-{{ $location->id }}" tabindex="-1"
+            aria-labelledby="modalLabel{{ $location->id }}" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header d-flex flex-column">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <h5 class="modal-title font-weight-bold" id="modalLabel{{ $location->id }}">Detail Data Jalur :
+                            {{ $location->name }}
+                        </h5>
+                    </div>
+                    <div class="modal-body">
+                        <center>
+                            <h6>Data RoW</h6>
+                        </center>
+                        <div class="row my-3">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped" id="detail-row" width="100%"
+                                    cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Jalur</th>
+                                            <th>No. Tower</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($location->rows as $row)
+                                            <tr>
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $location->name }}</td>
+                                                <td>{{ $row->firsttower->no }} - {{ $row->secondtower->no }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="row my-3">
+                            <center>
+                                <h6>Data Tapak Tower</h6>
+                            </center>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped" id="detail-tower" width="100%"
+                                    cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Jalur</th>
+                                            <th>No. Tower</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($location->towers as $tower)
+                                            <tr>
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $location->name }}</td>
+                                                <td>{{ $tower->no }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-target="#modal-{{ $location->id }}"
+                            data-bs-toggle="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
 @endsection

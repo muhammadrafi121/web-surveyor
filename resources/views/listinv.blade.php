@@ -69,8 +69,10 @@
                                         <td>{{ $inventory->updated_at }}</td>
                                         {{-- <td>{{ $inventory->user->name }}</td> --}}
                                         <td>
-                                            <a href="">Cetak</a> | <a href="">Lihat</a> | <a
-                                                href="javascript:void(0)" data-toggle="modal" data-target="#exampleModal2"
+                                            <a href="">Cetak</a> | <a href="" data-bs-toggle="modal"
+                                                data-bs-target="#modal-{{ $inventory->id }}"
+                                                data-bs-whatever="@getbootstrap">Lihat</a> | <a href="javascript:void(0)"
+                                                data-toggle="modal" data-target="#exampleModal2"
                                                 onclick="edit({{ $inventory }})">Edit</a> |
                                             <form action="/inventory/{{ $inventory->id }}" method="POST">
                                                 @method('delete')
@@ -143,4 +145,47 @@
             </div>
         </div>
     </div>
+
+    @foreach ($inventories as $inventory)
+        <div class="modal fade" id="modal-{{ $inventory->id }}" tabindex="-1"
+            aria-labelledby="modalLabel{{ $inventory->id }}" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header d-flex flex-column">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <h5 class="modal-title font-weight-bold" id="modalLabel{{ $inventory->id }}">Detail Data INV :
+                            {{ $inventory->name }}
+                        </h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row my-3">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped" id="detail-lahan" width="100%"
+                                    cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Jalur</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($inventory->locations as $location)
+                                            <tr>
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $location->name }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-target="#modal-{{ $inventory->id }}"
+                            data-bs-toggle="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
 @endsection
