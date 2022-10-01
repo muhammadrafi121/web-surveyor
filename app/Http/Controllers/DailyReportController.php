@@ -20,9 +20,15 @@ class DailyReportController extends Controller
      */
     public function index()
     {
+        $inventories = Inventory::all();
+        $locations = Location::where('inventory_id', $inventories->first()->id)->get();
+        $teams = Team::where('inventory_id', $inventories->first()->id)->get();
         return view('listreport', [
             'title' => 'Data Daily Report',
             'reports' => DailyReport::all(),
+            'inventories' => $inventories,
+            'locations' => $locations,
+            'teams' => $teams,
             'script' => 'dailyreport'
         ]);
     }
