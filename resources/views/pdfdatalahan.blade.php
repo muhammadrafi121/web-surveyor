@@ -14,9 +14,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet" />
-    <link href="css/style.css" rel="stylesheet" />
-    <link href="css/pdf.css" rel="stylesheet" />
+    <link href="/css/sb-admin-2.min.css" rel="stylesheet" />
+    <link href="/css/style.css" rel="stylesheet" />
+    <link href="/css/pdf.css" rel="stylesheet" />
     <style>
       * {
         /* border: 1px solid red; */
@@ -26,23 +26,24 @@
   </head>
 
   <body>
+    <button id="button">Print</button>
     <div class="container">
       <!-- A4 Paper -->
-      <div class="m-auto border-info bg-light" size="A4">
+      <div class="m-auto border-info bg-light" size="A4" id="makepdf">
         <div class="row mx-5">
           <!-- header -->
           <div class="col-12">
             <!-- logo -->
             <div class="col-12 d-flex justify-content-between">
               <div class="d-flex">
-                <img src="img/Logo_PLN.png" alt="" srcset="" width="50px" />
+                <img src="/img/Logo_PLN.png" alt="" srcset="" width="50px" />
                 <span class="ms-1"
                   ><p class="m-0">PT.PLN (Persero)</p>
                   <p class="m-0">INDUK PEMBANGUNAN SUMATERA BAGIAN SELANTAN</p>
                   <p class="m-0">UNIT PELAKSANA PROYEK SUMATERA BAGIAN SELATAN 1</p></span
                 >
               </div>
-              <img src="img/logo_ptsi.png" alt="" srcset="" height="50px" width="200px" />
+              <img src="/img/logo_ptsi.png" alt="" srcset="" height="50px" width="200px" />
             </div>
             <!-- tittle -->
             <div class="col-12 d-flex mt-2">
@@ -294,7 +295,7 @@
         mywindow.focus();
 
         mywindow.print();
-        //   mywindow.close();
+        mywindow.close();
 
         return true;
       });

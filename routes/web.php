@@ -49,6 +49,7 @@ Route::resource('tower', TowerController::class)->middleware('auth');
 Route::resource('row', RowController::class)->middleware('auth');
 
 // route land
+Route::get('land/{land}/print', [LandController::class, 'print'])->middleware('auth');
 Route::resource('land', LandController::class)->middleware('auth');
 
 // route plant
