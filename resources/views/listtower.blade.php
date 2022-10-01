@@ -52,30 +52,30 @@
                         </div>
                     </div>
                     <!-- <div class="row">
-                                            <div class="col-md-6">
-                                            <div class="container">
-                                                <form class="d-flex m-0" role="search">
-                                                <h6>cari :</h6>
-                                                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                                                </form>
-                                            </div>
-                                            </div>
-                                            <div class="col-md-6 d-flex mb-3">
-                                            <label class="col-4 d-sm-none d-md-block d-none d-sm-block p-sm-0 h-100"> <h6 class="h6 font-weight-bold mt-lg-2">Filter berasarkan :</h6></label>
-                                            <select class="col-4 form-select form-control ml-n3" id="kategori">
-                                                <option selected>Kategori</option>
-                                                <option value="1">One</option>
-                                                <option value="2">Two</option>
-                                                <option value="3">Three</option>
-                                            </select>
-                                            <select class="col-4 form-select form-control ml-3" id="penginput">
-                                                <option selected>Penginput</option>
-                                                <option value="1">One</option>
-                                                <option value="2">Two</option>
-                                                <option value="3">Three</option>
-                                            </select>
-                                            </div>
-                                        </div> -->
+                                                <div class="col-md-6">
+                                                <div class="container">
+                                                    <form class="d-flex m-0" role="search">
+                                                    <h6>cari :</h6>
+                                                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+                                                    </form>
+                                                </div>
+                                                </div>
+                                                <div class="col-md-6 d-flex mb-3">
+                                                <label class="col-4 d-sm-none d-md-block d-none d-sm-block p-sm-0 h-100"> <h6 class="h6 font-weight-bold mt-lg-2">Filter berasarkan :</h6></label>
+                                                <select class="col-4 form-select form-control ml-n3" id="kategori">
+                                                    <option selected>Kategori</option>
+                                                    <option value="1">One</option>
+                                                    <option value="2">Two</option>
+                                                    <option value="3">Three</option>
+                                                </select>
+                                                <select class="col-4 form-select form-control ml-3" id="penginput">
+                                                    <option selected>Penginput</option>
+                                                    <option value="1">One</option>
+                                                    <option value="2">Two</option>
+                                                    <option value="3">Three</option>
+                                                </select>
+                                                </div>
+                                            </div> -->
                     <div class="row mb-3 d-sm-flex">
                         {{-- <div class="col-md-4 col-sm-12">
                             <h6 class="mt-2 font-weight-bold">INV : {{ $towers[0]->location->inventory->name }}</h6>
@@ -87,24 +87,24 @@
                             <h6 class="mt-2 font-weight-bold">TAPAK : {{ $towers[0]->no }}</h6>
                         </div> --}}
                         <!-- <div class="col-md-6 d-flex">
-                                            <div class="col-md-3 d-sm-none d-md-block d-none d-sm-block"><h6 class="mt-2 font-weight-bold">cari :</h6></div>
-                                            <div class="col-md-6 col-sm-12"><input class="form-control" type="search" placeholder="Search" aria-label="Search" /></div>
-                                            </div>
-                                            <div class="col-md-6 col-sm-12 d-flex">
-                                            <label class="col-md-4 d-sm-none d-md-block d-none d-sm-block"> <h6 class="h6 font-weight-bold mt-lg-2">Filter berasarkan :</h6></label>
-                                            <select class="col-md-4 col-sm-12 form-select form-control ml-lg-n2" id="kategori">
-                                                <option selected>Kategori</option>
-                                                <option value="1">One</option>
-                                                <option value="2">Two</option>
-                                                <option value="3">Three</option>
-                                            </select>
-                                            <select class="col-md-4 col-sm-12 form-select form-control ml-lg-2" id="penginput">
-                                                <option selected>Penginput</option>
-                                                <option value="1">One</option>
-                                                <option value="2">Two</option>
-                                                <option value="3">Three</option>
-                                            </select>
-                                            </div> -->
+                                                <div class="col-md-3 d-sm-none d-md-block d-none d-sm-block"><h6 class="mt-2 font-weight-bold">cari :</h6></div>
+                                                <div class="col-md-6 col-sm-12"><input class="form-control" type="search" placeholder="Search" aria-label="Search" /></div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12 d-flex">
+                                                <label class="col-md-4 d-sm-none d-md-block d-none d-sm-block"> <h6 class="h6 font-weight-bold mt-lg-2">Filter berasarkan :</h6></label>
+                                                <select class="col-md-4 col-sm-12 form-select form-control ml-lg-n2" id="kategori">
+                                                    <option selected>Kategori</option>
+                                                    <option value="1">One</option>
+                                                    <option value="2">Two</option>
+                                                    <option value="3">Three</option>
+                                                </select>
+                                                <select class="col-md-4 col-sm-12 form-select form-control ml-lg-2" id="penginput">
+                                                    <option selected>Penginput</option>
+                                                    <option value="1">One</option>
+                                                    <option value="2">Two</option>
+                                                    <option value="3">Three</option>
+                                                </select>
+                                                </div> -->
                     </div>
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
@@ -127,7 +127,9 @@
                                         <td>{{ $tower->updated_at }}</td>
                                         <td>{{ $tower->user->name }}</td>
                                         <td>
-                                            <a href="">Cetak</a> | <a href="">Lihat</a> | <a
+                                            <a href="">Cetak</a> | <a href="" data-bs-toggle="modal"
+                                            data-bs-target="#modal-{{ $tower->id }}"
+                                            data-bs-whatever="@getbootstrap">Lihat</a> | <a
                                                 href="javascript:void(0)" data-toggle="modal" data-target="#exampleModal2"
                                                 onclick="edit({{ $tower }})">Edit</a> |
                                             <form action="/tower/{{ $tower->id }}" method="POST">
@@ -276,4 +278,87 @@
             </div>
         </div>
     </div>
+
+    @foreach ($towers as $tower)
+        <div class="modal fade" id="modal-{{ $tower->id }}" tabindex="-1"
+            aria-labelledby="modalLabel{{ $tower->id }}" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header d-flex flex-column">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <h5 class="modal-title font-weight-bold" id="modalLabel{{ $tower->id }}">Detail Data Lahan
+                        </h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col">
+                                <h6 id="jalur-detail">Jalur &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; :
+                                    {{ $tower->location->name }}
+                                </h6>
+                                <h6 id="tower-detail">No. Tower &nbsp;:
+                                    {{ $tower->no }}
+                                </h6>
+                            </div>
+                        </div>
+                        <div class="row my-3">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped" id="detail-lahan" width="100%"
+                                    cellspacing="0">
+                                    <thead>
+                                        <tr style="text-align: center">
+                                            <th rowspan="2">PEMILIK</th>
+                                            <th colspan="2">TANAH</th>
+                                            <th colspan="5">TANAM TUMBUH</th>
+                                        </tr>
+                                        <tr>
+                                            <th>Jenis Tanah</th>
+                                            <th>Luas (m<sup>2</sup>)</th>
+                                            <th>Nama Tanaman</th>
+                                            <th>Umur</th>
+                                            <th>Tinggi</th>
+                                            <th>Diameter</th>
+                                            <th>Jumlah</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($tower->lands as $land)
+                                            @if (!$land->plants->isEmpty())
+                                                @foreach ($land->plants as $plant)
+                                                    <tr>
+                                                        <td>{{ $land->owner->name }}</td>
+                                                        <td>{{ $land->type }}</td>
+                                                        <td>{{ $land->area }}</td>
+                                                        <td>{{ $plant->name }}</td>
+                                                        <td>{{ $plant->age }}</td>
+                                                        <td>{{ $plant->height }}</td>
+                                                        <td>{{ $plant->diameter }}</td>
+                                                        <td>{{ $plant->total }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            @else
+                                                <tr>
+                                                    <td>{{ $land->owner->name }}</td>
+                                                    <td>{{ $land->type }}</td>
+                                                    <td>{{ $land->area }}</td>
+                                                    <td>-</td>
+                                                    <td>-</td>
+                                                    <td>-</td>
+                                                    <td>-</td>
+                                                    <td>-</td>
+                                                </tr>
+                                            @endif
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-target="#modal-{{ $tower->id }}"
+                            data-bs-toggle="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
 @endsection
