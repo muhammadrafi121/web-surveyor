@@ -127,7 +127,9 @@
                                         <td>{{ $row->updated_at }}</td>
                                         <td>{{ $row->user->name }}</td>
                                         <td>
-                                            <a href="">Cetak</a> | <a href="">Lihat</a> | <a
+                                            <a href="">Cetak</a> | <a href=""data-bs-toggle="modal"
+                                            data-bs-target="#modal-{{ $row->id }}"
+                                            data-bs-whatever="@getbootstrap">Lihat</a> | <a
                                                 href="javascript:void(0)" data-toggle="modal" data-target="#exampleModal2"
                                                 onclick="edit({{ $row }})">Edit</a> |
                                             <form action="/row/{{ $row->id }}" method="POST">
@@ -284,4 +286,87 @@
             </div>
         </div>
     </div>
+
+    @foreach ($rows as $row)
+        <div class="modal fade" id="modal-{{ $row->id }}" tabindex="-1"
+            aria-labelledby="modalLabel{{ $row->id }}" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header d-flex flex-column">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <h5 class="modal-title font-weight-bold" id="modalLabel{{ $row->id }}">Detail Data Lahan
+                        </h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col">
+                                <h6 id="jalur-detail">Jalur &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; :
+                                    {{ $row->location->name }}
+                                </h6>
+                                <h6 id="tower-detail">No. Tower &nbsp;:
+                                    {{ $row->firsttower->no }} - {{ $row->secondtower->no }}
+                                </h6>
+                            </div>
+                        </div>
+                        <div class="row my-3">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped" id="detail-lahan" width="100%"
+                                    cellspacing="0">
+                                    <thead>
+                                        <tr style="text-align: center">
+                                            <th rowspan="2">PEMILIK</th>
+                                            <th colspan="2">TANAH</th>
+                                            <th colspan="5">TANAM TUMBUH</th>
+                                        </tr>
+                                        <tr>
+                                            <th>Jenis Tanah</th>
+                                            <th>Luas (m<sup>2</sup>)</th>
+                                            <th>Nama Tanaman</th>
+                                            <th>Umur</th>
+                                            <th>Tinggi</th>
+                                            <th>Diameter</th>
+                                            <th>Jumlah</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($row->lands as $land)
+                                            @if (!$land->plants->isEmpty())
+                                                @foreach ($land->plants as $plant)
+                                                    <tr>
+                                                        <td>{{ $land->owner->name }}</td>
+                                                        <td>{{ $land->type }}</td>
+                                                        <td>{{ $land->area }}</td>
+                                                        <td>{{ $plant->name }}</td>
+                                                        <td>{{ $plant->age }}</td>
+                                                        <td>{{ $plant->height }}</td>
+                                                        <td>{{ $plant->diameter }}</td>
+                                                        <td>{{ $plant->total }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            @else
+                                                <tr>
+                                                    <td>{{ $land->owner->name }}</td>
+                                                    <td>{{ $land->type }}</td>
+                                                    <td>{{ $land->area }}</td>
+                                                    <td>-</td>
+                                                    <td>-</td>
+                                                    <td>-</td>
+                                                    <td>-</td>
+                                                    <td>-</td>
+                                                </tr>
+                                            @endif
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-target="#modal-{{ $row->id }}"
+                            data-bs-toggle="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
 @endsection

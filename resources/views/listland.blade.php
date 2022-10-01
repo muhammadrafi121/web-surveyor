@@ -247,7 +247,7 @@
                                 <div class="col-md-7">
                                     <h6 id="kabupaten-detail">Kabupaten : {{ $land->owner->regency }}</h6>
                                     <h6 id="jalur-detail">Jalur &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; : {{ $land->tower == null ? $land->row->location->name : $land->tower->location->name }}</h6>
-                                    <h6 id="tower-detail">No. Tower &nbsp;: {{ $land->tower == null ? $land->row->firsttower->no . '-' . $land->row->secondtower>no : $land->tower->no }}</h6>
+                                    <h6 id="tower-detail">No. Tower &nbsp;: {{ $land->tower == null ? $land->row->firsttower->no . '-' . $land->row->secondtower->no : $land->tower->no }}</h6>
                                 </div>
                             </div>
                             <div class="row my-3">
