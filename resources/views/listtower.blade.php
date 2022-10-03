@@ -192,14 +192,14 @@
                                 placeholder="No Tower" value="{{ old('tapak') }}">
                         </div>
                         <div class="form-group mb-4">
-                            <label for="lat" class="h5 font-weight-bold">Lokasi X</label>
-                            <input type="text" class="form-control" id="lat" name="lat"
-                                placeholder="Lokasi X" value="{{ old('lat') }}">
+                            <label for="long" class="h5 font-weight-bold">Koordinat X</label>
+                            <input type="text" class="form-control" id="long" name="long"
+                                placeholder="Koordinat X" value="{{ old('long') }}">
                         </div>
                         <div class="form-group mb-4">
-                            <label for="long" class="h5 font-weight-bold">Lokasi Y</label>
-                            <input type="text" class="form-control" id="long" name="long"
-                                placeholder="Lokasi Y" value="{{ old('long') }}">
+                            <label for="lat" class="h5 font-weight-bold">Koordinat Y</label>
+                            <input type="text" class="form-control" id="lat" name="lat"
+                                placeholder="Koordinat Y" value="{{ old('lat') }}">
                         </div>
                         <div class="form-group mb-4">
                             <label for="type" class="h5 font-weight-bold">Jenis Tower</label>
@@ -256,14 +256,14 @@
                                 placeholder="No Tower" value="{{ old('tapak') }}">
                         </div>
                         <div class="form-group mb-4">
-                            <label for="lat2" class="h5 font-weight-bold">Lokasi X</label>
-                            <input type="text" class="form-control" id="lat2" name="lat"
-                                placeholder="Lokasi X" value="{{ old('lat') }}">
+                            <label for="long2" class="h5 font-weight-bold">Koordinat X</label>
+                            <input type="text" class="form-control" id="long2" name="long"
+                                placeholder="Koordinat X" value="{{ old('long') }}">
                         </div>
                         <div class="form-group mb-4">
-                            <label for="long2" class="h5 font-weight-bold">Lokasi Y</label>
-                            <input type="text" class="form-control" id="long2" name="long"
-                                placeholder="Lokasi Y" value="{{ old('long') }}">
+                            <label for="lat2" class="h5 font-weight-bold">Koordinat Y</label>
+                            <input type="text" class="form-control" id="lat2" name="lat"
+                                placeholder="Koordinat Y" value="{{ old('lat') }}">
                         </div>
                         <div class="form-group mb-4">
                             <label for="type2" class="h5 font-weight-bold">Jenis Tower</label>

@@ -29,7 +29,7 @@
         @endif
         <!-- Page Heading -->
         <div class="d-sm-flex flex-column justify-content-between mb-4 px-lg-4">
-            <h2 class="h2 mb-3 font-weight-bold">Data daily Report</h2>
+            <h2 class="h2 mb-3 font-weight-bold">Data Daily Report</h2>
 
             <div class="row d-flex flex-row justify-content-between">
                 <div class="col-md-2 col-sm-12">
@@ -60,6 +60,8 @@
                                 <tr>
                                     <th>Tanggal</th>
                                     <th>Tim</th>
+                                    <th>Penginput</th>
+                                    <th>Waktu</th>
                                     <th class="text-center">Tindakan</th>
                                 </tr>
                             </thead>
@@ -68,6 +70,8 @@
                                     <tr>
                                         <td>{{ $report->date }}</td>
                                         <td>{{ $report->team->name }}</td>
+                                        <td>{{ $report->user->name }}</td>
+                                        <td>{{ $report->updated_at }}</td>
                                         <td class="text-center"><a href="">Cetak</a>| <a href="">Lihat</a>| <a
                                                 href="">Edit</a>| <a href="">Hapus</a></td>
                                     </tr>
