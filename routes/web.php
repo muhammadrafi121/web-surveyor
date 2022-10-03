@@ -70,3 +70,7 @@ Route::get('/ajax/tower', [AjaxController::class, 'tower'])->middleware('auth');
 Route::get('/ajax/allrow', [AjaxController::class, 'allRow'])->middleware('auth');
 Route::get('/ajax/row', [AjaxController::class, 'row'])->middleware('auth');
 Route::get('/ajax/land', [AjaxController::class, 'land'])->middleware('auth');
+
+Route::get('/test', function () {
+    return view('inputtanaman');
+});

@@ -39,21 +39,52 @@ class PlantController extends Controller
      */
     public function store(Request $request)
     {
-        $plantData = [
-            'land_id' => $request->land_id,
-            'name' => $request->namatanaman,
-            'age' => $request->umur,
-            'height' => $request->tinggi,
-            'diameter' => $request->diameter,
-            'total' => $request->jumlah,
-            'description' => $request->keterangan,
-        ];
+        $plantData = [];
+        $plantDataEdit = [];
+        $plantDataDelete = [];
 
-        $plant = Plant::create($plantData);
+        for ($i = 0; $i < sizeof($request->namatanaman); $i++) {
+            if ($request->namatanaman[$i] != null) {
+                if ($request->idtanaman[$i] == null) {
+                    $plantData[] = [
+                        'land_id' => $request->id_lahan,
+                        'name' => $request->namatanaman[$i],
+                        'age' => $request->umurtanaman[$i],
+                        'height' => $request->tinggitanaman[$i],
+                        'diameter' => $request->diametertanaman[$i],
+                        'total' => $request->jumlahtanaman[$i],
+                    ];
+                } else {
+                    $plantDataEdit[] = [
+                        'id' => $request->idtanaman[$i],
+                        'land_id' => $request->id_lahan,
+                        'name' => $request->namatanaman[$i],
+                        'age' => $request->umurtanaman[$i],
+                        'height' => $request->tinggitanaman[$i],
+                        'diameter' => $request->diametertanaman[$i],
+                        'total' => $request->jumlahtanaman[$i],
+                    ];
+                }
+            } else if ($request->idtanaman[$i] != null) {
+                $plantDataDelete[] = [
+                    'id' => $request->idtanaman[$i]
+                ];
+            }
+        }
 
-        // dd($plant);
+        foreach ($plantData as $plant) {
+            Plant::create($plant);
+        }
 
-        return redirect('/plant/create?land=' . $plant->land_id);
+        foreach ($plantDataEdit as $edit) {
+            Plant::where('id', $edit['id'])->update($edit);
+        }
+
+        foreach ($plantDataDelete as $delete) {
+            Plant::where('id', $delete['id'])->delete();
+        }
+
+        return redirect('/land')->with('message', 'Update Data Tanaman Berhasil');
     }
 
     /**

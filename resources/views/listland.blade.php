@@ -96,8 +96,9 @@
                                             </form>
                                         <td>
                                             <button class="btn-sm btn-outline-primary font-weight-bold bg-yellow"
-                                                data-bs-toggle="modal" data-bs-target="#exampleModal"
-                                                data-bs-whatever="@getbootstrap"><i
+                                                data-bs-toggle="modal" data-bs-target="#plant-modal-{{ $land->id }}"
+                                                data-bs-whatever="@getbootstrap"
+                                                onclick="setDataTanaman({{ $land }})"><i
                                                     class="fas fa-plus mr-2"></i>Tambah</button>
                                         </td>
                                         <td>
@@ -240,14 +241,20 @@
                         <div class="modal-body">
                             <div class="row">
                                 <div class="col-md-5">
-                                    <h6 id="pemilik-detail">Nama Pemilik &nbsp; &nbsp; &nbsp; &nbsp;: {{ $land->owner->name }}</h6>
+                                    <h6 id="pemilik-detail">Nama Pemilik &nbsp; &nbsp; &nbsp; &nbsp;:
+                                        {{ $land->owner->name }}</h6>
                                     <h6 id="desa-detail">Desa / Kelurahan &nbsp;: {{ $land->owner->village }}</h6>
-                                    <h6 id="kecamatan-detail">Kecamatan &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;: {{ $land->owner->district }}</h6>
+                                    <h6 id="kecamatan-detail">Kecamatan &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;:
+                                        {{ $land->owner->district }}</h6>
                                 </div>
                                 <div class="col-md-7">
                                     <h6 id="kabupaten-detail">Kabupaten : {{ $land->owner->regency }}</h6>
-                                    <h6 id="jalur-detail">Jalur &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; : {{ $land->tower == null ? $land->row->location->name : $land->tower->location->name }}</h6>
-                                    <h6 id="tower-detail">No. Tower &nbsp;: {{ $land->tower == null ? $land->row->firsttower->no . '-' . $land->row->secondtower->no : $land->tower->no }}</h6>
+                                    <h6 id="jalur-detail">Jalur &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; :
+                                        {{ $land->tower == null ? $land->row->location->name : $land->tower->location->name }}
+                                    </h6>
+                                    <h6 id="tower-detail">No. Tower &nbsp;:
+                                        {{ $land->tower == null ? $land->row->firsttower->no . '-' . $land->row->secondtower->no : $land->tower->no }}
+                                    </h6>
                                 </div>
                             </div>
                             <div class="row my-3">
@@ -307,5 +314,107 @@
             </div>
         @endforeach
         <!-- modal end 3 -->
-    </div>
-@endsection
+
+        <!-- modal start 4 -->
+        @foreach ($lands as $land)
+            <div class="modal fade" id="plant-modal-{{ $land->id }}" tabindex="-1" aria-labelledby="modalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header d-flex flex-column">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                            <h5 class="modal-title font-weight-bold" id="modalLabel">Input Data Tanam Tumbuh
+                            </h5>
+                        </div>
+                        <form action="/plant" method="POST" id="plant-form">
+                            <div class="modal-body">
+                                @csrf
+                                <input type="hidden" name="id_lahan" id="id-lahan" value="{{ $land->id }}">
+                                <div id="table" class="table-editable">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Nama Tanaman</th>
+                                                <th>Umur</th>
+                                                <th>Tinggi</th>
+                                                <th>Diameter</th>
+                                                <th>Jumlah</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tabel-tanaman">
+                                            @php
+                                                $total = sizeof($land->plants);
+                                                $rest = 10 - $total;
+                                                $count = 0;
+                                            @endphp
+                                            @for ($i = 0; $i < $total; $i++)
+                                                <tr>
+                                                    <input type="hidden" name="idtanaman[]"
+                                                        id="id-{{ $i }}-{{ $land->id }}" value="{{ $land->plants[$i]->id }}">
+                                                    <td class="data-tanaman" contenteditable="true"
+                                                        id="nama-tanaman-{{ $i }}-{{ $land->id }}">{{ $land->plants[$i]->name }}</td><input type="hidden"
+                                                        name="namatanaman[]" id="nama-{{ $i }}-{{ $land->id }}" value="{{ $land->plants[$i]->name }}">
+                                                    <td class="data-tanaman" contenteditable="true"
+                                                        id="umur-tanaman-{{ $i }}-{{ $land->id }}">{{ $land->plants[$i]->age }}</td><input type="hidden"
+                                                        name="umurtanaman[]" id="umur-{{ $i }}-{{ $land->id }}" value="{{ $land->plants[$i]->age }}">
+                                                    <td class="data-tanaman" contenteditable="true"
+                                                        id="tinggi-tanaman-{{ $i }}-{{ $land->id }}">{{ $land->plants[$i]->height }}</td><input
+                                                        type="hidden" name="tinggitanaman[]"
+                                                        id="tinggi-{{ $i }}-{{ $land->id }}" value="{{ $land->plants[$i]->height }}">
+                                                    <td class="data-tanaman" contenteditable="true"
+                                                        id="diameter-tanaman-{{ $i }}-{{ $land->id }}">{{ $land->plants[$i]->diameter }}</td><input
+                                                        type="hidden" name="diametertanaman[]"
+                                                        id="diameter-{{ $i }}-{{ $land->id }}" value="{{ $land->plants[$i]->diameter }}">
+                                                    <td class="data-tanaman" contenteditable="true"
+                                                        id="jumlah-tanaman-{{ $i }}-{{ $land->id }}">{{ $land->plants[$i]->total }}</td><input
+                                                        type="hidden" name="jumlahtanaman[]"
+                                                        id="jumlah-{{ $i }}-{{ $land->id }}" value="{{ $land->plants[$i]->total }}">
+                                                </tr>
+                                                @php
+                                                    $count++;
+                                                @endphp
+                                            @endfor
+                                            @for ($i = 0; $i < 10; $i++)
+                                                <tr>
+                                                    <input type="hidden" name="idtanaman[]"
+                                                        id="id-{{ $count }}-{{ $land->id }}">
+                                                    <td class="data-tanaman" contenteditable="true"
+                                                        id="nama-tanaman-{{ $count }}-{{ $land->id }}"></td><input type="hidden"
+                                                        name="namatanaman[]" id="nama-{{ $count }}-{{ $land->id }}">
+                                                    <td class="data-tanaman" contenteditable="true"
+                                                        id="umur-tanaman-{{ $count }}-{{ $land->id }}"></td><input type="hidden"
+                                                        name="umurtanaman[]" id="umur-{{ $count }}-{{ $land->id }}">
+                                                    <td class="data-tanaman" contenteditable="true"
+                                                        id="tinggi-tanaman-{{ $count }}-{{ $land->id }}"></td><input
+                                                        type="hidden" name="tinggitanaman[]"
+                                                        id="tinggi-{{ $count }}-{{ $land->id }}">
+                                                    <td class="data-tanaman" contenteditable="true"
+                                                        id="diameter-tanaman-{{ $count }}-{{ $land->id }}"></td><input
+                                                        type="hidden" name="diametertanaman[]"
+                                                        id="diameter-{{ $count }}-{{ $land->id }}">
+                                                    <td class="data-tanaman" contenteditable="true"
+                                                        id="jumlah-tanaman-{{ $count }}-{{ $land->id }}"></td><input
+                                                        type="hidden" name="jumlahtanaman[]"
+                                                        id="jumlah-{{ $count }}-{{ $land->id }}">
+                                                </tr>
+                                                @php
+                                                    $count++;
+                                                @endphp
+                                            @endfor
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary"
+                                    data-bs-target="#plant-modal-{{ $land->id }}" data-bs-toggle="modal">Submit
+                                    Data</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+        <!-- modal end 4 -->
+    @endsection

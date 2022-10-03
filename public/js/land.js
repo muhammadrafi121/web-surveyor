@@ -14,6 +14,51 @@ $(document).ready(function() {
         }
     });
 
+    var $TABLE = $('#table');  
+    var $BTN = $('#export-btn');  
+    var $EXPORT = $('#export');
+
+    $('.table-add').click(function () {
+        var $clone = $TABLE.find('tr.hide').clone(true).removeClass('hide table-line');
+        $TABLE.find('table').append($clone);
+    });
+    
+    $('.table-remove').click(function () {
+        $(this).parents('tr').detach();
+    });
+    
+    $('.table-up').click(function () {
+        var $row = $(this).parents('tr');
+        if ($row.index() === 1) return;
+        $row.prev().before($row.get(0));
+    });
+    
+    $('.table-down').click(function () {
+        var $row = $(this).parents('tr');
+        $row.next().after($row.get(0));
+    });
+    
+    jQuery.fn.pop = [].pop;  
+    jQuery.fn.shift = [].shift;  
+    
+    $BTN.click(function () {
+        var $rows = $TABLE.find('tr:not(:hidden)');
+        var headers = [];
+        var data = [];
+        $($rows.shift()).find('th:not(:empty)').each(function () {
+            headers.push($(this).text().toLowerCase());
+        });
+        
+        $rows.each(function () {
+            var $td = $(this).find('td');
+            var h = {};
+            headers.forEach(function (header, i) {
+                h[header] = $td.eq(i).text();
+            });
+            data.push(h);
+        });
+    });
+
     $('#wilayah').on('change', function() {
         $.ajax({
             url: APP_URL + '/ajax/inventory/',
@@ -98,6 +143,17 @@ $(document).ready(function() {
                 }
             });
         }
+    });
+
+    $('.data-tanaman').on('DOMSubtreeModified', function(){
+        var id_lahan = $('#id-lahan').val();
+        var id = $(this).attr('id');
+        var id_arr = id.split('-');
+        const index = id_arr.indexOf('tanaman');
+        id_arr.splice(index, 1);
+        id = id_arr.join('-');
+        $('#' + id).val($(this).html());
+        console.log($('#' + id + '-' + id_lahan));
     });
 });
 
@@ -225,42 +281,85 @@ function setDetail(data) {
             $('#kabupaten-detail').html('Kabupaten : ' + d.owner.regency);
         }
     });
+}
 
-    var daftarP = $('#detail-lahan').DataTable({
-        ajax: {
-            url: APP_URL + '/ajax/land?id=' + data.id,
-            type: 'GET',
-            data: function(d) { }
-        },
-        columns: [{
-            data: "type",
-            "targets": 0
-        },
-        {
-            data: "area",
-            "targets": 1
-        },
-        {
-            data: "type",
-            "targets": 2
-        },
-        {
-            data: "area",
-            "targets": 3
-        },
-        {
-            data: "area",
-            "targets": 4
-        },
-        {
-            data: "area",
-            "targets": 5
-        },
-        {
-            data: "area",
-            "targets": 6
-        },
-        ],
-        order: [2, 'asc']
-    });
+function setDataTanaman(data) {
+    // $('#id-lahan').val(data.id);
+
+    // $.ajax({
+    //     url: APP_URL + '/ajax/land',
+    //     data: {
+    //         id: data.id
+    //     },
+    //     success: function(d) {
+    //         var html = '';
+    //         var totalPlant = 10 - d.plants.length;
+    //         var count = 0;
+    //         console.log(d.plants);
+    //         for (var i = 0; i < d.plants.length; i++) {
+    //             var name = d.plants[i].name != null ? d.plants[i].name : '';
+    //             var nameValue = d.plants[i].name != null ? `value="` + d.plants[i].name + `"` : '';
+                
+    //             var age = d.plants[i].age != null ? d.plants[i].age : '';
+    //             var ageValue = d.plants[i].age != null ? `value="` + d.plants[i].age + `"` : '';
+
+    //             var height = d.plants[i].height != null ? d.plants[i].height : '';
+    //             var heightValue = d.plants[i].height != null ? `value="` + d.plants[i].height + `"` : '';
+
+    //             var diameter = d.plants[i].diameter != null ? d.plants[i].diameter : '';
+    //             var diameterValue = d.plants[i].diameter != null ? `value="` + d.plants[i].diameter + `"` : '';
+
+    //             var total = d.plants[i].total != null ? d.plants[i].total : '';
+    //             var totalValue = d.plants[i].total != null ? `value="` + d.plants[i].total + `"` : '';
+
+    //             var tmp = ` <tr>
+    //                             <input type="hidden" name="idtanaman[]" id="id-` + i + `" value="` + d.plants[i].id + `">
+    //                             <td class="data-tanaman" contenteditable="true"
+    //                                 id="nama-tanaman-` + i + `">` + name + `</td><input type="hidden"
+    //                                 name="namatanaman[]" id="nama-` + i + `" ` + nameValue + `>
+    //                             <td class="data-tanaman" contenteditable="true"
+    //                                 id="umur-tanaman-` + i + `">` + age + `</td><input type="hidden"
+    //                                 name="umurtanaman[]" id="umur-` + i + `" ` + ageValue + `>
+    //                             <td class="data-tanaman" contenteditable="true"
+    //                                 id="tinggi-tanaman-` + i + `">` + height + `</td><input type="hidden"
+    //                                 name="tinggitanaman[]" id="tinggi-` + i + `" ` + heightValue + `>
+    //                             <td class="data-tanaman" contenteditable="true"
+    //                                 id="diameter-tanaman-` + i + `">` + diameter + `</td><input type="hidden"
+    //                                 name="diametertanaman[]" id="diameter-` + i + `" ` + diameterValue + `>
+    //                             <td class="data-tanaman" contenteditable="true"
+    //                                 id="jumlah-tanaman-` + i + `">` + total + `</td><input type="hidden"
+    //                                 name="jumlahtanaman[]" id="jumlah-` + i + `" ` + totalValue + `>
+    //                         </tr>
+    //             `;
+    //             html += tmp;
+    //             count++;
+    //         }
+
+    //         for (var i = 0; i < totalPlant; i++) {
+    //             var tmp = ` <tr>
+    //                             <input type="hidden" name="idtanaman[]" id="id-` + count + `">
+    //                             <td class="data-tanaman" contenteditable="true"
+    //                                 id="nama-tanaman-` + count + `"></td><input type="hidden"
+    //                                 name="namatanaman[]" id="nama-` + count + `">
+    //                             <td class="data-tanaman" contenteditable="true"
+    //                                 id="umur-tanaman-` + count + `"></td><input type="hidden"
+    //                                 name="umurtanaman[]" id="umur-` + count + `">
+    //                             <td class="data-tanaman" contenteditable="true"
+    //                                 id="tinggi-tanaman-` + count + `"></td><input type="hidden"
+    //                                 name="tinggitanaman[]" id="tinggi-` + count + `">
+    //                             <td class="data-tanaman" contenteditable="true"
+    //                                 id="diameter-tanaman-` + count + `"></td><input type="hidden"
+    //                                 name="diametertanaman[]" id="diameter-` + count + `">
+    //                             <td class="data-tanaman" contenteditable="true"
+    //                                 id="jumlah-tanaman-` + count + `"></td><input type="hidden"
+    //                                 name="jumlahtanaman[]" id="jumlah-` + count + `">
+    //                         </tr>
+    //             `;
+    //             html += tmp;
+    //             count++;
+    //         }
+
+    //         $('#tabel-tanaman').html(html);
+    //     }
+    // });
 }
