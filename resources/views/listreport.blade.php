@@ -72,8 +72,10 @@
                                         <td>{{ $report->team->name }}</td>
                                         <td>{{ $report->user->name }}</td>
                                         <td>{{ $report->updated_at }}</td>
-                                        <td class="text-center"><a href="">Cetak</a>| <a href="">Lihat</a>| <a
-                                                href="">Edit</a>| <a href="">Hapus</a></td>
+                                        <td class="text-center"><a href="">Cetak</a>| <a href="javascript:void(0)"
+                                                data-bs-toggle="modal" data-bs-target="#report-modal-{{ $report->id }}"
+                                                data-bs-whatever="@getbootstrap">Lihat</a>| <a href="">Edit</a>| <a
+                                                href="">Hapus</a></td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -307,6 +309,116 @@
                 </form>
             </div>
         </div>
+        <!-- modal end -->
+        <!-- modal start 3 -->
+        @foreach ($reports as $report)
+            <div class="modal fade" id="report-modal-{{ $report->id }}" tabindex="-1" aria-labelledby="report-modal-label-{{ $report->id }}"
+                aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title font-weight-bold" id="exampleModalLabel">Input Data Daily Report</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row bg-white d-flex shadow-lg py-5 pl-md-3">
+                                <div class="row d-sm-flex">
+                                    <div class="col-md-5 col-sm-12 mb-2">
+                                        <h6 class="font-weight-bold">INV &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : {{ $report->team->inventory->name }}</h6>
+                                    </div>
+                                    <div class="col-md-7 col-sm-12 mb-2">
+                                        <h6 class="font-weight-bold">JALUR &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : {{ $report->location->name }}</h6>
+                                    </div>
+                                </div>
+                                <div class="row d-sm-flex">
+                                    <div class="col-md-5 col-sm-12 mb-2">
+                                        <h6 class="font-weight-bold">TIM &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : {{ $report->team->name }}</h6>
+                                    </div>
+                                    <div class="col-md-5 col-sm-12 mb-2">
+                                        <h6 class="font-weight-bold">TANGGAL : {{ $report->date }}</h6>
+                                    </div>
+                                </div>
+                                <div class="row d-sm-flex">
+                                    <div class="col-md-5 col-sm-12 mb-2">
+                                        <h6 class="font-weight-bold">CUACA : {{ $report->weather }}</h6>
+                                    </div>
+                                </div>
+                                <div class="row d-sm-flex">
+                                    <table class="table table-bordered table-striped" id="dataTable" width="100%"
+                                        cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <td colspan="3">TENAGA KERJA</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Jabatan</td>
+                                                <td>Jumlah</td>
+                                                <td>Status</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($report->manpowers as $manpower)
+                                                <tr>
+                                                    <td>{{ $manpower->name }}</td>
+                                                    <td>{{ $manpower->total }}</td>
+                                                    <td>{{ $manpower->status == 1 ? 'Hadir' : 'Tidak Hadir' }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                        <thead>
+                                            <tr>
+                                                <td colspan="3">FASILITAS DAN MATERIAL</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Fasilitas dan Material Pekerjaan</td>
+                                                <td>Jumlah</td>
+                                                <td>Status</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($report->facilities as $facility)
+                                                <tr>
+                                                    <td>{{ $facility->name }}</td>
+                                                    <td>{{ $facility->total }}</td>
+                                                    <td>{{ $facility->status == 1 ? 'Ada' : 'Tidak Ada' }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                        <thead>
+                                            <tr>
+                                                <td colspan="3">URAIAN KEGIATAN</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2">Waktu Pelaksanaan</td>
+                                                <td rowspan="2">Kegiatan</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width: 20%">Mulai</td>
+                                                <td style="width: 20%">Selesai</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($report->activities as $activity)
+                                                <tr>
+                                                    <td>{{ $report->time_start }}</td>
+                                                    <td>{{ $report->time_end }}</td>
+                                                    <td>{{ $activity->activity }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-target="#report-modal-{{ $report->id }}"
+                                data-bs-toggle="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
         <!-- modal end -->
     </div>
 @endsection

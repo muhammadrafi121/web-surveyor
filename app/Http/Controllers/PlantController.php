@@ -49,20 +49,20 @@ class PlantController extends Controller
                     $plantData[] = [
                         'land_id' => $request->id_lahan,
                         'name' => $request->namatanaman[$i],
-                        'age' => $request->umurtanaman[$i],
-                        'height' => $request->tinggitanaman[$i],
-                        'diameter' => $request->diametertanaman[$i],
-                        'total' => $request->jumlahtanaman[$i],
+                        'age' => $request->umurtanaman[$i] != null ? (int)$request->umurtanaman[$i] : null,
+                        'height' => $request->tinggitanaman[$i] != null ? (int)$request->tinggitanaman[$i] : null,
+                        'diameter' => $request->diametertanaman[$i] != null ? (int)$request->diametertanaman[$i] : null,
+                        'total' => $request->jumlahtanaman[$i] != null ? (int)$request->jumlahtanaman[$i] : null,
                     ];
                 } else {
                     $plantDataEdit[] = [
                         'id' => $request->idtanaman[$i],
                         'land_id' => $request->id_lahan,
                         'name' => $request->namatanaman[$i],
-                        'age' => $request->umurtanaman[$i],
-                        'height' => $request->tinggitanaman[$i],
-                        'diameter' => $request->diametertanaman[$i],
-                        'total' => $request->jumlahtanaman[$i],
+                        'age' => $request->umurtanaman[$i] != null ? (int)$request->umurtanaman[$i] : null,
+                        'height' => $request->tinggitanaman[$i] != null ? (int)$request->tinggitanaman[$i] : null,
+                        'diameter' => $request->diametertanaman[$i] != null ? (int)$request->diametertanaman[$i] : null,
+                        'total' => $request->jumlahtanaman[$i] != null ? (int)$request->jumlahtanaman[$i] : null,
                     ];
                 }
             } else if ($request->idtanaman[$i] != null) {
