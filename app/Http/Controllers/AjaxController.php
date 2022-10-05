@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DailyReport;
 use App\Models\Inventory;
 use App\Models\Land;
 use App\Models\Location;
@@ -39,5 +40,10 @@ class AjaxController extends Controller
     public function land(Request $request)
     {
         return json_decode(Land::with(['tower', 'row', 'plants', 'owner'])->find($request->id));
+    }
+
+    public function dailyreport(Request $request)
+    {
+        return json_decode(DailyReport::with(['location.inventory', 'facilities', 'manpowers', 'activities', 'team'])->find($request->id));
     }
 }

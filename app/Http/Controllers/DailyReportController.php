@@ -40,14 +40,14 @@ class DailyReportController extends Controller
      */
     public function create()
     {
-        $inventories = Inventory::all();
-        $locations = Location::where('inventory_id', $inventories->first()->id)->get();
-        $teams = Team::all();
-        return view('dailybaru', [
-            'inventories' => $inventories,
-            'locations' => $locations,
-            'teams' => $teams
-        ]);
+        // $inventories = Inventory::all();
+        // $locations = Location::where('inventory_id', $inventories->first()->id)->get();
+        // $teams = Team::all();
+        // return view('dailybaru', [
+        //     'inventories' => $inventories,
+        //     'locations' => $locations,
+        //     'teams' => $teams
+        // ]);
     }
 
     /**
@@ -125,7 +125,7 @@ class DailyReportController extends Controller
             [
                 'name' => 'Kordinator',
                 'total' => 1,
-                'status' => $request->kordinator == 'on' ? 1 : 0,
+                'status' => $request->koordinator == 'on' ? 1 : 0,
             ],
             [
                 'name' => 'Surveyor 1',
@@ -154,10 +154,16 @@ class DailyReportController extends Controller
             ],
         ];
 
+        // dd($dataReport, $dataFasilitas, $dataManPower);
+
         $dailyreport = DailyReport::create($dataReport);
 
         foreach ($dataFasilitas as $fasilitas) {
-            $dailyreport->facilities()->create($fasilitas);
+            $dailyreport->facilities()->create([
+                'name' => $fasilitas['name'],
+                'total' => $fasilitas['total'],
+                'status' => $fasilitas['status'],
+            ]);
         }
 
         foreach ($dataManPower as $manPower) {
@@ -179,7 +185,7 @@ class DailyReportController extends Controller
      */
     public function show(DailyReport $dailyreport)
     {
-        return $dailyreport;
+        // return $dailyreport;
     }
 
     /**
@@ -190,9 +196,9 @@ class DailyReportController extends Controller
      */
     public function edit(DailyReport $dailyreport)
     {
-        return view('inputdaily', [
-            'dailyreport' => $dailyreport,
-        ]);
+        // return view('inputdaily', [
+        //     'dailyreport' => $dailyreport,
+        // ]);
     }
 
     /**
@@ -212,121 +218,137 @@ class DailyReportController extends Controller
 
         $dataFasilitas = [
             [
-                'dailyreport_id' => $request->id,
+                'id' => $request->gps_id,
+                'daily_report_id' => $request->id,
                 'name' => 'GPS Geodetic',
                 'total' => 1,
-                'status' => $request->gps,
+                'status' => $request->gps == 'on' ? 1 : 0,
             ],
             [
-                'dailyreport_id' => $request->id,
+                'id' => $request->laptop_id,
+                'daily_report_id' => $request->id,
                 'name' => 'Laptop',
                 'total' => 1,
-                'status' => $request->laptop,
+                'status' => $request->laptop == 'on' ? 1 : 0,
             ],
             [
-                'dailyreport_id' => $request->id,
+                'id' => $request->printer_id,
+                'daily_report_id' => $request->id,
                 'name' => 'Printer',
                 'total' => 1,
-                'status' => $request->printer,
+                'status' => $request->printer == 'on' ? 1 : 0,
             ],
             [
-                'dailyreport_id' => $request->id,
+                'id' => $request->kamera_id,
+                'daily_report_id' => $request->id,
                 'name' => 'Kamera Digital',
                 'total' => 1,
-                'status' => $request->kamera,
+                'status' => $request->kamera == 'on' ? 1 : 0,
             ],
             [
-                'dailyreport_id' => $request->id,
+                'id' => $request->scanner_id,
+                'daily_report_id' => $request->id,
                 'name' => 'Scanner',
                 'total' => 1,
-                'status' => $request->scanner,
+                'status' => $request->scanner == 'on' ? 1 : 0,
             ],
             [
-                'dailyreport_id' => $request->id,
+                'id' => $request->mobil_id,
+                'daily_report_id' => $request->id,
                 'name' => 'Mobil',
                 'total' => 1,
-                'status' => $request->mobil,
+                'status' => $request->mobil == 'on' ? 1 : 0,
             ],
             [
-                'dailyreport_id' => $request->id,
+                'id' => $request->motor_id,
+                'daily_report_id' => $request->id,
                 'name' => 'Motor',
                 'total' => 1,
-                'status' => $request->motor,
+                'status' => $request->motor == 'on' ? 1 : 0,
             ],
             [
-                'dailyreport_id' => $request->id,
+                'id' => $request->apd_id,
+                'daily_report_id' => $request->id,
                 'name' => 'APD',
                 'total' => 1,
-                'status' => $request->apd,
+                'status' => $request->apd == 'on' ? 1 : 0,
             ],
             [
-                'dailyreport_id' => $request->id,
+                'id' => $request->atk_id,
+                'daily_report_id' => $request->id,
                 'name' => 'ATK',
                 'total' => 1,
-                'status' => $request->atk,
+                'status' => $request->atk == 'on' ? 1 : 0,
             ],
             [
-                'dailyreport_id' => $request->id,
+                'id' => $request->cat_id,
+                'daily_report_id' => $request->id,
                 'name' => 'Cat Pilox',
                 'total' => 1,
-                'status' => $request->cat,
+                'status' => $request->cat == 'on' ? 1 : 0,
             ],
         ];
 
         $dataManPower = [
             [
-                'dailyreport_id' => $request->id,
-                'name' => 'Kordinator',
+                'id' => $request->koord_id,
+                'daily_report_id' => $request->id,
+                'name' => 'Koordinator',
                 'total' => 1,
-                'status' => $request->kordinator,
+                'status' => $request->koordinator == 'on' ? 1 : 0,
             ],
             [
-                'dailyreport_id' => $request->id,
+                'id' => $request->surveyor1_id,
+                'daily_report_id' => $request->id,
                 'name' => 'Surveyor 1',
                 'total' => 1,
-                'status' => $request->surveyor1,
+                'status' => $request->surveyor1 == 'on' ? 1 : 0,
             ],
             [
-                'dailyreport_id' => $request->id,
+                'id' => $request->surveyor2_id,
+                'daily_report_id' => $request->id,
                 'name' => 'Surveyor 2',
                 'total' => 1,
-                'status' => $request->surveyor2,
+                'status' => $request->surveyor2 == 'on' ? 1 : 0,
             ],
             [
-                'dailyreport_id' => $request->id,
+                'id' => $request->admin1_id,
+                'daily_report_id' => $request->id,
                 'name' => 'Administrator 1',
                 'total' => 1,
-                'status' => $request->admin1,
+                'status' => $request->admin1 == 'on' ? 1 : 0,
             ],
             [
-                'dailyreport_id' => $request->id,
+                'id' => $request->admin2_id,
+                'daily_report_id' => $request->id,
                 'name' => 'Administrator 2',
                 'total' => 1,
-                'status' => $request->admin2,
+                'status' => $request->admin2 == 'on' ? 1 : 0,
             ],
             [
-                'dailyreport_id' => $request->id,
+                'id' => $request->driver_id,
+                'daily_report_id' => $request->id,
                 'name' => 'Driver',
                 'total' => 1,
-                'status' => $request->driver,
+                'status' => $request->driver == 'on' ? 1 : 0,
             ],
         ];
 
         foreach ($dataFasilitas as $fasilitas) {
-            Facility::create($fasilitas);
+            Facility::where('id', $fasilitas['id'])->update($fasilitas);
         }
 
         foreach ($dataManPower as $manPower) {
-            ManPower::create($manPower);
+            ManPower::where('id', $manPower['id'])->update($manPower);
         }
         
-        Activity::create([
-            'dailyreport_id' => $request->id,
+        Activity::where('id', $request->kegiatan_id)->update([
+            'daily_report_id' => $request->id,
             'activity' => $request->kegiatan,
         ]);
 
         $dailyreport->where('id', $request->id)->update($dataReport);
-        return redirect('/dailyreport');
+        return redirect('/dailyreport')->with('message', 'Update Data Daily Report Berhasil');
     }
 
     /**
@@ -337,6 +359,7 @@ class DailyReportController extends Controller
      */
     public function destroy(DailyReport $dailyreport)
     {
-        //
+        $dailyreport->delete();
+        return redirect('/dailyreport')->with('message', 'Hapus Data Daily Report Berhasil');
     }
 }

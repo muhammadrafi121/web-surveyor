@@ -33,8 +33,7 @@
 
             <div class="row d-flex flex-row justify-content-between">
                 <div class="col-md-2 col-sm-12">
-                    <button class="btn btn-outline-primary font-weight-bold" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap"><i
+                    <button class="btn btn-outline-primary font-weight-bold" onclick="tambah()"><i
                             class="fas fa-plus mr-2"></i>Tambah</button>
                 </div>
                 <div class="col-md-4 col-sm-12 d-flex flex-column flex-lg-row mt-3 mt-md-0 mt-lg-0 mt-xl-0">
@@ -72,10 +71,18 @@
                                         <td>{{ $report->team->name }}</td>
                                         <td>{{ $report->user->name }}</td>
                                         <td>{{ $report->updated_at }}</td>
-                                        <td class="text-center"><a href="">Cetak</a>| <a href="javascript:void(0)"
-                                                data-bs-toggle="modal" data-bs-target="#report-modal-{{ $report->id }}"
-                                                data-bs-whatever="@getbootstrap">Lihat</a>| <a href="">Edit</a>| <a
-                                                href="">Hapus</a></td>
+                                        <td class="text-center">
+                                            <form action="/dailyreport/{{ $report->id }}" method="POST">
+                                                @method('DELETE')
+                                                @csrf
+                                                <a href="">Cetak</a>|
+                                                <a href="javascript:void(0)" data-bs-toggle="modal"
+                                                    data-bs-target="#report-modal-{{ $report->id }}"
+                                                    data-bs-whatever="@getbootstrap">Lihat</a>|
+                                                <a href="javascript:void(0)" onclick="edit({{ $report }})">Edit</a>|
+                                                <button class="link" type="submit">Hapus</button>
+                                            </form>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -132,28 +139,27 @@
         </div>
         <!-- modal end -->
         <!-- modal start 2 -->
-        <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel3" aria-hidden="true">
+        <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel3"
+            aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-scrollable">
-                <form class="modal-content" action="/dailyreport" method="POST">
+                <form class="modal-content" action="/dailyreport" method="POST" id="form-action">
+                    @method('PUT')
+                    @csrf
                     <div class="modal-header">
                         <h5 class="modal-title font-weight-bold" id="exampleModalLabel">Input Data Daily Report</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        @method('POST')
-                        @csrf
                         <input type="hidden" id="jalur-id" name="jalur">
                         <input type="hidden" id="tim-id" name="tim_id">
+                        <input type="hidden" name="id" id="id-edit">
                         <div class="row bg-white d-flex shadow-lg py-5 pl-md-3">
                             <div class="row d-sm-flex">
-                                <div class="col-md-4 col-sm-12 mb-2">
-                                    <h6 class="font-weight-bold">INV :</h6>
+                                <div class="col-md-7 col-sm-12 mb-2">
+                                    <h6 class="font-weight-bold" id="data-jalur">JALUR :</h6>
                                 </div>
-                                <div class="col-md-4 col-sm-12 mb-2">
-                                    <h6 class="font-weight-bold">JALUR :</h6>
-                                </div>
-                                <div class="col-md-4 col-sm-12 mb-2">
-                                    <h6 class="font-weight-bold">TIM :</h6>
+                                <div class="col-md-5 col-sm-12 mb-2">
+                                    <h6 class="font-weight-bold" id="data-tim">TIM :</h6>
                                 </div>
                             </div>
                             <div class="col-md-6 mx-auto">
@@ -164,11 +170,13 @@
                                     <select class="col-7 form-select form-control" id="cuaca" name="cuaca">
                                         <option value="" disabled selected>Cuaca</option>
                                         <option value="Cerah">Cerah</option>
+                                        <option value="Mendung">Mendung</option>
                                         <option value="Hujan">Hujan</option>
                                     </select>
                                 </div>
-                                <h6 class="h6 font-weight-bold">Fasilitas Pekerjaan</h6>
+                                <h6 class="h6 font-weight-bold">Tenaga Kerja</h6>
                                 <div class="row d-flex form-group mb-4 col-sm-12">
+                                    <input type="hidden" name="koord_id" id="koord-id">
                                     <label for="kordinator" class="col-md-4">Koordinator</label>
                                     <label class="switch">
                                         <input type="checkbox" id="koordinator" name="koordinator">
@@ -176,20 +184,23 @@
                                     </label>
                                 </div>
                                 <div class="row d-flex form-group mb-4 col-sm-12">
-                                    <label for="surveyor1" class="col-md-4">Sorveyor 1</label>
+                                    <input type="hidden" name="surveyor1_id" id="surveyor1-id">
+                                    <label for="surveyor1" class="col-md-4">Surveyor 1</label>
                                     <label class="switch">
                                         <input type="checkbox" id="surveyor1" name="surveyor1">
                                         <span class="slider round"></span>
                                     </label>
                                 </div>
                                 <div class="row d-flex form-group mb-4 col-sm-12">
-                                    <label for="sorveyor2" class="col-md-4">Sorveyor 2</label>
+                                    <input type="hidden" name="surveyor2_id" id="surveyor2-id">
+                                    <label for="sorveyor2" class="col-md-4">Surveyor 2</label>
                                     <label class="switch">
                                         <input type="checkbox" id="surveyor2" name="surveyor2">
                                         <span class="slider round"></span>
                                     </label>
                                 </div>
                                 <div class="row d-flex form-group mb-4 col-sm-12">
+                                    <input type="hidden" name="admin1_id" id="admin1-id">
                                     <label for="admin1" class="col-md-4">Admin 1</label>
                                     <label class="switch">
                                         <input type="checkbox" id="admin1" name="admin1">
@@ -197,6 +208,7 @@
                                     </label>
                                 </div>
                                 <div class="row d-flex form-group mb-4 col-sm-12">
+                                    <input type="hidden" name="admin2_id" id="admin2-id">
                                     <label for="admin2" class="col-md-4">Admin 2</label>
                                     <label class="switch">
                                         <input type="checkbox" id="admin2" name="admin2">
@@ -204,6 +216,7 @@
                                     </label>
                                 </div>
                                 <div class="row d-flex form-group mb-4 col-sm-12">
+                                    <input type="hidden" name="driver_id" id="driver-id">
                                     <label for="driver" class="col-md-4">Driver</label>
                                     <label class="switch">
                                         <input type="checkbox" id="driver" name="driver">
@@ -214,6 +227,7 @@
                             <div class="col-md-6 mx-auto">
                                 <h6 class="h6 font-weight-bold">Fasilitas Pekerjaan</h6>
                                 <div class="row d-flex form-group mb-4 col-sm-12">
+                                    <input type="hidden" name="gps_id" id="gps-id">
                                     <label for="gps" class="col-md-4">GPS Geodetic</label>
                                     <label class="switch">
                                         <input type="checkbox" id="gps" name="gps">
@@ -221,6 +235,7 @@
                                     </label>
                                 </div>
                                 <div class="row d-flex form-group mb-4 col-sm-12">
+                                    <input type="hidden" name="laptop_id" id="laptop-id">
                                     <label for="laptop" class="col-md-4">Laptop</label>
                                     <label class="switch">
                                         <input type="checkbox" id="laptop" name="laptop">
@@ -228,6 +243,7 @@
                                     </label>
                                 </div>
                                 <div class="row d-flex form-group mb-4 col-sm-12">
+                                    <input type="hidden" name="printer_id" id="printer-id">
                                     <label for="printer" class="col-md-4">Printer</label>
                                     <label class="switch">
                                         <input type="checkbox" id="printer" name="printer">
@@ -235,6 +251,7 @@
                                     </label>
                                 </div>
                                 <div class="row d-flex form-group mb-4 col-sm-12">
+                                    <input type="hidden" name="kamera_id" id="kamera-id">
                                     <label for="kamera" class="col-md-4">Kamera Digital</label>
                                     <label class="switch">
                                         <input type="checkbox" id="kamera" name="kamera">
@@ -242,6 +259,7 @@
                                     </label>
                                 </div>
                                 <div class="row d-flex form-group mb-4 col-sm-12">
+                                    <input type="hidden" name="scanner_id" id="scanner-id">
                                     <label for="scanner" class="col-md-4">Scanner</label>
                                     <label class="switch">
                                         <input type="checkbox" id="scanner" name="scanner">
@@ -249,6 +267,7 @@
                                     </label>
                                 </div>
                                 <div class="row d-flex form-group mb-4 col-sm-12">
+                                    <input type="hidden" name="mobil_id" id="mobil-id">
                                     <label for="mobil" class="col-md-4">Mobil</label>
                                     <label class="switch">
                                         <input type="checkbox" id="mobil" name="mobil">
@@ -256,6 +275,7 @@
                                     </label>
                                 </div>
                                 <div class="row d-flex form-group mb-4 col-sm-12">
+                                    <input type="hidden" name="motor_id" id="motor-id">
                                     <label for="motor" class="col-md-4">Motor</label>
                                     <label class="switch">
                                         <input type="checkbox" id="motor" name="motor">
@@ -263,6 +283,7 @@
                                     </label>
                                 </div>
                                 <div class="row d-flex form-group mb-4 col-sm-12">
+                                    <input type="hidden" name="apd_id" id="apd-id">
                                     <label for="apd" class="col-md-4">APD</label>
                                     <label class="switch">
                                         <input type="checkbox" id="apd" name="apd">
@@ -271,6 +292,7 @@
                                 </div>
                                 <h6 class="h6 font-weight-bold">Material Pekerjaan</h6>
                                 <div class="row d-flex form-group mb-4 col-sm-12">
+                                    <input type="hidden" name="atk_id" id="atk-id">
                                     <label for="atk" class="col-md-4">ATK</label>
                                     <label class="switch">
                                         <input type="checkbox" id="atk" name="atk">
@@ -278,6 +300,7 @@
                                     </label>
                                 </div>
                                 <div class="row d-flex form-group mb-4 col-sm-12">
+                                    <input type="hidden" name="cat_id" id="cat-id">
                                     <label for="cat" class="col-md-4">Cat Pilox</label>
                                     <label class="switch">
                                         <input type="checkbox" id="cat" name="cat">
@@ -296,6 +319,7 @@
                                 </div>
                                 <div class="row d-flex form-group mb-4 col-sm-12">
                                     <label for="kegiatan" class="col-md-2">Kegiatan</label>
+                                    <input type="hidden" name="kegiatan_id" id="kegiatan-id">
                                     <input type="text" class="col-md-10 form-control" id="kegiatan" name="kegiatan"
                                         placeholder="Text Area" />
                                 </div>
@@ -312,12 +336,12 @@
         <!-- modal end -->
         <!-- modal start 3 -->
         @foreach ($reports as $report)
-            <div class="modal fade" id="report-modal-{{ $report->id }}" tabindex="-1" aria-labelledby="report-modal-label-{{ $report->id }}"
-                aria-hidden="true">
+            <div class="modal fade" id="report-modal-{{ $report->id }}" tabindex="-1"
+                aria-labelledby="report-modal-label-{{ $report->id }}" aria-hidden="true">
                 <div class="modal-dialog modal-lg modal-dialog-scrollable">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title font-weight-bold" id="exampleModalLabel">Input Data Daily Report</h5>
+                            <h5 class="modal-title font-weight-bold" id="exampleModalLabel">Detail Data Daily Report</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                 aria-label="Close"></button>
                         </div>
@@ -325,15 +349,18 @@
                             <div class="row bg-white d-flex shadow-lg py-5 pl-md-3">
                                 <div class="row d-sm-flex">
                                     <div class="col-md-5 col-sm-12 mb-2">
-                                        <h6 class="font-weight-bold">INV &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : {{ $report->team->inventory->name }}</h6>
+                                        <h6 class="font-weight-bold">INV &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :
+                                            {{ $report->team->inventory->name }}</h6>
                                     </div>
                                     <div class="col-md-7 col-sm-12 mb-2">
-                                        <h6 class="font-weight-bold">JALUR &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : {{ $report->location->name }}</h6>
+                                        <h6 class="font-weight-bold">JALUR &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :
+                                            {{ $report->location->name }}</h6>
                                     </div>
                                 </div>
                                 <div class="row d-sm-flex">
                                     <div class="col-md-5 col-sm-12 mb-2">
-                                        <h6 class="font-weight-bold">TIM &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : {{ $report->team->name }}</h6>
+                                        <h6 class="font-weight-bold">TIM &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :
+                                            {{ $report->team->name }}</h6>
                                     </div>
                                     <div class="col-md-5 col-sm-12 mb-2">
                                         <h6 class="font-weight-bold">TANGGAL : {{ $report->date }}</h6>
@@ -412,8 +439,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-danger" data-bs-target="#report-modal-{{ $report->id }}"
-                                data-bs-toggle="modal">Close</button>
+                            <button type="button" class="btn btn-danger"
+                                data-bs-target="#report-modal-{{ $report->id }}" data-bs-toggle="modal">Close</button>
                         </div>
                     </div>
                 </div>
