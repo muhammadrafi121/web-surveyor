@@ -8,7 +8,7 @@
         </div>
         
         <!-- page data filter -->
-        <div class="row px-lg-4 mb-5">
+        {{-- <div class="row px-lg-4 mb-5">
             <div class="col-xl-12 col-lg-12 d-flex flex-lg-row flex-column">
                 <h4 class="col-md-3 px-0">Pemutakhiran Data :</h4>
                 <div class="col-md-2 dropdown p-0">
@@ -28,7 +28,7 @@
                     </select>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         <!-- page card -->
         <div class="row">
@@ -40,7 +40,7 @@
                         </span>
                         <span class="d-flex">
                             <h1>{{ $row }}</h1>
-                            {{-- <h6>/500 tapak</h6> --}}
+                            <h6>%</h6>
                         </span>
                         <span>
                             <p>Data RoW Terisi</p>
@@ -57,7 +57,7 @@
                         </span>
                         <span class="d-flex">
                             <h1>{{ $tower }}</h1>
-                            {{-- <h6>/500 tapak</h6> --}}
+                            <h6>%</h6>
                         </span>
                         <span>
                             <p>Data Tapak Tower Terisi</p>
