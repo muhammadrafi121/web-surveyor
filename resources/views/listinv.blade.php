@@ -44,10 +44,8 @@
                         <div class="col-md-6">
                             <!-- Button trigger modal -->
                             <button type="button" class="btn border border-dark text text-dark" data-toggle="modal"
-                                data-target="#exampleModal">
-                                <b>
-                                    Tambah
-                                </b>
+                                data-target="#exampleModal"><i
+                                class="fas fa-plus mr-2"></i><b>Tambah</b>
                             </button>
                         </div>
                     </div>
@@ -69,15 +67,17 @@
                                         <td>{{ $inventory->updated_at }}</td>
                                         {{-- <td>{{ $inventory->user->name }}</td> --}}
                                         <td>
-                                            <a href="">Cetak</a> | <a href="" data-bs-toggle="modal"
-                                                data-bs-target="#modal-{{ $inventory->id }}"
-                                                data-bs-whatever="@getbootstrap">Lihat</a> | <a href="javascript:void(0)"
-                                                data-toggle="modal" data-target="#exampleModal2"
-                                                onclick="edit({{ $inventory }})">Edit</a> |
                                             <form action="/inventory/{{ $inventory->id }}" method="POST">
                                                 @method('delete')
                                                 @csrf
-                                                <button type="submit">Hapus</button>
+                                                <a href="">Cetak</a> | 
+                                                <a href="" data-bs-toggle="modal"
+                                                    data-bs-target="#modal-{{ $inventory->id }}"
+                                                    data-bs-whatever="@getbootstrap">Lihat</a> | 
+                                                <a href="javascript:void(0)" data-toggle="modal"
+                                                    data-target="#exampleModal2"
+                                                    onclick="edit({{ $inventory }})">Edit</a> |
+                                                <button type="submit" class="link">Hapus</button>
                                             </form>
                                         </td>
                                     </tr>

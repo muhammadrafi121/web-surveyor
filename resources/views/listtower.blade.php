@@ -44,38 +44,35 @@
                         <div class="col-md-6">
                             <!-- Button trigger modal -->
                             <button type="button" class="btn border border-dark text text-dark" data-toggle="modal"
-                                data-target="#exampleModal">
-                                <b>
-                                    Tambah
-                                </b>
+                                data-target="#exampleModal"><i class="fas fa-plus mr-2"></i><b>Tambah</b>
                             </button>
                         </div>
                     </div>
                     <!-- <div class="row">
-                                                <div class="col-md-6">
-                                                <div class="container">
-                                                    <form class="d-flex m-0" role="search">
-                                                    <h6>cari :</h6>
-                                                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                                                    </form>
-                                                </div>
-                                                </div>
-                                                <div class="col-md-6 d-flex mb-3">
-                                                <label class="col-4 d-sm-none d-md-block d-none d-sm-block p-sm-0 h-100"> <h6 class="h6 font-weight-bold mt-lg-2">Filter berasarkan :</h6></label>
-                                                <select class="col-4 form-select form-control ml-n3" id="kategori">
-                                                    <option selected>Kategori</option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
-                                                </select>
-                                                <select class="col-4 form-select form-control ml-3" id="penginput">
-                                                    <option selected>Penginput</option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
-                                                </select>
-                                                </div>
-                                            </div> -->
+                                                        <div class="col-md-6">
+                                                        <div class="container">
+                                                            <form class="d-flex m-0" role="search">
+                                                            <h6>cari :</h6>
+                                                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+                                                            </form>
+                                                        </div>
+                                                        </div>
+                                                        <div class="col-md-6 d-flex mb-3">
+                                                        <label class="col-4 d-sm-none d-md-block d-none d-sm-block p-sm-0 h-100"> <h6 class="h6 font-weight-bold mt-lg-2">Filter berasarkan :</h6></label>
+                                                        <select class="col-4 form-select form-control ml-n3" id="kategori">
+                                                            <option selected>Kategori</option>
+                                                            <option value="1">One</option>
+                                                            <option value="2">Two</option>
+                                                            <option value="3">Three</option>
+                                                        </select>
+                                                        <select class="col-4 form-select form-control ml-3" id="penginput">
+                                                            <option selected>Penginput</option>
+                                                            <option value="1">One</option>
+                                                            <option value="2">Two</option>
+                                                            <option value="3">Three</option>
+                                                        </select>
+                                                        </div>
+                                                    </div> -->
                     <div class="row mb-3 d-sm-flex">
                         {{-- <div class="col-md-4 col-sm-12">
                             <h6 class="mt-2 font-weight-bold">INV : {{ $towers[0]->location->inventory->name }}</h6>
@@ -87,24 +84,24 @@
                             <h6 class="mt-2 font-weight-bold">TAPAK : {{ $towers[0]->no }}</h6>
                         </div> --}}
                         <!-- <div class="col-md-6 d-flex">
-                                                <div class="col-md-3 d-sm-none d-md-block d-none d-sm-block"><h6 class="mt-2 font-weight-bold">cari :</h6></div>
-                                                <div class="col-md-6 col-sm-12"><input class="form-control" type="search" placeholder="Search" aria-label="Search" /></div>
-                                                </div>
-                                                <div class="col-md-6 col-sm-12 d-flex">
-                                                <label class="col-md-4 d-sm-none d-md-block d-none d-sm-block"> <h6 class="h6 font-weight-bold mt-lg-2">Filter berasarkan :</h6></label>
-                                                <select class="col-md-4 col-sm-12 form-select form-control ml-lg-n2" id="kategori">
-                                                    <option selected>Kategori</option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
-                                                </select>
-                                                <select class="col-md-4 col-sm-12 form-select form-control ml-lg-2" id="penginput">
-                                                    <option selected>Penginput</option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
-                                                </select>
-                                                </div> -->
+                                                        <div class="col-md-3 d-sm-none d-md-block d-none d-sm-block"><h6 class="mt-2 font-weight-bold">cari :</h6></div>
+                                                        <div class="col-md-6 col-sm-12"><input class="form-control" type="search" placeholder="Search" aria-label="Search" /></div>
+                                                        </div>
+                                                        <div class="col-md-6 col-sm-12 d-flex">
+                                                        <label class="col-md-4 d-sm-none d-md-block d-none d-sm-block"> <h6 class="h6 font-weight-bold mt-lg-2">Filter berasarkan :</h6></label>
+                                                        <select class="col-md-4 col-sm-12 form-select form-control ml-lg-n2" id="kategori">
+                                                            <option selected>Kategori</option>
+                                                            <option value="1">One</option>
+                                                            <option value="2">Two</option>
+                                                            <option value="3">Three</option>
+                                                        </select>
+                                                        <select class="col-md-4 col-sm-12 form-select form-control ml-lg-2" id="penginput">
+                                                            <option selected>Penginput</option>
+                                                            <option value="1">One</option>
+                                                            <option value="2">Two</option>
+                                                            <option value="3">Three</option>
+                                                        </select>
+                                                        </div> -->
                     </div>
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
@@ -127,15 +124,17 @@
                                         <td>{{ $tower->updated_at }}</td>
                                         <td>{{ $tower->user->name }}</td>
                                         <td>
-                                            <a href="">Cetak</a> | <a href="" data-bs-toggle="modal"
-                                            data-bs-target="#modal-{{ $tower->id }}"
-                                            data-bs-whatever="@getbootstrap">Lihat</a> | <a
-                                                href="javascript:void(0)" data-toggle="modal" data-target="#exampleModal2"
-                                                onclick="edit({{ $tower }})">Edit</a> |
                                             <form action="/tower/{{ $tower->id }}" method="POST">
                                                 @method('delete')
                                                 @csrf
-                                                <button type="submit">Hapus</button>
+                                                <a href="">Cetak</a> |
+                                                <a href="" data-bs-toggle="modal"
+                                                    data-bs-target="#modal-{{ $tower->id }}"
+                                                    data-bs-whatever="@getbootstrap">Lihat</a> |
+                                                <a href="javascript:void(0)" data-toggle="modal"
+                                                    data-target="#exampleModal2"
+                                                    onclick="edit({{ $tower }})">Edit</a> |
+                                                <button type="submit" class="link">Hapus</button>
                                             </form>
                                         </td>
                                         <td>

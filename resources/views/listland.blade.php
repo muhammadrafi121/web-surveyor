@@ -85,14 +85,16 @@
                                         <td>{{ $land->type }}</td>
                                         <td>{{ $land->area }}</td>
                                         <td>{{ $land->user->name }}</td>
-                                        <td><a href="">Cetak</a>| <a href="" data-bs-toggle="modal"
-                                                data-bs-target="#modal-{{ $land->id }}"
-                                                data-bs-whatever="@getbootstrap">Lihat</a>| <a href="javascript:void(0)"
-                                                onclick="edit({{ $land }})">Edit</a>|
+                                        <td>
                                             <form action="/land/{{ $land->id }}" method="POST">
                                                 @method('delete')
                                                 @csrf
-                                                <button type="submit">Hapus</button>
+                                                <a href="">Cetak</a> |
+                                                <a href="" data-bs-toggle="modal"
+                                                    data-bs-target="#modal-{{ $land->id }}"
+                                                    data-bs-whatever="@getbootstrap">Lihat</a> |
+                                                <a href="javascript:void(0)" onclick="edit({{ $land }})">Edit</a> |
+                                                <button type="submit" class="link">Hapus</button>
                                             </form>
                                         <td>
                                             <button class="btn-sm btn-outline-primary font-weight-bold bg-yellow"
@@ -351,25 +353,38 @@
                                             @for ($i = 0; $i < $total; $i++)
                                                 <tr>
                                                     <input type="hidden" name="idtanaman[]"
-                                                        id="id-{{ $i }}-{{ $land->id }}" value="{{ $land->plants[$i]->id }}">
+                                                        id="id-{{ $i }}-{{ $land->id }}"
+                                                        value="{{ $land->plants[$i]->id }}">
                                                     <td class="data-tanaman" contenteditable="true"
-                                                        id="nama-tanaman-{{ $i }}-{{ $land->id }}">{{ $land->plants[$i]->name }}</td><input type="hidden"
-                                                        name="namatanaman[]" id="nama-{{ $i }}-{{ $land->id }}" value="{{ $land->plants[$i]->name }}">
+                                                        id="nama-tanaman-{{ $i }}-{{ $land->id }}">
+                                                        {{ $land->plants[$i]->name }}</td><input type="hidden"
+                                                        name="namatanaman[]"
+                                                        id="nama-{{ $i }}-{{ $land->id }}"
+                                                        value="{{ $land->plants[$i]->name }}">
                                                     <td class="data-tanaman" contenteditable="true"
-                                                        id="umur-tanaman-{{ $i }}-{{ $land->id }}">{{ $land->plants[$i]->age }}</td><input type="hidden"
-                                                        name="umurtanaman[]" id="umur-{{ $i }}-{{ $land->id }}" value="{{ $land->plants[$i]->age }}">
+                                                        id="umur-tanaman-{{ $i }}-{{ $land->id }}">
+                                                        {{ $land->plants[$i]->age }}</td><input type="hidden"
+                                                        name="umurtanaman[]"
+                                                        id="umur-{{ $i }}-{{ $land->id }}"
+                                                        value="{{ $land->plants[$i]->age }}">
                                                     <td class="data-tanaman" contenteditable="true"
-                                                        id="tinggi-tanaman-{{ $i }}-{{ $land->id }}">{{ $land->plants[$i]->height }}</td><input
-                                                        type="hidden" name="tinggitanaman[]"
-                                                        id="tinggi-{{ $i }}-{{ $land->id }}" value="{{ $land->plants[$i]->height }}">
+                                                        id="tinggi-tanaman-{{ $i }}-{{ $land->id }}">
+                                                        {{ $land->plants[$i]->height }}</td><input type="hidden"
+                                                        name="tinggitanaman[]"
+                                                        id="tinggi-{{ $i }}-{{ $land->id }}"
+                                                        value="{{ $land->plants[$i]->height }}">
                                                     <td class="data-tanaman" contenteditable="true"
-                                                        id="diameter-tanaman-{{ $i }}-{{ $land->id }}">{{ $land->plants[$i]->diameter }}</td><input
-                                                        type="hidden" name="diametertanaman[]"
-                                                        id="diameter-{{ $i }}-{{ $land->id }}" value="{{ $land->plants[$i]->diameter }}">
+                                                        id="diameter-tanaman-{{ $i }}-{{ $land->id }}">
+                                                        {{ $land->plants[$i]->diameter }}</td><input type="hidden"
+                                                        name="diametertanaman[]"
+                                                        id="diameter-{{ $i }}-{{ $land->id }}"
+                                                        value="{{ $land->plants[$i]->diameter }}">
                                                     <td class="data-tanaman" contenteditable="true"
-                                                        id="jumlah-tanaman-{{ $i }}-{{ $land->id }}">{{ $land->plants[$i]->total }}</td><input
-                                                        type="hidden" name="jumlahtanaman[]"
-                                                        id="jumlah-{{ $i }}-{{ $land->id }}" value="{{ $land->plants[$i]->total }}">
+                                                        id="jumlah-tanaman-{{ $i }}-{{ $land->id }}">
+                                                        {{ $land->plants[$i]->total }}</td><input type="hidden"
+                                                        name="jumlahtanaman[]"
+                                                        id="jumlah-{{ $i }}-{{ $land->id }}"
+                                                        value="{{ $land->plants[$i]->total }}">
                                                 </tr>
                                                 @php
                                                     $count++;
@@ -380,22 +395,24 @@
                                                     <input type="hidden" name="idtanaman[]"
                                                         id="id-{{ $count }}-{{ $land->id }}">
                                                     <td class="data-tanaman" contenteditable="true"
-                                                        id="nama-tanaman-{{ $count }}-{{ $land->id }}"></td><input type="hidden"
-                                                        name="namatanaman[]" id="nama-{{ $count }}-{{ $land->id }}">
+                                                        id="nama-tanaman-{{ $count }}-{{ $land->id }}"></td>
+                                                    <input type="hidden" name="namatanaman[]"
+                                                        id="nama-{{ $count }}-{{ $land->id }}">
                                                     <td class="data-tanaman" contenteditable="true"
-                                                        id="umur-tanaman-{{ $count }}-{{ $land->id }}"></td><input type="hidden"
-                                                        name="umurtanaman[]" id="umur-{{ $count }}-{{ $land->id }}">
+                                                        id="umur-tanaman-{{ $count }}-{{ $land->id }}"></td>
+                                                    <input type="hidden" name="umurtanaman[]"
+                                                        id="umur-{{ $count }}-{{ $land->id }}">
                                                     <td class="data-tanaman" contenteditable="true"
-                                                        id="tinggi-tanaman-{{ $count }}-{{ $land->id }}"></td><input
-                                                        type="hidden" name="tinggitanaman[]"
+                                                        id="tinggi-tanaman-{{ $count }}-{{ $land->id }}"></td>
+                                                    <input type="hidden" name="tinggitanaman[]"
                                                         id="tinggi-{{ $count }}-{{ $land->id }}">
                                                     <td class="data-tanaman" contenteditable="true"
-                                                        id="diameter-tanaman-{{ $count }}-{{ $land->id }}"></td><input
-                                                        type="hidden" name="diametertanaman[]"
+                                                        id="diameter-tanaman-{{ $count }}-{{ $land->id }}">
+                                                    </td><input type="hidden" name="diametertanaman[]"
                                                         id="diameter-{{ $count }}-{{ $land->id }}">
                                                     <td class="data-tanaman" contenteditable="true"
-                                                        id="jumlah-tanaman-{{ $count }}-{{ $land->id }}"></td><input
-                                                        type="hidden" name="jumlahtanaman[]"
+                                                        id="jumlah-tanaman-{{ $count }}-{{ $land->id }}"></td>
+                                                    <input type="hidden" name="jumlahtanaman[]"
                                                         id="jumlah-{{ $count }}-{{ $land->id }}">
                                                 </tr>
                                                 @php
