@@ -89,7 +89,7 @@
                                             <form action="/land/{{ $land->id }}" method="POST">
                                                 @method('delete')
                                                 @csrf
-                                                <a href="">Cetak</a> |
+                                                <a href="/land/{{ $land->id }}/print">Cetak</a> |
                                                 <a href="" data-bs-toggle="modal"
                                                     data-bs-target="#modal-{{ $land->id }}"
                                                     data-bs-whatever="@getbootstrap">Lihat</a> |
@@ -104,7 +104,7 @@
                                                     class="fas fa-plus mr-2"></i>Tambah</button>
                                         </td>
                                         <td>
-                                            <a href="" class="btn-primary"><i
+                                            <a href="" class="btn btn-primary" style="border: 2px solid black"><i
                                                     class="fas fa-file fa-sm fa-fw mr-2"></i>Browse File</a>
                                         </td>
                                     </tr>

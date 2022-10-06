@@ -233,4 +233,16 @@ class LandController extends Controller
         $land->delete();
         return redirect('/land')->with('message', 'Hapus Data Lahan Berhasil');
     }
+
+    public function print(Land $land)
+    {
+        $row = $land->row()->with('location');
+        $tower = $land->tower()->with('location');
+
+        return view('pdfdatalahan', [
+            'land' => $land,
+            'tower' => $tower,
+            'row' => $row,
+        ]);
+    }
 }
