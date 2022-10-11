@@ -60,7 +60,7 @@
                                     <th>Tanggal</th>
                                     <th>Tim</th>
                                     <th>Penginput</th>
-                                    <th>Waktu</th>
+                                    <th>Last Update</th>
                                     <th class="text-center">Tindakan</th>
                                 </tr>
                             </thead>
@@ -310,12 +310,7 @@
                             </div>
                             <div class="col-md-12 mx-auto">
                                 <div class="row d-flex form-group mb-5 col-sm-12">
-                                    <label for="waktum" class="col-md-3">Waktu Mulai</label>
-                                    <input type="time" class="col-md-2 form-control" id="waktum" name="waktum" />
-                                </div>
-                                <div class="row d-flex form-group mb-5 col-sm-12">
-                                    <label for="waktus" class="col-md-3">Waktu Selesai</label>
-                                    <input type="time" class="col-md-2 form-control" id="waktus" name="waktus" />
+                                    <label for="waktum" class="col-md">Waktu : 08:00 - 17:00</label>
                                 </div>
                                 <div class="row d-flex form-group mb-4 col-sm-12">
                                     <label for="kegiatan" class="col-md-2">Kegiatan</label>
@@ -389,7 +384,7 @@
                                                 <tr>
                                                     <td>{{ $manpower->name }}</td>
                                                     <td>{{ $manpower->total }}</td>
-                                                    <td>{{ $manpower->status == 1 ? 'Hadir' : 'Tidak Hadir' }}</td>
+                                                    <td>{{ $manpower->status == 1 ? 'Hadir' : '' }}</td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -408,7 +403,7 @@
                                                 <tr>
                                                     <td>{{ $facility->name }}</td>
                                                     <td>{{ $facility->total }}</td>
-                                                    <td>{{ $facility->status == 1 ? 'Ada' : 'Tidak Ada' }}</td>
+                                                    <td>{{ $facility->status == 1 ? 'Ada' : '' }}</td>
                                                 </tr>
                                             @endforeach
                                         </tbody>

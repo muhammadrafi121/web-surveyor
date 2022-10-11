@@ -134,4 +134,38 @@ class RowController extends Controller
         DB::table('rows')->where('id', $row->id)->delete();
         return redirect('/row')->with('message', 'Hapus Data RoW Berhasil');
     }
+
+    public function upload(Request $request, Row $row)
+    {
+        $request->validate([
+            'file' => "required|mimes:pdf|max:60000"
+        ]);
+
+        $file = $request->file('file');
+        $name = $file->hashName();
+        
+        $row->update(["attachment" => $name]);
+
+        $file->move('attachments', $name);
+
+
+        return redirect('/row')->with('message', 'Upload Lampiran Berhasil');
+    }
+
+    public function download(Row $row)
+    {
+        //how to download file on laravel?
+        
+        //PDF file is stored under project/public/attachments
+        $filesource = $row->attachment;
+        $file = public_path(). "/attachments/" . $filesource;
+        $filename = "Lampiran RoW " . $row->firsttower->no . "-" . $row->secondtower->no . ".pdf";
+
+        $headers = array(
+                'Content-Type: application/pdf',
+                );
+
+        return response()->download($file, $filename, $headers);
+
+    }
 }

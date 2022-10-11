@@ -50,30 +50,30 @@
                         </div>
                     </div>
                     <!-- <div class="row">
-                                                            <div class="col-md-6">
-                                                            <div class="container">
-                                                                <form class="d-flex m-0" role="search">
-                                                                <h6>cari :</h6>
-                                                                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                                                                </form>
-                                                            </div>
-                                                            </div>
-                                                            <div class="col-md-6 d-flex mb-3">
-                                                            <label class="col-4 d-sm-none d-md-block d-none d-sm-block p-sm-0 h-100"> <h6 class="h6 font-weight-bold mt-lg-2">Filter berasarkan :</h6></label>
-                                                            <select class="col-4 form-select form-control ml-n3" id="kategori">
-                                                                <option selected>Kategori</option>
-                                                                <option value="1">One</option>
-                                                                <option value="2">Two</option>
-                                                                <option value="3">Three</option>
-                                                            </select>
-                                                            <select class="col-4 form-select form-control ml-3" id="penginput">
-                                                                <option selected>Penginput</option>
-                                                                <option value="1">One</option>
-                                                                <option value="2">Two</option>
-                                                                <option value="3">Three</option>
-                                                            </select>
-                                                            </div>
-                                                        </div> -->
+                                                                    <div class="col-md-6">
+                                                                    <div class="container">
+                                                                        <form class="d-flex m-0" role="search">
+                                                                        <h6>cari :</h6>
+                                                                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+                                                                        </form>
+                                                                    </div>
+                                                                    </div>
+                                                                    <div class="col-md-6 d-flex mb-3">
+                                                                    <label class="col-4 d-sm-none d-md-block d-none d-sm-block p-sm-0 h-100"> <h6 class="h6 font-weight-bold mt-lg-2">Filter berasarkan :</h6></label>
+                                                                    <select class="col-4 form-select form-control ml-n3" id="kategori">
+                                                                        <option selected>Kategori</option>
+                                                                        <option value="1">One</option>
+                                                                        <option value="2">Two</option>
+                                                                        <option value="3">Three</option>
+                                                                    </select>
+                                                                    <select class="col-4 form-select form-control ml-3" id="penginput">
+                                                                        <option selected>Penginput</option>
+                                                                        <option value="1">One</option>
+                                                                        <option value="2">Two</option>
+                                                                        <option value="3">Three</option>
+                                                                    </select>
+                                                                    </div>
+                                                                </div> -->
                     <div class="row mb-3 d-sm-flex">
                         {{-- <div class="col-md-4 col-sm-12">
                             <h6 class="mt-2 font-weight-bold">INV : {{ $towers[0]->location->inventory->name }}</h6>
@@ -85,24 +85,24 @@
                             <h6 class="mt-2 font-weight-bold">TAPAK : {{ $towers[0]->no }}</h6>
                         </div> --}}
                         <!-- <div class="col-md-6 d-flex">
-                                                            <div class="col-md-3 d-sm-none d-md-block d-none d-sm-block"><h6 class="mt-2 font-weight-bold">cari :</h6></div>
-                                                            <div class="col-md-6 col-sm-12"><input class="form-control" type="search" placeholder="Search" aria-label="Search" /></div>
-                                                            </div>
-                                                            <div class="col-md-6 col-sm-12 d-flex">
-                                                            <label class="col-md-4 d-sm-none d-md-block d-none d-sm-block"> <h6 class="h6 font-weight-bold mt-lg-2">Filter berasarkan :</h6></label>
-                                                            <select class="col-md-4 col-sm-12 form-select form-control ml-lg-n2" id="kategori">
-                                                                <option selected>Kategori</option>
-                                                                <option value="1">One</option>
-                                                                <option value="2">Two</option>
-                                                                <option value="3">Three</option>
-                                                            </select>
-                                                            <select class="col-md-4 col-sm-12 form-select form-control ml-lg-2" id="penginput">
-                                                                <option selected>Penginput</option>
-                                                                <option value="1">One</option>
-                                                                <option value="2">Two</option>
-                                                                <option value="3">Three</option>
-                                                            </select>
-                                                            </div> -->
+                                                                    <div class="col-md-3 d-sm-none d-md-block d-none d-sm-block"><h6 class="mt-2 font-weight-bold">cari :</h6></div>
+                                                                    <div class="col-md-6 col-sm-12"><input class="form-control" type="search" placeholder="Search" aria-label="Search" /></div>
+                                                                    </div>
+                                                                    <div class="col-md-6 col-sm-12 d-flex">
+                                                                    <label class="col-md-4 d-sm-none d-md-block d-none d-sm-block"> <h6 class="h6 font-weight-bold mt-lg-2">Filter berasarkan :</h6></label>
+                                                                    <select class="col-md-4 col-sm-12 form-select form-control ml-lg-n2" id="kategori">
+                                                                        <option selected>Kategori</option>
+                                                                        <option value="1">One</option>
+                                                                        <option value="2">Two</option>
+                                                                        <option value="3">Three</option>
+                                                                    </select>
+                                                                    <select class="col-md-4 col-sm-12 form-select form-control ml-lg-2" id="penginput">
+                                                                        <option selected>Penginput</option>
+                                                                        <option value="1">One</option>
+                                                                        <option value="2">Two</option>
+                                                                        <option value="3">Three</option>
+                                                                    </select>
+                                                                    </div> -->
                     </div>
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
@@ -110,7 +110,7 @@
                                 <tr>
                                     <th>Ruas Jalur</th>
                                     <th>No Tower</th>
-                                    <th>Waktu</th>
+                                    <th>Last Update</th>
                                     <th>Penginput</th>
                                     <th>Tindakan</th>
                                     <th>Lampiran</th>
@@ -139,7 +139,11 @@
                                             </form>
                                         </td>
                                         <td>
-                                            <a href="">Lampiran</a>
+                                            <a href="" class="btn btn-primary" style="border: 2px solid black"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#attachment-modal-{{ $row->id }}"
+                                                data-bs-whatever="@getbootstrap"><i
+                                                    class="fas fa-file fa-sm fa-fw mr-2"></i>Browse File</a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -157,7 +161,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Form Input Data Tapak Tower</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Form Input Data ROW</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -223,7 +227,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModal2Label">Form Update Data Tapak Tower</h5>
+                    <h5 class="modal-title" id="exampleModal2Label">Form Update Data ROW</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -314,6 +318,7 @@
                                     cellspacing="0">
                                     <thead>
                                         <tr style="text-align: center">
+                                            <th rowspan="2">NO</th>
                                             <th rowspan="2">PEMILIK</th>
                                             <th colspan="2">TANAH</th>
                                             <th colspan="5">TANAM TUMBUH</th>
@@ -322,9 +327,9 @@
                                             <th>Jenis Tanah</th>
                                             <th>Luas (m<sup>2</sup>)</th>
                                             <th>Nama Tanaman</th>
-                                            <th>Umur</th>
-                                            <th>Tinggi</th>
-                                            <th>Diameter</th>
+                                            <th>Umur (th)</th>
+                                            <th>Tinggi (m)</th>
+                                            <th>Diameter (cm)</th>
                                             <th>Jumlah</th>
                                         </tr>
                                     </thead>
@@ -333,6 +338,7 @@
                                             @if (!$land->plants->isEmpty())
                                                 @foreach ($land->plants as $plant)
                                                     <tr>
+                                                        <td>{{ $loop->iteration }}</td>
                                                         <td>{{ $land->owner->name }}</td>
                                                         <td>{{ $land->type }}</td>
                                                         <td>{{ $land->area }}</td>
@@ -345,6 +351,7 @@
                                                 @endforeach
                                             @else
                                                 <tr>
+                                                    <td>1</td>
                                                     <td>{{ $land->owner->name }}</td>
                                                     <td>{{ $land->type }}</td>
                                                     <td>{{ $land->area }}</td>
@@ -360,6 +367,17 @@
                                 </table>
                             </div>
                         </div>
+                        <div class="row my-3">
+                            <div class="col-lg-5">
+                                <h6>Lampiran</h6>
+                                @if ($row->attachment)
+                                    <a href="/row/{{ $row->id }}/download" class="btn btn-primary"
+                                        style="border: 2px solid black"><i class="fa-solid fa-download"></i> Download</a>
+                                @else
+                                    <p class="text text-danger">File Lampiran Belum Tersedia</p>
+                                @endif
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-target="#modal-{{ $row->id }}"
@@ -368,5 +386,34 @@
                 </div>
             </div>
         </div>
+
+        <!-- modal start 5 -->
+        <div class="modal fade" id="attachment-modal-{{ $row->id }}" tabindex="-1" aria-labelledby="modalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <form class="modal-content" action="/row/{{ $row->id }}/upload" method="POST"
+                    id="attachment-form" enctype="multipart/form-data">
+                    <div class="modal-header d-flex flex-column">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <h5 class="modal-title font-weight-bold" id="modalLabel">Upload File Lampiran
+                        </h5>
+                    </div>
+                    <div class="modal-body">
+                        @method('PUT')
+                        @csrf
+                        <input type="hidden" name="id_lahan" id="id-lahan" value="{{ $row->id }}">
+                        <div class="form-group mb-4">
+                            <h6 class="font-weight-light mt-n2">Lampiran</h6>
+                            <input type="file" class="form-control" id="file" name="file"
+                                placeholder="Lampiran" required />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Submit Data</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- modal end 5 -->
     @endforeach
 @endsection

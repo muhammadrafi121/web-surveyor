@@ -43,13 +43,19 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('aut
 Route::resource('user', UserController::class)->middleware('auth');
 
 // route tower
+Route::put('tower/{tower}/upload', [TowerController::class, 'upload'])->middleware('auth');
+Route::get('tower/{tower}/download', [TowerController::class, 'download'])->middleware('auth');
 Route::resource('tower', TowerController::class)->middleware('auth');
 
 // route ROW
+Route::put('row/{row}/upload', [RowController::class, 'upload'])->middleware('auth');
+Route::get('row/{row}/download', [RowController::class, 'download'])->middleware('auth');
 Route::resource('row', RowController::class)->middleware('auth');
 
 // route land
 Route::get('land/{land}/print', [LandController::class, 'print'])->middleware('auth');
+Route::put('land/{land}/upload', [LandController::class, 'upload'])->middleware('auth');
+Route::get('land/{land}/download', [LandController::class, 'download'])->middleware('auth');
 Route::resource('land', LandController::class)->middleware('auth');
 
 // route plant
@@ -72,7 +78,3 @@ Route::get('/ajax/allrow', [AjaxController::class, 'allRow'])->middleware('auth'
 Route::get('/ajax/row', [AjaxController::class, 'row'])->middleware('auth');
 Route::get('/ajax/land', [AjaxController::class, 'land'])->middleware('auth');
 Route::get('/ajax/dailyreport', [AjaxController::class, 'dailyreport'])->middleware('auth');
-
-Route::get('/test', function () {
-    return view('inputtanaman');
-});

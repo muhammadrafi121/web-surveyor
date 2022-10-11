@@ -8,6 +8,7 @@ use App\Models\LandOwner;
 use App\Models\Location;
 use App\Models\Tower;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
 class TowerController extends Controller
@@ -166,5 +167,39 @@ class TowerController extends Controller
     {
         DB::table('towers')->where('id', $tower->id)->delete();
         return redirect('/tower')->with('message', 'Hapus Data Tapak Tower Berhasil');
+    }
+
+    public function upload(Request $request, Tower $tower)
+    {
+        $request->validate([
+            'file' => "required|mimes:pdf|max:60000"
+        ]);
+
+        $file = $request->file('file');
+        $name = $file->hashName();
+        
+        $tower->update(["attachment" => $name]);
+
+        $file->move('attachments', $name);
+
+
+        return redirect('/tower')->with('message', 'Upload Lampiran Berhasil');
+    }
+
+    public function download(Tower $tower)
+    {
+        //how to download file on laravel?
+        
+        //PDF file is stored under project/public/attachments
+        $filesource = $tower->attachment;
+        $file = public_path(). "/attachments/" . $filesource;
+        $filename = "Lampiran Tower " . $tower->no . ".pdf";
+
+        $headers = array(
+                'Content-Type: application/pdf',
+                );
+
+        return response()->download($file, $filename, $headers);
+
     }
 }

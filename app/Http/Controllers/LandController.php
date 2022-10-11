@@ -11,6 +11,7 @@ use App\Models\Row;
 use App\Models\Tower;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rules\File;
 
 class LandController extends Controller
 {
@@ -210,10 +211,10 @@ class LandController extends Controller
         if ($request->tower) {
             $land_input['tower_id'] = $request->tower;
         }
-        
+
         LandOwner::where('id', $request->owner_id)->update($owner_input);
         Land::where('id', $request->id)->update($land_input);
-        
+
         return redirect('/land')->with('message', 'Update Data Lahan Berhasil');
     }
 
@@ -244,5 +245,39 @@ class LandController extends Controller
             'tower' => $tower,
             'row' => $row,
         ]);
+    }
+
+    public function upload(Request $request, Land $land)
+    {
+        $request->validate([
+            'file' => "required|mimes:pdf|max:60000"
+        ]);
+
+        $file = $request->file('file');
+        $name = $file->hashName();
+        
+        $land->update(["attachment" => $name]);
+
+        $file->move('attachments', $name);
+
+
+        return redirect('/land')->with('message', 'Upload Lampiran Berhasil');
+    }
+
+    public function download(Land $land)
+    {
+        //how to download file on laravel?
+        
+        //PDF file is stored under project/public/attachments
+        $filesource = $land->attachment;
+        $file = public_path(). "/attachments/" . $filesource;
+        $filename = "Lampiran Lahan Milik " . $land->owner->name . ".pdf";
+
+        $headers = array(
+                'Content-Type: application/pdf',
+                );
+
+        return response()->download($file, $filename, $headers);
+
     }
 }

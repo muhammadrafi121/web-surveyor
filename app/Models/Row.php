@@ -9,6 +9,8 @@ class Row extends Model
 {
     use HasFactory;
 
+    protected $guarded = ["id"];
+
     public function lands()
     {
         return $this->hasMany(Land::class);
