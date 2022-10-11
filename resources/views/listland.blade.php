@@ -223,8 +223,7 @@
                             </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary" data-bs-target="#exampleModalToggle3"
-                            data-bs-toggle="modal">Submit Data</button>
+                        <button type="submit" class="btn btn-primary">Submit Data</button>
                         </form>
                     </div>
                 </div>
@@ -276,25 +275,39 @@
                                                 <th>Jenis Tanah</th>
                                                 <th>Luas (m<sup>2</sup>)</th>
                                                 <th>Nama Tanaman</th>
-                                                <th>Umur</th>
-                                                <th>Tinggi</th>
-                                                <th>Diameter</th>
+                                                <th>Umur (th)</th>
+                                                <th>Tinggi (m)</th>
+                                                <th>Diameter (cm)</th>
                                                 <th>Jumlah</th>
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            @php
+                                                $currLand = null;
+                                            @endphp
                                             @if (!$land->plants->isEmpty())
+                                                @php
+                                                    $prevLand = $land;
+                                                @endphp
                                                 @foreach ($land->plants as $plant)
                                                     <tr>
                                                         <td>{{ $loop->iteration }}</td>
-                                                        <td>{{ $land->type }}</td>
-                                                        <td>{{ $land->area }}</td>
+                                                        @if ($prevLand == $currLand)
+                                                            <td></td>
+                                                            <td></td>
+                                                        @else
+                                                            <td>{{ $land->type }}</td>
+                                                            <td>{{ $land->area }}</td>
+                                                        @endif
                                                         <td>{{ $plant->name }}</td>
                                                         <td>{{ $plant->age }}</td>
                                                         <td>{{ $plant->height }}</td>
                                                         <td>{{ $plant->diameter }}</td>
                                                         <td>{{ $plant->total }}</td>
                                                     </tr>
+                                                    @php
+                                                        $currLand = $prevLand;
+                                                    @endphp
                                                 @endforeach
                                             @else
                                                 <tr>
@@ -354,9 +367,9 @@
                                         <tr>
                                             <th>No</th>
                                             <th>Nama Tanaman</th>
-                                            <th>Umur</th>
-                                            <th>Tinggi</th>
-                                            <th>Diameter</th>
+                                            <th>Umur (th)</th>
+                                            <th>Tinggi (m)</th>
+                                            <th>Diameter (cm)</th>
                                             <th>Jumlah</th>
                                         </tr>
                                     </thead>

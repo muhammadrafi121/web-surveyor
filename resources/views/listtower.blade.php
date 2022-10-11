@@ -325,13 +325,28 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @php
+                                            $currLand = null;
+                                            $count = 1;
+                                        @endphp
                                         @foreach ($tower->lands as $land)
+                                            @php
+                                                $prevLand = $land;
+                                            @endphp
                                             @if (!$land->plants->isEmpty())
                                                 @foreach ($land->plants as $plant)
                                                     <tr>
-                                                        <td>{{ $loop->iteration }}</td>
-                                                        <td>{{ $land->owner->name }}</td>
-                                                        <td>{{ $land->type }}</td>
+                                                        <td>{{ $count }}</td>
+                                                        @if ($currLand && $currLand->owner == $prevLand->owner)
+                                                            <td></td>
+                                                        @else
+                                                            <td>{{ $land->owner->name }}</td>
+                                                        @endif
+                                                        @if ($currLand && $currLand->type == $prevLand->type)
+                                                            <td></td>
+                                                        @else
+                                                            <td>{{ $land->type }}</td>
+                                                        @endif
                                                         <td>{{ $land->area }}</td>
                                                         <td>{{ $plant->name }}</td>
                                                         <td>{{ $plant->age }}</td>
@@ -339,12 +354,24 @@
                                                         <td>{{ $plant->diameter }}</td>
                                                         <td>{{ $plant->total }}</td>
                                                     </tr>
+                                                    @php
+                                                        $currLand = $prevLand;
+                                                        $count++;
+                                                    @endphp
                                                 @endforeach
                                             @else
                                                 <tr>
-                                                    <td>1</td>
-                                                    <td>{{ $land->owner->name }}</td>
-                                                    <td>{{ $land->type }}</td>
+                                                    <td>{{ $count }}</td>
+                                                    @if ($currLand && $currLand->owner == $prevLand->owner)
+                                                        <td></td>
+                                                    @else
+                                                        <td>{{ $land->owner->name }}</td>
+                                                    @endif
+                                                    @if ($currLand && $currLand->owner == $prevLand->owner && $currLand->type == $prevLand->type)
+                                                        <td></td>
+                                                    @else
+                                                        <td>{{ $land->type }}</td>
+                                                    @endif
                                                     <td>{{ $land->area }}</td>
                                                     <td>-</td>
                                                     <td>-</td>
@@ -352,6 +379,10 @@
                                                     <td>-</td>
                                                     <td>-</td>
                                                 </tr>
+                                                @php
+                                                    $currLand = $prevLand;
+                                                    $count++;
+                                                @endphp
                                             @endif
                                         @endforeach
                                     </tbody>
