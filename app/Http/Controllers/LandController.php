@@ -9,6 +9,7 @@ use App\Models\Location;
 use App\Models\Plant;
 use App\Models\Row;
 use App\Models\Tower;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rules\File;
@@ -23,10 +24,30 @@ class LandController extends Controller
     public function index()
     {
         $inventories = Inventory::all();
+        if (auth()->user()->role == 'Surveyor') {
+            $user = User::with('team')->find(auth()->user()->id);
+            $inventories = Inventory::find($user->team->inventory_id);
+        }
+
         $locations = Location::where('inventory_id', $inventories->first()->id)->get();
         $towers = Tower::where('location_id', $locations->first()->id)->get();
         $rows = Row::where('location_id', $locations->first()->id)->get();
         $lands = Land::all();
+        if (auth()->user()->role == 'Surveyor') {
+            $user = User::with('team')->find(auth()->user()->id);
+            $towerlands = Land::join('towers', 'lands.tower_id', '=', 'towers.id')
+                ->join('locations', 'towers.location_id', '=', 'locations.id')
+                ->join('inventories', 'locations.inventory_id', '=', 'inventories.id')
+                ->where('inventories.id', '=', $user->team->inventory_id)
+                ->select('locations.id', 'inventories.*', 'lands.*');
+            $rowlands = Land::join('rows', 'lands.row_id', '=', 'rows.id')
+                ->join('locations', 'rows.location_id', '=', 'locations.id')
+                ->join('inventories', 'locations.inventory_id', '=', 'inventories.id')
+                ->where('inventories.id', '=', $user->team->inventory_id)
+                ->select('locations.id', 'inventories.*', 'lands.*');
+            // dd($towerlands->get(), $rowlands->get());
+            $lands = $towerlands->union($rowlands)->get();
+        }
         return view('listland', [
             'title' => 'Data Lahan',
             'lands' => $lands,
@@ -338,28 +359,36 @@ class LandController extends Controller
         $currLoc = null;
         foreach ($lands as $land) {
             $prevLand = $land;
-            
-            
+
             $no = $land->row ? $land->row->firsttower->no . ' - ' . $land->row->secondtower->no : $land->tower->no;
             $location = $land->row ? $land->row->location->name : $land->tower->location->name;
-            
+
             $prevNo = $no;
             $prevLoc = $location;
-            
+
             if ($currNo != $prevNo) {
-                $sheet->setCellValue('A' . $row, $num); $sheet->setCellValue('B' . $row, $no);
+                $sheet->setCellValue('A' . $row, $num);
+                $sheet->setCellValue('B' . $row, $no);
             }
 
-            if ($currLoc != $prevLoc) $sheet->setCellValue('C' . $row, $location);
+            if ($currLoc != $prevLoc) {
+                $sheet->setCellValue('C' . $row, $location);
+            }
 
-            if (!$currLand || $currLand->owner != $prevLand->owner) $sheet->setCellValue('D' . $row, $land->owner->name);
+            if (!$currLand || $currLand->owner != $prevLand->owner) {
+                $sheet->setCellValue('D' . $row, $land->owner->name);
+            }
 
-            if (!$currLand || $currLand->type != $prevLand->type) $sheet->setCellValue('E' . $row, $land->type);
-            
+            if (!$currLand || $currLand->type != $prevLand->type) {
+                $sheet->setCellValue('E' . $row, $land->type);
+            }
+
             $sheet->setCellValue('F' . $row, $land->area);
 
-            if ($land->plants->isEmpty()) $row++;
-            
+            if ($land->plants->isEmpty()) {
+                $row++;
+            }
+
             foreach ($land->plants as $plant) {
                 $sheet->setCellValue('G' . $row, $plant->name);
                 $sheet->setCellValue('H' . $row, $plant->age);

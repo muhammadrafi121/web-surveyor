@@ -131,9 +131,14 @@
                             <div class="form-group mb-4">
                                 <h6 class="font-weight-light mt-n2">Pilih Inventory Wilayah</h6>
                                 <select class="form-select form-control" id="wilayah" name="wilayah">
+                                    @can('isAdmin')
                                     @foreach ($inventories as $inventory)
                                         <option value="{{ $inventory->id }}">{{ $inventory->name }}</option>
                                     @endforeach
+                                        
+                                    @elsecan('isSurveyor')
+                                        <option value="{{ $inventories->id }}">{{ $inventories->name }}</option>
+                                    @endcan
                                 </select>
                             </div>
                             <div class="form-group mb-4">

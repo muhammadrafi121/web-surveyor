@@ -134,9 +134,13 @@
                             <label class="h5 font-weight-bold" for="wilayah">Pilih Inventory</label>
                             <h6 class="font-weight-light mt-n2">Pilih Inventory Wilayah</h6>
                             <select class="form-select form-control" id="wilayah" name="wilayah" required>
-                                @foreach ($inventories as $inventory)
-                                    <option value="{{ $inventory->id }}">{{ $inventory->name }}</option>
-                                @endforeach
+                                @can('isAdmin')
+                                    @foreach ($inventories as $inventory)
+                                        <option value="{{ $inventory->id }}">{{ $inventory->name }}</option>
+                                    @endforeach
+                                @elsecan('isSurveyor')
+                                    <option value="{{ $inventories->id }}">{{ $inventories->name }}</option>
+                                @endcan
                             </select>
                         </div>
                         <div class="form-group mb-4">
@@ -198,9 +202,13 @@
                             <label class="h5 font-weight-bold" for="wilayah2">Pilih Inventory</label>
                             <h6 class="font-weight-light mt-n2">Pilih Inventory Wilayah</h6>
                             <select class="form-select form-control" id="wilayah2" name="wilayah" required>
-                                @foreach ($inventories as $inventory)
-                                    <option value="{{ $inventory->id }}">{{ $inventory->name }}</option>
-                                @endforeach
+                                @can('isAdmin')
+                                    @foreach ($inventories as $inventory)
+                                        <option value="{{ $inventory->id }}">{{ $inventory->name }}</option>
+                                    @endforeach
+                                @elsecan('isSurveyor')
+                                    <option value="{{ $inventories->id }}">{{ $inventories->name }}</option>
+                                @endcan
                             </select>
                         </div>
                         <div class="form-group mb-4">

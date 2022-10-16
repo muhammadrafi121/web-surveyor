@@ -8,6 +8,7 @@ use App\Models\Land;
 use App\Models\LandOwner;
 use App\Models\Location;
 use App\Models\Tower;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -22,9 +23,21 @@ class TowerController extends Controller
      */
     public function index()
     {
-        $towers = Tower::all();
         $inventories = Inventory::all();
+        if (auth()->user()->role == 'Surveyor') {
+            $user = User::with('team')->find(auth()->user()->id);
+            $inventories = Inventory::find($user->team->inventory_id);
+        }
         $locations = Location::where('inventory_id', $inventories->first()->id)->get();
+        $towers = Tower::all();
+        if (auth()->user()->role == 'Surveyor') {
+            $user = User::with('team')->find(auth()->user()->id);
+            $towers = Tower::join('locations', 'towers.location_id', '=', 'locations.id')
+                ->join('inventories', 'locations.inventory_id', '=', 'inventories.id')
+                ->where('inventories.id', '=', $user->team->inventory_id)
+                ->select('locations.id', 'inventories.*', 'towers.*')
+                ->get();
+        }
         return view('listtower', [
             'title' => 'Data Tapak Tower',
             'towers' => $towers,
@@ -266,7 +279,9 @@ class TowerController extends Controller
 
             $currLand = null;
 
-            if ($tower->lands->isEmpty()) $row++;
+            if ($tower->lands->isEmpty()) {
+                $row++;
+            }
             foreach ($tower->lands as $land) {
                 $prevLand = $land;
 
@@ -279,7 +294,9 @@ class TowerController extends Controller
                 }
                 $sheet->setCellValue('F' . $row, $land->area);
 
-                if ($land->plants->isEmpty()) $row++;
+                if ($land->plants->isEmpty()) {
+                    $row++;
+                }
                 foreach ($land->plants as $plant) {
                     $sheet->setCellValue('G' . $row, $plant->name);
                     $sheet->setCellValue('H' . $row, $plant->age);

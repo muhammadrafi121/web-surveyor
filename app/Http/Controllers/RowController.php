@@ -8,6 +8,7 @@ use App\Models\LandOwner;
 use App\Models\Location;
 use App\Models\Row;
 use App\Models\Tower;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -20,10 +21,30 @@ class RowController extends Controller
      */
     public function index()
     {
-        $rows = Row::all();
         $inventories = Inventory::all();
+        if (auth()->user()->role == 'Surveyor') {
+            $user = User::with('team')->find(auth()->user()->id);
+            $inventories = Inventory::find($user->team->inventory_id);
+        }
         $locations = Location::where('inventory_id', $inventories->first()->id)->get();
         $towers = Tower::where('location_id', $locations->first()->id)->get();
+        if (auth()->user()->role == 'Surveyor') {
+            $user = User::with('team')->find(auth()->user()->id);
+            $towers = Tower::join('locations', 'towers.location_id', '=', 'locations.id')
+                ->join('inventories', 'locations.inventory_id', '=', 'inventories.id')
+                ->where('inventories.id', '=', $user->team->inventory_id)
+                ->select('locations.id', 'inventories.*', 'towers.*')
+                ->get();
+        }
+        $rows = Row::all();
+        if (auth()->user()->role == 'Surveyor') {
+            $user = User::with('team')->find(auth()->user()->id);
+            $rows = Row::join('locations', 'rows.location_id', '=', 'locations.id')
+                ->join('inventories', 'locations.inventory_id', '=', 'inventories.id')
+                ->where('inventories.id', '=', $user->team->inventory_id)
+                ->select('locations.id', 'inventories.*', 'rows.*')
+                ->get();
+        }
         return view('listrow', [
             'title' => 'Data ROW',
             'rows' => $rows,

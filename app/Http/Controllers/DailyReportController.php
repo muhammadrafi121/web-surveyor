@@ -9,6 +9,7 @@ use App\Models\Inventory;
 use App\Models\Location;
 use App\Models\ManPower;
 use App\Models\Team;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class DailyReportController extends Controller
@@ -21,15 +22,31 @@ class DailyReportController extends Controller
     public function index()
     {
         $inventories = Inventory::all();
+        if (auth()->user()->role == 'Surveyor') {
+            $user = User::with('team')->find(auth()->user()->id);
+            $inventories = Inventory::find($user->team->inventory_id);
+        }
         $locations = Location::where('inventory_id', $inventories->first()->id)->get();
         $teams = Team::where('inventory_id', $inventories->first()->id)->get();
+
+        if (auth()->user()->role == 'Surveyor') {
+            $user = User::with('team')->find(auth()->user()->id);
+            $teams = $user->team;
+        }
+
+        $reports = DailyReport::all();
+        if (auth()->user()->role == 'Surveyor') {
+            $user = User::with('team')->find(auth()->user()->id);
+            $reports = DailyReport::where('team_id', $user->team->id)->get();
+        }
+
         return view('listreport', [
             'title' => 'Data Daily Report',
-            'reports' => DailyReport::all(),
+            'reports' => $reports,
             'inventories' => $inventories,
             'locations' => $locations,
             'teams' => $teams,
-            'script' => 'dailyreport'
+            'script' => 'dailyreport',
         ]);
     }
 
@@ -169,7 +186,7 @@ class DailyReportController extends Controller
         foreach ($dataManPower as $manPower) {
             $dailyreport->manPowers()->create($manPower);
         }
-        
+
         $dailyreport->activities()->create([
             'activity' => $request->kegiatan,
         ]);
@@ -341,7 +358,7 @@ class DailyReportController extends Controller
         foreach ($dataManPower as $manPower) {
             ManPower::where('id', $manPower['id'])->update($manPower);
         }
-        
+
         Activity::where('id', $request->kegiatan_id)->update([
             'daily_report_id' => $request->id,
             'activity' => $request->kegiatan,
