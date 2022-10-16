@@ -38,40 +38,41 @@ Route::get('/map', function () {
 })->middleware('can:isAdmin');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth');
+Route::get('/report', [DashboardController::class, 'report'])->middleware('can:isAdmin, isSurveyor');
 
 // route user
 Route::resource('user', UserController::class)->middleware('auth');
 
 // route tower
-Route::put('tower/{tower}/upload', [TowerController::class, 'upload'])->middleware('auth');
-Route::get('tower/{tower}/download', [TowerController::class, 'download'])->middleware('auth');
-Route::get('tower/export', [TowerController::class, 'export'])->middleware('auth');
-Route::resource('tower', TowerController::class)->middleware('auth');
+Route::put('tower/{tower}/upload', [TowerController::class, 'upload'])->middleware('can:isAdmin, isSurveyor');
+Route::get('tower/{tower}/download', [TowerController::class, 'download'])->middleware('can:isAdmin, isSurveyor');
+Route::get('tower/export', [TowerController::class, 'export'])->middleware('can:isAdmin, isSurveyor');
+Route::resource('tower', TowerController::class)->middleware('can:isAdmin, isSurveyor');
 
 // route ROW
-Route::put('row/{row}/upload', [RowController::class, 'upload'])->middleware('auth');
-Route::get('row/{row}/download', [RowController::class, 'download'])->middleware('auth');
-Route::get('row/export', [RowController::class, 'export'])->middleware('auth');
-Route::resource('row', RowController::class)->middleware('auth');
+Route::put('row/{row}/upload', [RowController::class, 'upload'])->middleware('can:isAdmin, isSurveyor');
+Route::get('row/{row}/download', [RowController::class, 'download'])->middleware('can:isAdmin, isSurveyor');
+Route::get('row/export', [RowController::class, 'export'])->middleware('can:isAdmin, isSurveyor');
+Route::resource('row', RowController::class)->middleware('can:isAdmin, isSurveyor');
 
 // route land
-Route::get('land/{land}/print', [LandController::class, 'print'])->middleware('auth');
-Route::put('land/{land}/upload', [LandController::class, 'upload'])->middleware('auth');
-Route::get('land/{land}/download', [LandController::class, 'download'])->middleware('auth');
-Route::get('land/export', [LandController::class, 'export'])->middleware('auth');
-Route::resource('land', LandController::class)->middleware('auth');
+Route::get('land/{land}/print', [LandController::class, 'print'])->middleware('can:isAdmin, isSurveyor');
+Route::put('land/{land}/upload', [LandController::class, 'upload'])->middleware('can:isAdmin, isSurveyor');
+Route::get('land/{land}/download', [LandController::class, 'download'])->middleware('can:isAdmin, isSurveyor');
+Route::get('land/export', [LandController::class, 'export'])->middleware('can:isAdmin, isSurveyor');
+Route::resource('land', LandController::class)->middleware('can:isAdmin, isSurveyor');
 
 // route plant
-Route::resource('plant', PlantController::class)->middleware('auth');
+Route::resource('plant', PlantController::class)->middleware('can:isAdmin, isSurveyor');
 
 // route daily report
-Route::resource('dailyreport', DailyReportController::class)->middleware('auth');
+Route::resource('dailyreport', DailyReportController::class)->middleware('can:isAdmin, isSurveyor');
 
 // route inventory
-Route::resource('inventory', InventoryController::class)->middleware('auth');
+Route::resource('inventory', InventoryController::class)->middleware('can:isAdmin, isSurveyor');
 
 // route locations
-Route::resource('location', LocationController::class)->middleware('auth');
+Route::resource('location', LocationController::class)->middleware('can:isAdmin, isSurveyor');
 
 // route ajax
 Route::get('/ajax/inventory', [AjaxController::class, 'inventory'])->middleware('auth');
@@ -81,3 +82,9 @@ Route::get('/ajax/allrow', [AjaxController::class, 'allRow'])->middleware('auth'
 Route::get('/ajax/row', [AjaxController::class, 'row'])->middleware('auth');
 Route::get('/ajax/land', [AjaxController::class, 'land'])->middleware('auth');
 Route::get('/ajax/dailyreport', [AjaxController::class, 'dailyreport'])->middleware('auth');
+Route::get('/ajax/rowinv', [AjaxController::class, 'rowsByInv'])->middleware('auth');
+Route::get('/ajax/towerinv', [AjaxController::class, 'towersByInv'])->middleware('auth');
+Route::get('/ajax/rowloc', [AjaxController::class, 'rowsByLoc'])->middleware('auth');
+Route::get('/ajax/towerloc', [AjaxController::class, 'towersByLoc'])->middleware('auth');
+Route::get('/ajax/rowteam', [AjaxController::class, 'rowsByTeam'])->middleware('auth');
+Route::get('/ajax/towerteam', [AjaxController::class, 'towersByTeam'])->middleware('auth');
