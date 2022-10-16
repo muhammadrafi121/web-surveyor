@@ -250,16 +250,15 @@ class LandController extends Controller
     public function upload(Request $request, Land $land)
     {
         $request->validate([
-            'file' => "required|mimes:pdf|max:60000"
+            'file' => 'required|mimes:pdf|max:60000',
         ]);
 
         $file = $request->file('file');
         $name = $file->hashName();
-        
-        $land->update(["attachment" => $name]);
+
+        $land->update(['attachment' => $name]);
 
         $file->move('attachments', $name);
-
 
         return redirect('/land')->with('message', 'Upload Lampiran Berhasil');
     }
@@ -267,17 +266,119 @@ class LandController extends Controller
     public function download(Land $land)
     {
         //how to download file on laravel?
-        
+
         //PDF file is stored under project/public/attachments
         $filesource = $land->attachment;
-        $file = public_path(). "/attachments/" . $filesource;
-        $filename = "Lampiran Lahan Milik " . $land->owner->name . ".pdf";
+        $file = public_path() . '/attachments/' . $filesource;
+        $filename = 'Lampiran Lahan Milik ' . $land->owner->name . '.pdf';
 
-        $headers = array(
-                'Content-Type: application/pdf',
-                );
+        $headers = ['Content-Type: application/pdf'];
 
         return response()->download($file, $filename, $headers);
+    }
 
+    public function export(Request $request)
+    {
+        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $sheet->mergeCells('A1:K1');
+        $sheet->mergeCells('A3:A4');
+        $sheet->mergeCells('B3:B4');
+        $sheet->mergeCells('C3:C4');
+        $sheet->mergeCells('D3:D4');
+        $sheet->mergeCells('E3:F3');
+        $sheet->mergeCells('G3:K3');
+
+        $sheet->getColumnDimension('A')->setAutoSize(true);
+        $sheet->getColumnDimension('B')->setAutoSize(true);
+        $sheet->getColumnDimension('C')->setAutoSize(true);
+        $sheet->getColumnDimension('D')->setAutoSize(true);
+        $sheet->getColumnDimension('E')->setAutoSize(true);
+        $sheet->getColumnDimension('F')->setAutoSize(true);
+        $sheet->getColumnDimension('G')->setAutoSize(true);
+        $sheet->getColumnDimension('H')->setAutoSize(true);
+        $sheet->getColumnDimension('I')->setAutoSize(true);
+        $sheet->getColumnDimension('J')->setAutoSize(true);
+        $sheet->getColumnDimension('K')->setAutoSize(true);
+
+        $sheet->setCellValue('A1', 'REKAP DATA LAHAN');
+        $sheet->setCellValue('A3', 'NO');
+        $sheet->setCellValue('B3', 'NO TOWER');
+        $sheet->setCellValue('C3', 'RUAS JALUR');
+        $sheet->setCellValue('D3', 'PEMILIK');
+        $sheet->setCellValue('E3', 'TANAH');
+        $sheet->setCellValue('E4', 'JENIS');
+        $sheet->setCellValue('F4', 'LUAS');
+        $sheet->setCellValue('G3', 'TANAM TUMBUH');
+        $sheet->setCellValue('G4', 'NAMA TANAMAN');
+        $sheet->setCellValue('H4', 'UMUR (th)');
+        $sheet->setCellValue('I4', 'TINGGI (m)');
+        $sheet->setCellValue('J4', 'DIAMETER (cm)');
+        $sheet->setCellValue('K4', 'JUMLAH');
+
+        $sheet
+            ->getStyle('A1:K4')
+            ->getFont()
+            ->setBold(true);
+
+        $sheet
+            ->getStyle('A1:K4')
+            ->getAlignment()
+            ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)
+            ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+        $row = 5;
+        $num = 1;
+
+        $lands = Land::orderBy('land_owner_id')->get();
+
+        $currLand = null;
+        $currNo = null;
+        $currLoc = null;
+        foreach ($lands as $land) {
+            $prevLand = $land;
+            
+            
+            $no = $land->row ? $land->row->firsttower->no . ' - ' . $land->row->secondtower->no : $land->tower->no;
+            $location = $land->row ? $land->row->location->name : $land->tower->location->name;
+            
+            $prevNo = $no;
+            $prevLoc = $location;
+            
+            if ($currNo != $prevNo) {
+                $sheet->setCellValue('A' . $row, $num); $sheet->setCellValue('B' . $row, $no);
+            }
+
+            if ($currLoc != $prevLoc) $sheet->setCellValue('C' . $row, $location);
+
+            if (!$currLand || $currLand->owner != $prevLand->owner) $sheet->setCellValue('D' . $row, $land->owner->name);
+
+            if (!$currLand || $currLand->type != $prevLand->type) $sheet->setCellValue('E' . $row, $land->type);
+            
+            $sheet->setCellValue('F' . $row, $land->area);
+
+            if ($land->plants->isEmpty()) $row++;
+            
+            foreach ($land->plants as $plant) {
+                $sheet->setCellValue('G' . $row, $plant->name);
+                $sheet->setCellValue('H' . $row, $plant->age);
+                $sheet->setCellValue('I' . $row, $plant->height);
+                $sheet->setCellValue('J' . $row, $plant->diameter);
+                $sheet->setCellValue('K' . $row, $plant->total);
+                $row++;
+                $currLand = $prevLand;
+            }
+            $currLand = $prevLand;
+            $currNo = $prevNo;
+            $currLoc = $prevLoc;
+            $num++;
+        }
+
+        $fileName = 'Rekap Data Lahan.xlsx';
+        $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename="' . $fileName . '"');
+        $writer->save('php://output');
     }
 }

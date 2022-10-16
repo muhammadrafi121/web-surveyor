@@ -13,7 +13,7 @@ class Row extends Model
 
     public function lands()
     {
-        return $this->hasMany(Land::class);
+        return $this->hasMany(Land::class)->orderBy('land_owner_id');
     }
 
     public function firsttower()

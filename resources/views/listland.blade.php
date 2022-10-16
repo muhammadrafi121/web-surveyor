@@ -29,7 +29,7 @@
         @endif
         <!-- Page Heading -->
         <div class="d-sm-flex flex-column justify-content-between mb-4 px-lg-4">
-            <h2 class="h2 mb-3 font-weight-bold">Data Lahan</h2>
+            <h2 class="h2 mb-3 font-weight-bold">{{ $title }}</h2>
 
             <div class="row d-flex flex-column flex-lg-row justify-content-between">
                 <div class="d-flex flex-row col-md-8 col-sm-12">
@@ -43,9 +43,8 @@
                                 class="fas fa-download mr-2"></i>Import</button>
                     </div>
                     <div class="col-md-3 col-sm-12">
-                        <button class="btn btn-outline-primary font-weight-bold" data-bs-toggle="modal"
-                            data-bs-target="#exampleModal2" data-bs-whatever="@getbootstrap"><i
-                                class="fas fa-upload mr-2"></i>Export</button>
+                        <a href="/land/export" class="btn btn-outline-primary font-weight-bold"><i
+                                class="fas fa-upload mr-2"></i>Export</a>
                     </div>
                 </div>
                 <div class="col-md-4 col-sm-12 d-flex flex-column flex-lg-row mt-3 mt-md-0 mt-lg-0 mt-xl-0">

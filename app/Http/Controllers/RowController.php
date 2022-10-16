@@ -168,4 +168,102 @@ class RowController extends Controller
         return response()->download($file, $filename, $headers);
 
     }
+
+    public function export(Request $request)
+    {
+        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $sheet->mergeCells('A1:K1');
+        $sheet->mergeCells('A3:A4');
+        $sheet->mergeCells('B3:B4');
+        $sheet->mergeCells('C3:C4');
+        $sheet->mergeCells('D3:D4');
+        $sheet->mergeCells('E3:F3');
+        $sheet->mergeCells('G3:K3');
+
+        $sheet->getColumnDimension('A')->setAutoSize(true);
+        $sheet->getColumnDimension('B')->setAutoSize(true);
+        $sheet->getColumnDimension('C')->setAutoSize(true);
+        $sheet->getColumnDimension('D')->setAutoSize(true);
+        $sheet->getColumnDimension('E')->setAutoSize(true);
+        $sheet->getColumnDimension('F')->setAutoSize(true);
+        $sheet->getColumnDimension('G')->setAutoSize(true);
+        $sheet->getColumnDimension('H')->setAutoSize(true);
+        $sheet->getColumnDimension('I')->setAutoSize(true);
+        $sheet->getColumnDimension('J')->setAutoSize(true);
+        $sheet->getColumnDimension('K')->setAutoSize(true);
+
+        $sheet->setCellValue('A1', 'REKAP DATA ROW');
+        $sheet->setCellValue('A3', 'NO');
+        $sheet->setCellValue('B3', 'NO TOWER');
+        $sheet->setCellValue('C3', 'RUAS JALUR');
+        $sheet->setCellValue('D3', 'PEMILIK');
+        $sheet->setCellValue('E3', 'TANAH');
+        $sheet->setCellValue('E4', 'JENIS');
+        $sheet->setCellValue('F4', 'LUAS');
+        $sheet->setCellValue('G3', 'TANAM TUMBUH');
+        $sheet->setCellValue('G4', 'NAMA TANAMAN');
+        $sheet->setCellValue('H4', 'UMUR (th)');
+        $sheet->setCellValue('I4', 'TINGGI (m)');
+        $sheet->setCellValue('J4', 'DIAMETER (cm)');
+        $sheet->setCellValue('K4', 'JUMLAH');
+
+        $sheet
+            ->getStyle('A1:K4')
+            ->getFont()
+            ->setBold(true);
+
+        $sheet
+            ->getStyle('A1:K4')
+            ->getAlignment()
+            ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)
+            ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+        $rownum = 5;
+        $num = 1;
+
+        $rows = Row::all();
+
+        foreach ($rows as $row) {
+            $sheet->setCellValue('A' . $rownum, $num);
+            $sheet->setCellValue('B' . $rownum, $row->firsttower->no . " - " . $row->secondtower->no);
+            $sheet->setCellValue('C' . $rownum, $row->location->name);
+
+            $currLand = null;
+
+            if ($row->lands->isEmpty()) $rownum++;
+            foreach ($row->lands as $land) {
+                $prevLand = $land;
+
+                if (!$currLand || $currLand->owner != $prevLand->owner) {
+                    $sheet->setCellValue('D' . $rownum, $land->owner->name);
+                }
+
+                if (!$currLand || $currLand->type != $prevLand->type || $currLand->area != $prevLand->area) {
+                    $sheet->setCellValue('E' . $rownum, $land->type);
+                }
+                $sheet->setCellValue('F' . $rownum, $land->area);
+
+                if ($land->plants->isEmpty()) $rownum++;
+                foreach ($land->plants as $plant) {
+                    $sheet->setCellValue('G' . $rownum, $plant->name);
+                    $sheet->setCellValue('H' . $rownum, $plant->age);
+                    $sheet->setCellValue('I' . $rownum, $plant->height);
+                    $sheet->setCellValue('J' . $rownum, $plant->diameter);
+                    $sheet->setCellValue('K' . $rownum, $plant->total);
+                    $rownum++;
+                    $currLand = $prevLand;
+                }
+                $currLand = $prevLand;
+            }
+            $num++;
+        }
+
+        $fileName = 'Rekap Data RoW.xlsx';
+        $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename="' . $fileName . '"');
+        $writer->save('php://output');
+    }
 }
