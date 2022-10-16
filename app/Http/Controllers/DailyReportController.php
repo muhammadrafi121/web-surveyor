@@ -228,9 +228,13 @@ class DailyReportController extends Controller
     public function update(Request $request, DailyReport $dailyreport)
     {
         $dataReport = [
+            'location_id' => $request->jalur,
+            'date' => $request->tanggal,
             'weather' => $request->cuaca,
             'time_start' => '08:00:00',
             'time_end' => '17:00:00',
+            'user_id' => auth()->user()->id,
+            'team_id' => $request->tim_id,
         ];
 
         $dataFasilitas = [

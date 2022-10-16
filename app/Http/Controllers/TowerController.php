@@ -74,8 +74,6 @@ class TowerController extends Controller
         $request->validate([
             'jalur' => 'required',
             'tapak' => 'required',
-            'lat' => 'required',
-            'long' => 'required',
             'type' => 'required',
         ]);
 
@@ -129,8 +127,6 @@ class TowerController extends Controller
         $request->validate([
             'jalur' => 'required',
             'tapak' => 'required',
-            'lat' => 'required',
-            'long' => 'required',
             'type' => 'required',
         ]);
 

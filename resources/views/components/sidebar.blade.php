@@ -43,7 +43,7 @@
     @can('isAdmin')
         <!-- Nav Item - laporan -->
         <li class="nav-item">
-            <a class="nav-link" href="/report">
+            <a class="nav-link {{ Request::is('report') ? 'active' : '' }}" href="/report">
                 <i class="fas fa-fw fa-chart-line"></i>
                 <span>Laporan</span>
             </a>

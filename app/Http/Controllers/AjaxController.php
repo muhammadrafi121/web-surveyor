@@ -123,13 +123,13 @@ class AjaxController extends Controller
         $filled = DB::table('towers')
             ->select('locations.name', DB::raw('IFNULL(COUNT(DISTINCT(towers.id)), 0) as filled'))
             ->join('lands', 'towers.id', '=', 'lands.tower_id')
-            ->join('locations', 'towers.location_id', '=', 'locations.id')
+            ->rightJoin('locations', 'towers.location_id', '=', 'locations.id')
             ->groupBy('locations.name')
             ->orderBy('locations.name')
             ->get();
         $total = DB::table('towers')
             ->select('locations.name', DB::raw('COUNT(towers.id) as total'))
-            ->join('locations', 'towers.location_id', '=', 'locations.id')
+            ->rightJoin('locations', 'towers.location_id', '=', 'locations.id')
             ->groupBy('locations.name')
             ->orderBy('locations.name')
             ->get();
@@ -151,13 +151,13 @@ class AjaxController extends Controller
         $filled = DB::table('rows')
             ->select('locations.name', DB::raw('IFNULL(COUNT(DISTINCT(rows.id)), 0) as filled'))
             ->join('lands', 'rows.id', '=', 'lands.row_id')
-            ->join('locations', 'rows.location_id', '=', 'locations.id')
+            ->rightJoin('locations', 'rows.location_id', '=', 'locations.id')
             ->groupBy('locations.name')
             ->orderBy('locations.name')
             ->get();
         $total = DB::table('rows')
             ->select('locations.name', DB::raw('COUNT(rows.id) as total'))
-            ->join('locations', 'rows.location_id', '=', 'locations.id')
+            ->rightJoin('locations', 'rows.location_id', '=', 'locations.id')
             ->groupBy('locations.name')
             ->orderBy('locations.name')
             ->get();
