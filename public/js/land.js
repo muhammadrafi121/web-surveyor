@@ -155,6 +155,64 @@ $(document).ready(function() {
         $('#' + id).val($(this).html());
         console.log($('#' + id + '-' + id_lahan));
     });
+
+    // get data api daerah indonesia
+
+    // provinsi
+    $.ajax({
+        url: 'https://muhammadrafi121.github.io/api-wilayah-indonesia/api/provinces.json',
+        type: 'GET',
+        data: { },
+        success: function(d) {
+            var html = '<option value="">Pilih Provinsi</option>';
+            for (var i = 0; i < d.length; i++) {
+                html += '<option value="' + d[i].id + '">' + d[i].name + '</option>'
+            }
+            $('#provinsi').html(html);
+        }
+    });
+
+    $('#provinsi').on('change', function() {
+        $.ajax({
+            url: 'https://muhammadrafi121.github.io/api-wilayah-indonesia/api/regencies/' + $(this).val() + '.json',
+            data: { },
+            success: function(d) {
+                var html = '<option value="">Pilih Kabupaten</option>';
+                for (var i = 0; i < d.length; i++) {
+                    html += '<option value="' + d[i].id + '">' + d[i].name + '</option>'
+                }
+                $('#kabupaten').html(html);
+            }
+        });
+    });
+
+    $('#kabupaten').on('change', function() {
+        $.ajax({
+            url: 'https://muhammadrafi121.github.io/api-wilayah-indonesia/api/districts/' + $(this).val() + '.json',
+            data: { },
+            success: function(d) {
+                var html = '<option value="">Pilih Kecamatan</option>';
+                for (var i = 0; i < d.length; i++) {
+                    html += '<option value="' + d[i].id + '">' + d[i].name + '</option>'
+                }
+                $('#kecamatan').html(html);
+            }
+        });
+    });
+
+    $('#kecamatan').on('change', function() {
+        $.ajax({
+            url: 'https://muhammadrafi121.github.io/api-wilayah-indonesia/api/villages/' + $(this).val() + '.json',
+            data: { },
+            success: function(d) {
+                var html = '<option value="">Pilih Kelurahan / Desa</option>';
+                for (var i = 0; i < d.length; i++) {
+                    html += '<option value="' + d[i].id + '">' + d[i].name + '</option>'
+                }
+                $('#desa').html(html);
+            }
+        });
+    });
 });
 
 function tambah() {
@@ -175,6 +233,77 @@ function edit(data) {
             id: data.id
         },
         success: function(d) {
+            
+            $.ajax({
+                url: 'https://muhammadrafi121.github.io/api-wilayah-indonesia/api/regency/' + d.owner.regency + '.json',
+                type: 'GET',
+                data: { },
+                success: function(dkab) {
+                    
+                    $.ajax({
+                        url: 'https://muhammadrafi121.github.io/api-wilayah-indonesia/api/province/' + dkab.province_id + '.json',
+                        type: 'GET',
+                        data: { },
+                        success: function(dprov) {
+                            $('#provinsi').val(dprov.id).change();
+
+                            $.ajax({
+                                url: 'https://muhammadrafi121.github.io/api-wilayah-indonesia/api/regencies/' + $('#provinsi').val() + '.json',
+                                data: { },
+                                success: function(pilihankab) {
+                                    var html = '<option value="">Pilih Kabupaten</option>';
+                                    for (var i = 0; i < pilihankab.length; i++) {
+                                        html += '<option value="' + pilihankab[i].id + '">' + pilihankab[i].name + '</option>'
+                                    }
+                                    $('#kabupaten').html(html);
+                                    $('#kabupaten').val(dkab.id).change();
+                                    $.ajax({
+                                        url: 'https://muhammadrafi121.github.io/api-wilayah-indonesia/api/districts/' + $('#kabupaten').val() + '.json',
+                                        data: { },
+                                        success: function(pilihankec) {
+                                            var html = '<option value="">Pilih Kecamatan</option>';
+                                            for (var i = 0; i < pilihankec.length; i++) {
+                                                html += '<option value="' + pilihankec[i].id + '">' + pilihankec[i].name + '</option>'
+                                            }
+                                            $('#kecamatan').html(html);
+                                            $.ajax({
+                                                url: 'https://muhammadrafi121.github.io/api-wilayah-indonesia/api/district/' + d.owner.district + '.json',
+                                                type: 'GET',
+                                                data: { },
+                                                success: function(dkec) {
+                                                    $('#kecamatan').val(dkec.id).change();
+                                                    $.ajax({
+                                                        url: 'https://muhammadrafi121.github.io/api-wilayah-indonesia/api/villages/' + $('#kecamatan').val() + '.json',
+                                                        data: { },
+                                                        success: function(pilihandes) {
+                                                            var html = '<option value="">Pilih Kelurahan / Desa</option>';
+                                                            for (var i = 0; i < pilihandes.length; i++) {
+                                                                html += '<option value="' + pilihandes[i].id + '">' + pilihandes[i].name + '</option>'
+                                                            }
+                                                            $('#desa').html(html);
+                                                            $.ajax({
+                                                                url: 'https://muhammadrafi121.github.io/api-wilayah-indonesia/api/village/' + d.owner.village + '.json',
+                                                                type: 'GET',
+                                                                data: { },
+                                                                success: function(ddes) {
+                                                                    $('#desa').val(ddes.id).change();
+                                                                }
+                                                            });
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+        
+                }
+            });
+
+
             var html = '';
             for (var i = 0; i < d[0].locations.length; i++) {
                 html += '<option value="' + d[0].locations[i].id + '">' + d[0].locations[i].name + '</option>'
@@ -274,92 +403,33 @@ function setDetail(data) {
             id: data.id
         },
         success: function(d) {
-            console.log(d);
             $('#pemilik-detail').html('Nama Pemilik : ' + d.owner.name);
-            $('#desa-detail').html('Desa / Kelurahan : ' + d.owner.village);
-            $('#kecamatan-detail').html('Kecamatan : ' + d.owner.district);
-            $('#kabupaten-detail').html('Kabupaten : ' + d.owner.regency);
+            $.ajax({
+                url: 'https://muhammadrafi121.github.io/api-wilayah-indonesia/api/regency/' + d.owner.regency + '.json',
+                type: 'GET',
+                data: { },
+                success: function(dkab) {
+                    $('#kabupaten-detail-' + d.id).html('Kabupaten : ' + dkab.name);
+                }
+            });
+
+            $.ajax({
+                url: 'https://muhammadrafi121.github.io/api-wilayah-indonesia/api/district/' + d.owner.district + '.json',
+                type: 'GET',
+                data: { },
+                success: function(dkec) {
+                    $('#kecamatan-detail-' + d.id).html(`Kecamatan &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;: ` + dkec.name);
+                }
+            });
+
+            $.ajax({
+                url: 'https://muhammadrafi121.github.io/api-wilayah-indonesia/api/village/' + d.owner.village + '.json',
+                type: 'GET',
+                data: { },
+                success: function(ddes) {
+                    $('#desa-detail-' + d.id).html(`Desa / Kelurahan &nbsp;: ` + ddes.name);
+                }
+            });
         }
     });
-}
-
-function setDataTanaman(data) {
-    // $('#id-lahan').val(data.id);
-
-    // $.ajax({
-    //     url: APP_URL + '/ajax/land',
-    //     data: {
-    //         id: data.id
-    //     },
-    //     success: function(d) {
-    //         var html = '';
-    //         var totalPlant = 10 - d.plants.length;
-    //         var count = 0;
-    //         console.log(d.plants);
-    //         for (var i = 0; i < d.plants.length; i++) {
-    //             var name = d.plants[i].name != null ? d.plants[i].name : '';
-    //             var nameValue = d.plants[i].name != null ? `value="` + d.plants[i].name + `"` : '';
-                
-    //             var age = d.plants[i].age != null ? d.plants[i].age : '';
-    //             var ageValue = d.plants[i].age != null ? `value="` + d.plants[i].age + `"` : '';
-
-    //             var height = d.plants[i].height != null ? d.plants[i].height : '';
-    //             var heightValue = d.plants[i].height != null ? `value="` + d.plants[i].height + `"` : '';
-
-    //             var diameter = d.plants[i].diameter != null ? d.plants[i].diameter : '';
-    //             var diameterValue = d.plants[i].diameter != null ? `value="` + d.plants[i].diameter + `"` : '';
-
-    //             var total = d.plants[i].total != null ? d.plants[i].total : '';
-    //             var totalValue = d.plants[i].total != null ? `value="` + d.plants[i].total + `"` : '';
-
-    //             var tmp = ` <tr>
-    //                             <input type="hidden" name="idtanaman[]" id="id-` + i + `" value="` + d.plants[i].id + `">
-    //                             <td class="data-tanaman" contenteditable="true"
-    //                                 id="nama-tanaman-` + i + `">` + name + `</td><input type="hidden"
-    //                                 name="namatanaman[]" id="nama-` + i + `" ` + nameValue + `>
-    //                             <td class="data-tanaman" contenteditable="true"
-    //                                 id="umur-tanaman-` + i + `">` + age + `</td><input type="hidden"
-    //                                 name="umurtanaman[]" id="umur-` + i + `" ` + ageValue + `>
-    //                             <td class="data-tanaman" contenteditable="true"
-    //                                 id="tinggi-tanaman-` + i + `">` + height + `</td><input type="hidden"
-    //                                 name="tinggitanaman[]" id="tinggi-` + i + `" ` + heightValue + `>
-    //                             <td class="data-tanaman" contenteditable="true"
-    //                                 id="diameter-tanaman-` + i + `">` + diameter + `</td><input type="hidden"
-    //                                 name="diametertanaman[]" id="diameter-` + i + `" ` + diameterValue + `>
-    //                             <td class="data-tanaman" contenteditable="true"
-    //                                 id="jumlah-tanaman-` + i + `">` + total + `</td><input type="hidden"
-    //                                 name="jumlahtanaman[]" id="jumlah-` + i + `" ` + totalValue + `>
-    //                         </tr>
-    //             `;
-    //             html += tmp;
-    //             count++;
-    //         }
-
-    //         for (var i = 0; i < totalPlant; i++) {
-    //             var tmp = ` <tr>
-    //                             <input type="hidden" name="idtanaman[]" id="id-` + count + `">
-    //                             <td class="data-tanaman" contenteditable="true"
-    //                                 id="nama-tanaman-` + count + `"></td><input type="hidden"
-    //                                 name="namatanaman[]" id="nama-` + count + `">
-    //                             <td class="data-tanaman" contenteditable="true"
-    //                                 id="umur-tanaman-` + count + `"></td><input type="hidden"
-    //                                 name="umurtanaman[]" id="umur-` + count + `">
-    //                             <td class="data-tanaman" contenteditable="true"
-    //                                 id="tinggi-tanaman-` + count + `"></td><input type="hidden"
-    //                                 name="tinggitanaman[]" id="tinggi-` + count + `">
-    //                             <td class="data-tanaman" contenteditable="true"
-    //                                 id="diameter-tanaman-` + count + `"></td><input type="hidden"
-    //                                 name="diametertanaman[]" id="diameter-` + count + `">
-    //                             <td class="data-tanaman" contenteditable="true"
-    //                                 id="jumlah-tanaman-` + count + `"></td><input type="hidden"
-    //                                 name="jumlahtanaman[]" id="jumlah-` + count + `">
-    //                         </tr>
-    //             `;
-    //             html += tmp;
-    //             count++;
-    //         }
-
-    //         $('#tabel-tanaman').html(html);
-    //     }
-    // });
 }

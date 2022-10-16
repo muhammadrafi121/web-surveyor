@@ -91,15 +91,14 @@
                                                 <a href="/land/{{ $land->id }}/print">Cetak</a> |
                                                 <a href="" data-bs-toggle="modal"
                                                     data-bs-target="#modal-{{ $land->id }}"
-                                                    data-bs-whatever="@getbootstrap">Lihat</a> |
+                                                    data-bs-whatever="@getbootstrap" onclick="setDetail({{ $land }})">Lihat</a> |
                                                 <a href="javascript:void(0)" onclick="edit({{ $land }})">Edit</a> |
                                                 <button type="submit" class="link">Hapus</button>
                                             </form>
                                         <td>
                                             <button class="btn-sm btn-outline-primary font-weight-bold bg-yellow"
                                                 data-bs-toggle="modal" data-bs-target="#plant-modal-{{ $land->id }}"
-                                                data-bs-whatever="@getbootstrap"
-                                                onclick="setDataTanaman({{ $land }})"><i
+                                                data-bs-whatever="@getbootstrap"><i
                                                     class="fas fa-plus mr-2"></i>Tambah</button>
                                         </td>
                                         <td>
@@ -196,24 +195,29 @@
                                 <input type="text" class="form-control" id="nama" name="nama"
                                     placeholder="Nama Pemilik" required />
                             </div>
-                            {{-- <div class="form-group mb-4">
-                                <h6 class="font-weight-light mt-n2">Alamat</h6>
-                                <input type="text" class="form-control" name="name" placeholder="Alamat" required/>
-                            </div> --}}
                             <div class="form-group mb-4">
-                                <h6 class="font-weight-light mt-n2">Desa</h6>
-                                <input type="text" class="form-control" id="desa" name="desa"
-                                    placeholder="Desa / Kelurahan" required />
-                            </div>
-                            <div class="form-group mb-4">
-                                <h6 class="font-weight-light mt-n2">Kecamatan</h6>
-                                <input type="text" class="form-control" id="kecamatan" name="kecamatan"
-                                    placeholder="Kecamatan" required />
+                                <h6 class="font-weight-light mt-n2">Provinsi</h6>
+                                <select name="provinsi" id="provinsi" class="form-control" required>
+                                    <option value="">Pilih Provinsi</option>
+                                </select>
                             </div>
                             <div class="form-group mb-4">
                                 <h6 class="font-weight-light mt-n2">Kabupaten</h6>
-                                <input type="text" class="form-control" id="kabupaten" name="kabupaten"
-                                    placeholder="Kabupaten" required />
+                                <select name="kabupaten" id="kabupaten" class="form-control" required>
+                                    <option value="">Pilih Kabupaten</option>
+                                </select>
+                            </div>
+                            <div class="form-group mb-4">
+                                <h6 class="font-weight-light mt-n2">Kecamatan</h6>
+                                <select name="kecamatan" id="kecamatan" class="form-control" required>
+                                    <option value="">Pilih Kecamatan</option>
+                                </select>
+                            </div>
+                            <div class="form-group mb-4">
+                                <h6 class="font-weight-light mt-n2">Kelurahan / Desa</h6>
+                                <select name="desa" id="desa" class="form-control" required>
+                                    <option value="">Pilih Kelurahan / Desa</option>
+                                </select>
                             </div>
                             <div class="form-group mb-4">
                                 <h6 class="font-weight-light mt-n2">Jenis Tanah</h6>
@@ -249,25 +253,25 @@
                         <div class="modal-body">
                             <div class="row">
                                 <div class="col-md-5">
-                                    <h6 id="pemilik-detail">Nama Pemilik &nbsp; &nbsp; &nbsp; &nbsp;:
+                                    <h6 id="pemilik-detail-{{ $land->id }}">Nama Pemilik &nbsp; &nbsp; &nbsp; &nbsp;:
                                         {{ $land->owner->name }}</h6>
-                                    <h6 id="desa-detail">Desa / Kelurahan &nbsp;: {{ $land->owner->village }}</h6>
-                                    <h6 id="kecamatan-detail">Kecamatan &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;:
+                                    <h6 id="desa-detail-{{ $land->id }}">Desa / Kelurahan &nbsp;: {{ $land->owner->village }}</h6>
+                                    <h6 id="kecamatan-detail-{{ $land->id }}">Kecamatan &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;:
                                         {{ $land->owner->district }}</h6>
                                 </div>
                                 <div class="col-md-7">
-                                    <h6 id="kabupaten-detail">Kabupaten : {{ $land->owner->regency }}</h6>
-                                    <h6 id="jalur-detail">Jalur &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; :
+                                    <h6 id="kabupaten-detail-{{ $land->id }}">Kabupaten : {{ $land->owner->regency }}</h6>
+                                    <h6 id="jalur-detail-{{ $land->id }}">Jalur &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; :
                                         {{ $land->tower == null ? $land->row->location->name : $land->tower->location->name }}
                                     </h6>
-                                    <h6 id="tower-detail">No. Tower &nbsp;:
+                                    <h6 id="tower-detail-{{ $land->id }}">No. Tower &nbsp;:
                                         {{ $land->tower == null ? $land->row->firsttower->no . '-' . $land->row->secondtower->no : $land->tower->no }}
                                     </h6>
                                 </div>
                             </div>
                             <div class="row my-3">
                                 <div class="table-responsive">
-                                    <table class="table table-bordered table-striped" id="detail-lahan" width="100%"
+                                    <table class="table table-bordered table-striped" id="detail-{{ $land->id }}-lahan" width="100%"
                                         cellspacing="0">
                                         <thead>
                                             <tr style="text-align: center">
