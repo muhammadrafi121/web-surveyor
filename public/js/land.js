@@ -219,7 +219,7 @@ function tambah() {
     $('#exampleModal').modal('show');
     $('.modal-title').text('Input Data Lahan');
     $('#pilihan').html('');
-    $('#form-action').attr('action', '/land/');
+    $('#form-action').attr('action', '/land');
     $('input[name="_method"]').val('POST');
 }
 
@@ -365,6 +365,8 @@ function edit(data) {
 }
 
 function saveData() {
+    $('#exampleModal').modal('hide');
+    $('#exampleModal3').modal('show');
     if ($('#tower').val()) {
         $('#tower-row').attr('name', 'tower');
         $.ajax({

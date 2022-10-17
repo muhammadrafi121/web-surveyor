@@ -91,7 +91,8 @@
                                                 <a href="/land/{{ $land->id }}/print">Cetak</a> |
                                                 <a href="" data-bs-toggle="modal"
                                                     data-bs-target="#modal-{{ $land->id }}"
-                                                    data-bs-whatever="@getbootstrap" onclick="setDetail({{ $land }})">Lihat</a> |
+                                                    data-bs-whatever="@getbootstrap"
+                                                    onclick="setDetail({{ $land }})">Lihat</a> |
                                                 <a href="javascript:void(0)" onclick="edit({{ $land }})">Edit</a> |
                                                 <button type="submit" class="link">Hapus</button>
                                             </form>
@@ -131,10 +132,9 @@
                                 <h6 class="font-weight-light mt-n2">Pilih Inventory Wilayah</h6>
                                 <select class="form-select form-control" id="wilayah" name="wilayah">
                                     @can('isAdmin')
-                                    @foreach ($inventories as $inventory)
-                                        <option value="{{ $inventory->id }}">{{ $inventory->name }}</option>
-                                    @endforeach
-                                        
+                                        @foreach ($inventories as $inventory)
+                                            <option value="{{ $inventory->id }}">{{ $inventory->name }}</option>
+                                        @endforeach
                                     @elsecan('isSurveyor')
                                         <option value="{{ $inventories->id }}">{{ $inventories->name }}</option>
                                     @endcan
@@ -163,8 +163,7 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                            data-bs-target="#exampleModal3" data-bs-whatever="@getbootstrap" onclick="saveData()">Submit
+                        <button type="button" class="btn btn-primary" data-bs-whatever="@getbootstrap" onclick="saveData()">Submit
                             Data</button>
                     </div>
                 </div>
@@ -175,7 +174,7 @@
         <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel3"
             aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-scrollable">
-                <div class="modal-content">
+                <form action="/land" method="POST" id="form-action" class="modal-content">
                     <div class="modal-header d-flex flex-column">
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         <h6 id="data-inv">INV : Sumsel 1</h6>
@@ -184,57 +183,55 @@
                         <h5 class="modal-title font-weight-bold" id="exampleModalLabel3">Form Lahan</h5>
                     </div>
                     <div class="modal-body">
-                        <form action="/land" method="POST" id="form-action">
-                            @method('PUT')
-                            @csrf
-                            <input type="hidden" id="tower-row">
-                            <input type="hidden" id="id-edit" name="id">
-                            <input type="hidden" id="owner-id" name="owner_id">
-                            <div class="form-group mb-4">
-                                <h6 class="font-weight-light mt-n2">Nama</h6>
-                                <input type="text" class="form-control" id="nama" name="nama"
-                                    placeholder="Nama Pemilik" required />
-                            </div>
-                            <div class="form-group mb-4">
-                                <h6 class="font-weight-light mt-n2">Provinsi</h6>
-                                <select name="provinsi" id="provinsi" class="form-control" required>
-                                    <option value="">Pilih Provinsi</option>
-                                </select>
-                            </div>
-                            <div class="form-group mb-4">
-                                <h6 class="font-weight-light mt-n2">Kabupaten</h6>
-                                <select name="kabupaten" id="kabupaten" class="form-control" required>
-                                    <option value="">Pilih Kabupaten</option>
-                                </select>
-                            </div>
-                            <div class="form-group mb-4">
-                                <h6 class="font-weight-light mt-n2">Kecamatan</h6>
-                                <select name="kecamatan" id="kecamatan" class="form-control" required>
-                                    <option value="">Pilih Kecamatan</option>
-                                </select>
-                            </div>
-                            <div class="form-group mb-4">
-                                <h6 class="font-weight-light mt-n2">Kelurahan / Desa</h6>
-                                <select name="desa" id="desa" class="form-control" required>
-                                    <option value="">Pilih Kelurahan / Desa</option>
-                                </select>
-                            </div>
-                            <div class="form-group mb-4">
-                                <h6 class="font-weight-light mt-n2">Jenis Tanah</h6>
-                                <input type="text" class="form-control" id="jenis" name="jenis"
-                                    placeholder="Jenis Tanah" required />
-                            </div>
-                            <div class="form-group mb-4">
-                                <h6 class="font-weight-light mt-n2">Luas Tanah</h6>
-                                <input type="text" class="form-control" id="luas" name="luas"
-                                    placeholder="Luas Tanah" required />
-                            </div>
+                        @method('PUT')
+                        @csrf
+                        <input type="hidden" id="tower-row">
+                        <input type="hidden" id="id-edit" name="id">
+                        <input type="hidden" id="owner-id" name="owner_id">
+                        <div class="form-group mb-4">
+                            <h6 class="font-weight-light mt-n2">Nama</h6>
+                            <input type="text" class="form-control" id="nama" name="nama"
+                                placeholder="Nama Pemilik" required />
+                        </div>
+                        <div class="form-group mb-4">
+                            <h6 class="font-weight-light mt-n2">Provinsi</h6>
+                            <select name="provinsi" id="provinsi" class="form-control" required>
+                                <option value="">Pilih Provinsi</option>
+                            </select>
+                        </div>
+                        <div class="form-group mb-4">
+                            <h6 class="font-weight-light mt-n2">Kabupaten</h6>
+                            <select name="kabupaten" id="kabupaten" class="form-control" required>
+                                <option value="">Pilih Kabupaten</option>
+                            </select>
+                        </div>
+                        <div class="form-group mb-4">
+                            <h6 class="font-weight-light mt-n2">Kecamatan</h6>
+                            <select name="kecamatan" id="kecamatan" class="form-control" required>
+                                <option value="">Pilih Kecamatan</option>
+                            </select>
+                        </div>
+                        <div class="form-group mb-4">
+                            <h6 class="font-weight-light mt-n2">Kelurahan / Desa</h6>
+                            <select name="desa" id="desa" class="form-control" required>
+                                <option value="">Pilih Kelurahan / Desa</option>
+                            </select>
+                        </div>
+                        <div class="form-group mb-4">
+                            <h6 class="font-weight-light mt-n2">Jenis Tanah</h6>
+                            <input type="text" class="form-control" id="jenis" name="jenis"
+                                placeholder="Jenis Tanah" required />
+                        </div>
+                        <div class="form-group mb-4">
+                            <h6 class="font-weight-light mt-n2">Luas Tanah</h6>
+                            <input type="text" class="form-control" id="luas" name="luas"
+                                placeholder="Luas Tanah" required />
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary">Submit Data</button>
-                        </form>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
         <!-- modal end 2 -->
@@ -255,12 +252,15 @@
                                 <div class="col-md-5">
                                     <h6 id="pemilik-detail-{{ $land->id }}">Nama Pemilik &nbsp; &nbsp; &nbsp; &nbsp;:
                                         {{ $land->owner->name }}</h6>
-                                    <h6 id="desa-detail-{{ $land->id }}">Desa / Kelurahan &nbsp;: {{ $land->owner->village }}</h6>
-                                    <h6 id="kecamatan-detail-{{ $land->id }}">Kecamatan &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;:
+                                    <h6 id="desa-detail-{{ $land->id }}">Desa / Kelurahan &nbsp;:
+                                        {{ $land->owner->village }}</h6>
+                                    <h6 id="kecamatan-detail-{{ $land->id }}">Kecamatan &nbsp; &nbsp; &nbsp; &nbsp;
+                                        &nbsp; &nbsp;:
                                         {{ $land->owner->district }}</h6>
                                 </div>
                                 <div class="col-md-7">
-                                    <h6 id="kabupaten-detail-{{ $land->id }}">Kabupaten : {{ $land->owner->regency }}</h6>
+                                    <h6 id="kabupaten-detail-{{ $land->id }}">Kabupaten : {{ $land->owner->regency }}
+                                    </h6>
                                     <h6 id="jalur-detail-{{ $land->id }}">Jalur &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; :
                                         {{ $land->tower == null ? $land->row->location->name : $land->tower->location->name }}
                                     </h6>
@@ -271,8 +271,8 @@
                             </div>
                             <div class="row my-3">
                                 <div class="table-responsive">
-                                    <table class="table table-bordered table-striped" id="detail-{{ $land->id }}-lahan" width="100%"
-                                        cellspacing="0">
+                                    <table class="table table-bordered table-striped"
+                                        id="detail-{{ $land->id }}-lahan" width="100%" cellspacing="0">
                                         <thead>
                                             <tr style="text-align: center">
                                                 <th rowspan="2">NO</th>
