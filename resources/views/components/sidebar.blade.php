@@ -1,7 +1,7 @@
 <ul class="navbar-nav bg-white sidebar accordion" id="accordionSidebar">
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/dashboard">
-        <img src="/img/apple-logo.png" width="33px" alt="" />
+        <img src="/img/logotransmisi.png" width="65px" alt="" />
     </a>
 
     <!-- Divider -->

@@ -10,8 +10,12 @@ use App\Models\Plant;
 use App\Models\Row;
 use App\Models\Tower;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\Rules\File;
 
 class LandController extends Controller
@@ -261,11 +265,37 @@ class LandController extends Controller
         $row = $land->row()->with('location');
         $tower = $land->tower()->with('location');
 
-        return view('pdfdatalahan', [
+        $village = $land->owner->village;
+        $district = $land->owner->district;
+        $regency = $land->owner->regency;
+
+        if (is_numeric($village) && is_numeric($district) && is_numeric($regency)) {
+            $village_api = Http::get('https://muhammadrafi121.github.io/api-wilayah-indonesia/api/village/' . $land->owner->village . '.json');
+    
+            $village = json_decode($village_api->body())->name;
+    
+            $district_api = Http::get('https://muhammadrafi121.github.io/api-wilayah-indonesia/api/district/' . $land->owner->district . '.json');
+    
+            $district = json_decode($district_api->body())->name;
+    
+            $regency_api = Http::get('https://muhammadrafi121.github.io/api-wilayah-indonesia/api/regency/' . $land->owner->regency . '.json');
+    
+            $regency = json_decode($regency_api->body())->name;
+
+        }
+
+        $pdf = Pdf::loadView('pdfdatalahan', [
             'land' => $land,
             'tower' => $tower,
             'row' => $row,
+            'village' => $village,
+            'district' => $district,
+            'regency' => $regency,
         ]);
+
+        $pdf->render();
+
+        return $pdf->stream();
     }
 
     public function upload(Request $request, Land $land)

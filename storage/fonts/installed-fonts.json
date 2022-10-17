@@ -1,0 +1,30 @@
+{
+    "font awesome 6 brands": {
+        "normal": "font_awesome_6_brands_normal_14a348a7b8f303c720f5b71ebe104673"
+    },
+    "font awesome 6 free": {
+        "normal": "\/home\/muhammadrafi\/Documents\/project\/web-surveyor\/storage\/fonts\/font_awesome_6_free_normal_05a8e4157ec18d2fbe177f2c01ee2e6e",
+        "900": "font_awesome_6_free_900_5dcbce935361265a4c85924af7b00695"
+    },
+    "font awesome 5 brands": {
+        "normal": "font_awesome_5_brands_normal_14a348a7b8f303c720f5b71ebe104673"
+    },
+    "font awesome 5 free": {
+        "900": "\/home\/muhammadrafi\/Documents\/project\/web-surveyor\/storage\/fonts\/font_awesome_5_free_900_5dcbce935361265a4c85924af7b00695",
+        "normal": "font_awesome_5_free_normal_05a8e4157ec18d2fbe177f2c01ee2e6e"
+    },
+    "fontawesome": {
+        "normal": "fontawesome_normal_90320d6848002102ab261126e2aea574"
+    },
+    "inter": {
+        "100": "\/home\/muhammadrafi\/Documents\/project\/web-surveyor\/storage\/fonts\/inter_100_34d70a0ef39e9758ef49196d909f584f",
+        "200": "\/home\/muhammadrafi\/Documents\/project\/web-surveyor\/storage\/fonts\/inter_200_e6c1fbcf88f8b708cc1d3e57af1c144b",
+        "300": "\/home\/muhammadrafi\/Documents\/project\/web-surveyor\/storage\/fonts\/inter_300_6f003d6153bb6629d9efcdc027439d83",
+        "normal": "\/home\/muhammadrafi\/Documents\/project\/web-surveyor\/storage\/fonts\/inter_normal_4c1c39b2d60dc6de8a3bc272ce3fe7dc",
+        "500": "\/home\/muhammadrafi\/Documents\/project\/web-surveyor\/storage\/fonts\/inter_500_73384d6e47fd66bbc719b75497af932b",
+        "600": "\/home\/muhammadrafi\/Documents\/project\/web-surveyor\/storage\/fonts\/inter_600_5fa3cee4db6b0338a4ce38a93c93ddd3",
+        "bold": "\/home\/muhammadrafi\/Documents\/project\/web-surveyor\/storage\/fonts\/inter_bold_c57a050bb9f74fe1522e9f687ba11188",
+        "800": "\/home\/muhammadrafi\/Documents\/project\/web-surveyor\/storage\/fonts\/inter_800_d0a767ffeda1c5c5782aa5e0f854b616",
+        "900": "inter_900_4577264094a2ca5c1e656fd5cd767851"
+    }
+}
