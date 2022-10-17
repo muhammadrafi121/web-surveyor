@@ -88,7 +88,7 @@
                                             <form action="/land/{{ $land->id }}" method="POST">
                                                 @method('delete')
                                                 @csrf
-                                                <a href="/land/{{ $land->id }}/print">Cetak</a> |
+                                                <a href="/land/{{ $land->id }}/print" target="_blank">Cetak</a> |
                                                 <a href="" data-bs-toggle="modal"
                                                     data-bs-target="#modal-{{ $land->id }}"
                                                     data-bs-whatever="@getbootstrap"

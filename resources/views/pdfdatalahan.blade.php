@@ -30,7 +30,7 @@
             <div class="col-12">
                 <center>
                     <h1 class="text-md">
-                        DAFTAR INVENTARISASI TAPAK TOWER
+                        DAFTAR INVENTARISASI {{ $land->row? "RIGHT OF WAY (ROW)" : "TAPAK TOWER" }}
                     </h1>
                     <h1 class="text-md">
                         JALUR
