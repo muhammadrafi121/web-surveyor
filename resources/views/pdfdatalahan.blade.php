@@ -133,6 +133,20 @@
                             @endif
                         @endforeach
                     @endif
+                    @for ($i = $counter; $i <= 21; $i++)
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    @endfor
                 </tbody>
             </table>
         </div>
