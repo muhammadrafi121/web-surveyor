@@ -44,12 +44,14 @@ Route::get('/report', [DashboardController::class, 'report'])->middleware('auth'
 Route::resource('user', UserController::class)->middleware('auth');
 
 // route tower
+Route::get('tower/{tower}/print', [TowerController::class, 'print'])->middleware('auth');
 Route::put('tower/{tower}/upload', [TowerController::class, 'upload'])->middleware('auth');
 Route::get('tower/{tower}/download', [TowerController::class, 'download'])->middleware('auth');
 Route::get('tower/export', [TowerController::class, 'export'])->middleware('auth');
 Route::resource('tower', TowerController::class)->middleware('auth');
 
 // route ROW
+Route::get('row/{row}/print', [RowController::class, 'print'])->middleware('auth');
 Route::put('row/{row}/upload', [RowController::class, 'upload'])->middleware('auth');
 Route::get('row/{row}/download', [RowController::class, 'download'])->middleware('auth');
 Route::get('row/export', [RowController::class, 'export'])->middleware('auth');

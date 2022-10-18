@@ -89,7 +89,7 @@
                                             <form action="/tower/{{ $tower->id }}" method="POST">
                                                 @method('delete')
                                                 @csrf
-                                                <a href="">Cetak</a> |
+                                                <a href="/tower/{{ $tower->id }}/print" target="_blank">Cetak</a> |
                                                 <a href="" data-bs-toggle="modal"
                                                     data-bs-target="#modal-{{ $tower->id }}"
                                                     data-bs-whatever="@getbootstrap">Lihat</a> |

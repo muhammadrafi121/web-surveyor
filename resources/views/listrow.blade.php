@@ -89,7 +89,7 @@
                                             <form action="/row/{{ $row->id }}" method="POST">
                                                 @method('delete')
                                                 @csrf
-                                                <a href="">Cetak</a> |
+                                                <a href="/row/{{ $row->id }}/print" target="_blank">Cetak</a> |
                                                 <a href=""data-bs-toggle="modal"
                                                     data-bs-target="#modal-{{ $row->id }}"
                                                     data-bs-whatever="@getbootstrap">Lihat</a> |

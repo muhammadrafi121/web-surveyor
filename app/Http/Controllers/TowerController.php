@@ -9,9 +9,11 @@ use App\Models\LandOwner;
 use App\Models\Location;
 use App\Models\Tower;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Maatwebsite\Excel\Facades\Excel;
 
 class TowerController extends Controller
@@ -180,6 +182,51 @@ class TowerController extends Controller
             ->where('id', $tower->id)
             ->delete();
         return redirect('/tower')->with('message', 'Hapus Data Tapak Tower Berhasil');
+    }
+
+    public function print(Tower $tower)
+    {
+        
+        $lands = $tower->lands;
+
+        $villages = [];
+        $districts = [];
+        $regencies = [];
+        
+        foreach ($lands as $land) {
+            $village = $land->owner->village;
+            $district = $land->owner->district;
+            $regency = $land->owner->regency;
+            if (is_numeric($village) && is_numeric($district) && is_numeric($regency)) {
+                $village_api = Http::get('https://muhammadrafi121.github.io/api-wilayah-indonesia/api/village/' . $village . '.json');
+        
+                $village = json_decode($village_api->body())->name;
+        
+                $district_api = Http::get('https://muhammadrafi121.github.io/api-wilayah-indonesia/api/district/' . $district . '.json');
+        
+                $district = json_decode($district_api->body())->name;
+        
+                $regency_api = Http::get('https://muhammadrafi121.github.io/api-wilayah-indonesia/api/regency/' . $regency . '.json');
+        
+                $regency = json_decode($regency_api->body())->name;
+
+            }
+            array_push($villages, $village);
+            array_push($districts, $district);
+            array_push($regencies, $regency);
+        }
+
+        $pdf = Pdf::loadView('pdfdatatower', [
+            'lands' => $lands,
+            'tower' => $tower,
+            'villages' => $villages,
+            'districts' => $districts,
+            'regencies' => $regencies,
+        ]);
+
+        $pdf->render();
+
+        return $pdf->stream();
     }
 
     public function upload(Request $request, Tower $tower)
