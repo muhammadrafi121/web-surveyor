@@ -284,6 +284,9 @@ class LandController extends Controller
 
         }
 
+		$pln = base64_encode(file_get_contents(public_path('/img/pln-logo.png')));
+		$ptsi = base64_encode(file_get_contents(public_path('/img/logo_ptsi.png')));
+
         $pdf = Pdf::loadView('pdfdatalahan', [
             'land' => $land,
             'tower' => $tower,
@@ -291,6 +294,8 @@ class LandController extends Controller
             'village' => $village,
             'district' => $district,
             'regency' => $regency,
+            'pln' => $pln,
+            'ptsi' => $ptsi
         ]);
 
         $pdf->render();

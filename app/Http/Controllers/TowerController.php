@@ -216,12 +216,17 @@ class TowerController extends Controller
             array_push($regencies, $regency);
         }
 
+		$pln = base64_encode(file_get_contents(public_path('/img/pln-logo.png')));
+		$ptsi = base64_encode(file_get_contents(public_path('/img/logo_ptsi.png')));
+
         $pdf = Pdf::loadView('pdfdatatower', [
             'lands' => $lands,
             'tower' => $tower,
             'villages' => $villages,
             'districts' => $districts,
             'regencies' => $regencies,
+            'pln' => $pln,
+            'ptsi' => $ptsi,
         ]);
 
         $pdf->render();
