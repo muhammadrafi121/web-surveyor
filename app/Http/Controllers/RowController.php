@@ -7,6 +7,7 @@ use App\Models\Land;
 use App\Models\LandOwner;
 use App\Models\Location;
 use App\Models\Row;
+use App\Models\RowHistory;
 use App\Models\Tower;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -92,6 +93,17 @@ class RowController extends Controller
         $row->tower2_id = $request->notower2;
         $row->user_id = auth()->user()->id;
         $row->save();
+
+        $tmprow = $row->where('id', $row->id)->get();
+        
+        $hist = [
+            'user_id' => auth()->user()->id,
+            'row_id' => $tmprow->first()->id,
+            'updated' => $tmprow->first()->updated_at,
+        ];
+
+        RowHistory::create($hist);
+
         return redirect('/row')->with('message', 'Input Data RoW Berhasil');
     }
 
@@ -142,6 +154,16 @@ class RowController extends Controller
             'location_id' => $request->jalur,
             'user_id' => auth()->user()->id,
         ]);
+
+        $tmprow = $row->where('id', $row->id)->get();
+
+        $hist = [
+            'user_id' => auth()->user()->id,
+            'row_id' => $tmprow->first()->id,
+            'updated' => $tmprow->first()->updated_at,
+        ];
+
+        RowHistory::create($hist);
 
         return redirect('/row')->with('message', 'Update Data RoW Berhasil');
     }
@@ -221,6 +243,15 @@ class RowController extends Controller
 
         $file->move('attachments', $name);
 
+        $tmprow = $row->where('id', $row->id)->get();
+        
+        $hist = [
+            'user_id' => auth()->user()->id,
+            'row_id' => $tmprow->first()->id,
+            'updated' => $tmprow->first()->updated_at,
+        ];
+
+        RowHistory::create($hist);
 
         return redirect('/row')->with('message', 'Upload Lampiran Berhasil');
     }

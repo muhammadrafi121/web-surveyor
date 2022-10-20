@@ -435,3 +435,8 @@ function setDetail(data) {
         }
     });
 }
+
+function showHistory(id) {
+    $('#modal-' + id).modal('hide');
+    $('#history-modal-' + id).modal('show');
+}

@@ -75,6 +75,13 @@
         </div>
     </li>
 
+    <!-- Nav Item - Charts -->
+    <li class="nav-item">
+        <a class="nav-link {{ Request::is('feedback*') ? 'active' : '' }}" href="/feedback">
+            <i class="fa-sharp fa-solid fa-envelope"></i>
+            <span>Bantuan</span></a>
+    </li>
+
     @can('isAdmin')
         <!-- Nav Item - Charts -->
         <li class="nav-item">

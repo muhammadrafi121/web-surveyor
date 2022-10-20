@@ -157,3 +157,8 @@ function saveData() {
         $('#kegiatan-id').val(null);
     }
 }
+
+function showHistory(id) {
+    $('#report-modal-' + id).modal('hide');
+    $('#history-modal-' + id).modal('show');
+}

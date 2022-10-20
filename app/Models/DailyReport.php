@@ -45,4 +45,9 @@ class DailyReport extends Model
     {
         return $this->belongsTo(Location::class);
     }
+
+    public function histories()
+    {
+        return $this->hasMany(DailyReportHistory::class)->orderBy('updated', 'desc');
+    }
 }

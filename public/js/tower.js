@@ -59,3 +59,8 @@ function edit(data) {
     $('#long2').val(data.long);
     $('#type2').val(data.type);
 }
+
+function showHistory(id) {
+    $('#modal-' + id).modal('hide');
+    $('#history-modal-' + id).modal('show');
+}

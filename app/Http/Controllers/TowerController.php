@@ -8,6 +8,7 @@ use App\Models\Land;
 use App\Models\LandOwner;
 use App\Models\Location;
 use App\Models\Tower;
+use App\Models\TowerHistory;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
@@ -87,6 +88,17 @@ class TowerController extends Controller
         $tower->type = $request->type;
         $tower->user_id = auth()->user()->id;
         $tower->save();
+
+        $tmptower = $tower->where('id', $tower->id)->get();
+        
+        $hist = [
+            'user_id' => auth()->user()->id,
+            'tower_id' => $tmptower->first()->id,
+            'updated' => $tmptower->first()->updated_at,
+        ];
+
+        TowerHistory::create($hist);
+
         return redirect('/tower')->with('message', 'Input Data Tapak Tower Berhasil');
     }
 
@@ -141,33 +153,19 @@ class TowerController extends Controller
             'user_id' => auth()->user()->id,
         ];
 
-        // $dataOwner = [
-        //     "name" => $request->nama,
-        //     "village" => $request->desa,
-        //     "district" => $request->kecamatan,
-        //     "regency" => $request->kabupaten,
-        // ];
-
-        // $dataLahan = [
-        //     "tower_id" => $request->tower_id,
-        //     "type" => $request->jenistanah,
-        //     "area" => $request->luas
-        // ];
-
-        // $owner = LandOwner::updateOrInsert(
-        //     [
-        //         "name" => $request->nama,
-        //         "village" => $request->desa,
-        //         "district" => $request->kecamatan,
-        //     ],
-        //     $dataOwner
-        // )->get()[0];
-
-        // $land = $owner->lands()->create($dataLahan);
-
         $tower->where('id', $request->id)->update($dataTower);
+
+        $tmptower = $tower->where('id', $tower->id)->get();
+        
+        $hist = [
+            'user_id' => auth()->user()->id,
+            'tower_id' => $tmptower->first()->id,
+            'updated' => $tmptower->first()->updated_at,
+        ];
+
+        TowerHistory::create($hist);
+
         return redirect('/tower')->with('message', 'Update Data Tapak Tower Berhasil');
-        // return redirect()->action([PlantController::class, 'create'], ['land' => $land]);
     }
 
     /**
@@ -246,6 +244,16 @@ class TowerController extends Controller
         $tower->update(['attachment' => $name]);
 
         $file->move('attachments', $name);
+
+        $tmptower = $tower->where('id', $tower->id)->get();
+        
+        $hist = [
+            'user_id' => auth()->user()->id,
+            'tower_id' => $tmptower->first()->id,
+            'updated' => $tmptower->first()->updated_at,
+        ];
+
+        TowerHistory::create($hist);
 
         return redirect('/tower')->with('message', 'Upload Lampiran Berhasil');
     }

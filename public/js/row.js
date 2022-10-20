@@ -126,3 +126,8 @@ function edit(data) {
     $('#notower1_2').val(data.tower1_id);
     $('#notower2_2').val(data.tower2_id);
 }
+
+function showHistory(id) {
+    $('#modal-' + id).modal('hide');
+    $('#history-modal-' + id).modal('show');
+}

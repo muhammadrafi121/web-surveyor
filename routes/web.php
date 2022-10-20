@@ -3,6 +3,7 @@
 use App\Http\Controllers\AjaxController;
 use App\Http\Controllers\DailyReportController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\LandController;
 use App\Http\Controllers\LocationController;
@@ -75,6 +76,11 @@ Route::resource('inventory', InventoryController::class)->middleware('auth');
 
 // route locations
 Route::resource('location', LocationController::class)->middleware('auth');
+
+// route help page
+Route::get('feedback/admin', [FeedbackController::class, 'showAdminMsg'])->middleware('auth');
+Route::get('feedback/forum', [FeedbackController::class, 'showForum'])->middleware('auth');
+Route::resource('feedback', FeedbackController::class)->middleware('auth');
 
 // route ajax
 Route::get('/ajax/inventory', [AjaxController::class, 'inventory'])->middleware('auth');

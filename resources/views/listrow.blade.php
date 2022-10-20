@@ -90,7 +90,7 @@
                                                 @method('delete')
                                                 @csrf
                                                 <a href="/row/{{ $row->id }}/print" target="_blank">Cetak</a> |
-                                                <a href=""data-bs-toggle="modal"
+                                                <a href="" data-bs-toggle="modal"
                                                     data-bs-target="#modal-{{ $row->id }}"
                                                     data-bs-whatever="@getbootstrap">Lihat</a> |
                                                 <a href="javascript:void(0)" data-toggle="modal"
@@ -267,10 +267,22 @@
                 <div class="modal-content">
                     <div class="modal-header d-flex flex-column">
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        <h5 class="modal-title font-weight-bold" id="modalLabel{{ $row->id }}">Detail Data Lahan
+                        <h5 class="modal-title font-weight-bold" id="modalLabel{{ $row->id }}">
+                            Detail Data RoW
                         </h5>
                     </div>
                     <div class="modal-body">
+                        <div class="row">
+                            <div class="col-10 pt-2">
+                                <small><i>Last Updated : </i></small>
+                                <small><strong>{{ $row->updated_at->format('d-m-Y | H:i') }}</strong></small>
+                            </div>
+                            <div class="col">
+                                <button class="btn btn-user btn-primary" data-bs-toggle="modal"
+                                    onclick="showHistory({{ $row->id }})">Log</button>
+                            </div>
+                        </div>
+                        <hr>
                         <div class="row">
                             <div class="col">
                                 <h6 id="jalur-detail">Jalur &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; :
@@ -415,5 +427,37 @@
             </div>
         </div>
         <!-- modal end 5 -->
+
+        <!-- modal start 6 -->
+        <div class="modal fade" id="history-modal-{{ $row->id }}" tabindex="-1" aria-labelledby="modalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header d-flex flex-column">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <h5 class="modal-title font-weight-bold" id="modalLabel">Log History Pengisian RoW
+                        </h5>
+                    </div>
+                    <div class="modal-body">
+                        <ul class="list-group list-group-flush">
+                            @foreach ($row->histories as $history)
+                                <li class="list-group-item row d-flex justify-content-between">
+                                    <div class="col">
+                                        <i>Diupdate : </i> <strong>{{ $history->updated }}</strong>
+                                    </div>
+                                    <div class="col-3">
+                                        <i>Oleh : </i> <strong>{{ $history->user->name }}</strong>
+                                    </div>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Kembali</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- modal end 6 -->
     @endforeach
 @endsection

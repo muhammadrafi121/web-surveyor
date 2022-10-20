@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Activity;
 use App\Models\DailyReport;
+use App\Models\DailyReportHistory;
 use App\Models\Facility;
 use App\Models\Inventory;
 use App\Models\Location;
@@ -191,6 +192,16 @@ class DailyReportController extends Controller
             'activity' => $request->kegiatan,
         ]);
 
+        $tmpdailyreport = $dailyreport->where('id', $dailyreport->id)->get();
+        
+        $hist = [
+            'user_id' => auth()->user()->id,
+            'daily_report_id' => $tmpdailyreport->first()->id,
+            'updated' => $tmpdailyreport->first()->updated_at,
+        ];
+
+        DailyReportHistory::create($hist);
+
         return redirect('/dailyreport')->with('message', 'Input Data Daily Report Berhasil');
     }
 
@@ -369,6 +380,21 @@ class DailyReportController extends Controller
         ]);
 
         $dailyreport->where('id', $request->id)->update($dataReport);
+
+        $dailyreport->activities()->create([
+            'activity' => $request->kegiatan,
+        ]);
+
+        $tmpdailyreport = $dailyreport->where('id', $dailyreport->id)->get();
+        
+        $hist = [
+            'user_id' => auth()->user()->id,
+            'daily_report_id' => $tmpdailyreport->first()->id,
+            'updated' => $tmpdailyreport->first()->updated_at,
+        ];
+
+        DailyReportHistory::create($hist);
+
         return redirect('/dailyreport')->with('message', 'Update Data Daily Report Berhasil');
     }
 

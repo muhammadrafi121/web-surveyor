@@ -259,10 +259,21 @@
                 <div class="modal-content">
                     <div class="modal-header d-flex flex-column">
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        <h5 class="modal-title font-weight-bold" id="modalLabel{{ $tower->id }}">Detail Data Lahan
+                        <h5 class="modal-title font-weight-bold" id="modalLabel{{ $tower->id }}">Detail Data Tapak Tower
                         </h5>
                     </div>
                     <div class="modal-body">
+                        <div class="row">
+                            <div class="col-10 pt-2">
+                                <small><i>Last Updated : </i></small>
+                                <small><strong>{{ $tower->updated_at->format('d-m-Y | H:i') }}</strong></small>
+                            </div>
+                            <div class="col">
+                                <button class="btn btn-user btn-primary" data-bs-toggle="modal"
+                                    onclick="showHistory({{ $tower->id }})">Log</button>
+                            </div>
+                        </div>
+                        <hr>
                         <div class="row">
                             <div class="col">
                                 <h6 id="jalur-detail">Jalur &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; :
@@ -408,5 +419,37 @@
             </div>
         </div>
         <!-- modal end 5 -->
+
+        <!-- modal start 6 -->
+        <div class="modal fade" id="history-modal-{{ $tower->id }}" tabindex="-1" aria-labelledby="modalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header d-flex flex-column">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <h5 class="modal-title font-weight-bold" id="modalLabel">Log History Pengisian Tower
+                        </h5>
+                    </div>
+                    <div class="modal-body">
+                        <ul class="list-group list-group-flush">
+                            @foreach ($tower->histories as $history)
+                                <li class="list-group-item row d-flex justify-content-between">
+                                    <div class="col">
+                                        <i>Diupdate : </i> <strong>{{ $history->updated }}</strong>
+                                    </div>
+                                    <div class="col-3">
+                                        <i>Oleh : </i> <strong>{{ $history->user->name }}</strong>
+                                    </div>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Kembali</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- modal end 6 -->
     @endforeach
 @endsection

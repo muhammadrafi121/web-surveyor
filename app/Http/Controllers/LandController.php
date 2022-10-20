@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Inventory;
 use App\Models\Land;
+use App\Models\LandHistory;
 use App\Models\LandOwner;
 use App\Models\Location;
 use App\Models\Plant;
@@ -130,6 +131,16 @@ class LandController extends Controller
             $land = Land::create($land_input);
         }
 
+        $tmpland = $land->where('id', $land->id)->get();
+        
+        $hist = [
+            'user_id' => auth()->user()->id,
+            'land_id' => $tmpland->first()->id,
+            'updated' => $tmpland->first()->updated_at,
+        ];
+
+        LandHistory::create($hist);
+
         return redirect('/land')->with('message', 'Input Data Lahan Berhasil');
     }
 
@@ -164,48 +175,6 @@ class LandController extends Controller
      */
     public function update(Request $request, Land $land)
     {
-        // $request->validate([
-        //     'owner_name' => 'required',
-        //     'village' => 'required',
-        //     'district' => 'required',
-        //     'regency' => 'required',
-        //     'province' => 'required',
-        //     'type' => 'required',
-        //     'area' => 'required',
-        //     'location_id' => 'required',
-        // ]);
-
-        // $owner_input = [
-        //     'name' => $request->owner_name,
-        //     'village' => $request->village,
-        //     'district' => $request->district,
-        //     'regency' => $request->regency,
-        //     'province' => $request->province,
-        // ];
-
-        // $land_input = [
-        //     'location_id' => $request->location_id,
-        //     'type' => $request->type,
-        //     'area' => $request->area,
-        //     'description' => $request->description,
-        // ];
-
-        // if ($request->row_id) {
-        //     $land_input['row_id'] = $request->row_id;
-        // }
-
-        // if ($request->tower_id) {
-        //     $land_input['tower_id'] = $request->tower_id;
-        // }
-
-        // if ($request->owner_id) {
-        //     $owner = LandOwner::find('id', $request->owner_id);
-        // } else {
-        //     $owner = LandOwner::create($owner_input);
-        // }
-
-        // $land = $owner->lands()->where('id', $request->id)->update($land_input);
-
         $rules = [
             'nama' => 'required',
             'desa' => 'required',
@@ -238,7 +207,17 @@ class LandController extends Controller
         }
 
         LandOwner::where('id', $request->owner_id)->update($owner_input);
-        Land::where('id', $request->id)->update($land_input);
+        $land->where('id', $request->id)->update($land_input);
+
+        $tmpland = $land->where('id', $land->id)->get();
+        
+        $hist = [
+            'user_id' => auth()->user()->id,
+            'land_id' => $tmpland->first()->id,
+            'updated' => $tmpland->first()->updated_at,
+        ];
+
+        LandHistory::create($hist);
 
         return redirect('/land')->with('message', 'Update Data Lahan Berhasil');
     }
@@ -315,6 +294,16 @@ class LandController extends Controller
         $land->update(['attachment' => $name]);
 
         $file->move('attachments', $name);
+
+        $tmpland = $land->where('id', $land->id)->get();
+        
+        $hist = [
+            'user_id' => auth()->user()->id,
+            'land_id' => $tmpland->first()->id,
+            'updated' => $tmpland->first()->updated_at,
+        ];
+
+        LandHistory::create($hist);
 
         return redirect('/land')->with('message', 'Upload Lampiran Berhasil');
     }
