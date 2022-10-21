@@ -27,14 +27,13 @@ class TowerController extends Controller
     public function index()
     {
         $inventories = Inventory::all();
+        $locations = Location::where('inventory_id', $inventories->first()->id)->get();
+        $towers = Tower::all();
+        
         if (auth()->user()->role == 'Surveyor') {
             $user = User::with('team')->find(auth()->user()->id);
             $inventories = Inventory::find($user->team->inventory_id);
-        }
-        $locations = Location::where('inventory_id', $inventories->first()->id)->get();
-        $towers = Tower::all();
-        if (auth()->user()->role == 'Surveyor') {
-            $user = User::with('team')->find(auth()->user()->id);
+            $locations = Location::where('inventory_id', $user->team->inventory_id)->get();
             $towers = Tower::join('locations', 'towers.location_id', '=', 'locations.id')
                 ->join('inventories', 'locations.inventory_id', '=', 'inventories.id')
                 ->where('inventories.id', '=', $user->team->inventory_id)
@@ -90,7 +89,7 @@ class TowerController extends Controller
         $tower->save();
 
         $tmptower = $tower->where('id', $tower->id)->get();
-        
+
         $hist = [
             'user_id' => auth()->user()->id,
             'tower_id' => $tmptower->first()->id,
@@ -156,7 +155,7 @@ class TowerController extends Controller
         $tower->where('id', $request->id)->update($dataTower);
 
         $tmptower = $tower->where('id', $tower->id)->get();
-        
+
         $hist = [
             'user_id' => auth()->user()->id,
             'tower_id' => $tmptower->first()->id,
@@ -184,38 +183,36 @@ class TowerController extends Controller
 
     public function print(Tower $tower)
     {
-        
         $lands = $tower->lands;
 
         $villages = [];
         $districts = [];
         $regencies = [];
-        
+
         foreach ($lands as $land) {
             $village = $land->owner->village;
             $district = $land->owner->district;
             $regency = $land->owner->regency;
             if (is_numeric($village) && is_numeric($district) && is_numeric($regency)) {
                 $village_api = Http::get('https://muhammadrafi121.github.io/api-wilayah-indonesia/api/village/' . $village . '.json');
-        
-                $village = json_decode($village_api->body())->name;
-        
-                $district_api = Http::get('https://muhammadrafi121.github.io/api-wilayah-indonesia/api/district/' . $district . '.json');
-        
-                $district = json_decode($district_api->body())->name;
-        
-                $regency_api = Http::get('https://muhammadrafi121.github.io/api-wilayah-indonesia/api/regency/' . $regency . '.json');
-        
-                $regency = json_decode($regency_api->body())->name;
 
+                $village = json_decode($village_api->body())->name;
+
+                $district_api = Http::get('https://muhammadrafi121.github.io/api-wilayah-indonesia/api/district/' . $district . '.json');
+
+                $district = json_decode($district_api->body())->name;
+
+                $regency_api = Http::get('https://muhammadrafi121.github.io/api-wilayah-indonesia/api/regency/' . $regency . '.json');
+
+                $regency = json_decode($regency_api->body())->name;
             }
             array_push($villages, $village);
             array_push($districts, $district);
             array_push($regencies, $regency);
         }
 
-		$pln = base64_encode(file_get_contents(public_path('/img/pln-logo.png')));
-		$ptsi = base64_encode(file_get_contents(public_path('/img/logo_ptsi.png')));
+        $pln = base64_encode(file_get_contents(public_path('/img/pln-logo.png')));
+        $ptsi = base64_encode(file_get_contents(public_path('/img/logo_ptsi.png')));
 
         $pdf = Pdf::loadView('pdfdatatower', [
             'lands' => $lands,
@@ -246,7 +243,7 @@ class TowerController extends Controller
         $file->move('attachments', $name);
 
         $tmptower = $tower->where('id', $tower->id)->get();
-        
+
         $hist = [
             'user_id' => auth()->user()->id,
             'tower_id' => $tmptower->first()->id,

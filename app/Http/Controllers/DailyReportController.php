@@ -23,21 +23,15 @@ class DailyReportController extends Controller
     public function index()
     {
         $inventories = Inventory::all();
+        $locations = Location::where('inventory_id', $inventories->first()->id)->get();
+        $teams = Team::where('inventory_id', $inventories->first()->id)->get();
+        $reports = DailyReport::all();
+
         if (auth()->user()->role == 'Surveyor') {
             $user = User::with('team')->find(auth()->user()->id);
             $inventories = Inventory::find($user->team->inventory_id);
-        }
-        $locations = Location::where('inventory_id', $inventories->first()->id)->get();
-        $teams = Team::where('inventory_id', $inventories->first()->id)->get();
-
-        if (auth()->user()->role == 'Surveyor') {
-            $user = User::with('team')->find(auth()->user()->id);
+            $locations = Location::where('inventory_id', $user->team->inventory_id)->get();
             $teams = $user->team;
-        }
-
-        $reports = DailyReport::all();
-        if (auth()->user()->role == 'Surveyor') {
-            $user = User::with('team')->find(auth()->user()->id);
             $reports = DailyReport::where('team_id', $user->team->id)->get();
         }
 
@@ -193,7 +187,7 @@ class DailyReportController extends Controller
         ]);
 
         $tmpdailyreport = $dailyreport->where('id', $dailyreport->id)->get();
-        
+
         $hist = [
             'user_id' => auth()->user()->id,
             'daily_report_id' => $tmpdailyreport->first()->id,
@@ -386,7 +380,7 @@ class DailyReportController extends Controller
         ]);
 
         $tmpdailyreport = $dailyreport->where('id', $dailyreport->id)->get();
-        
+
         $hist = [
             'user_id' => auth()->user()->id,
             'daily_report_id' => $tmpdailyreport->first()->id,

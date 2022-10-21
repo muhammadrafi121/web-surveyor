@@ -25,29 +25,26 @@ class RowController extends Controller
     public function index()
     {
         $inventories = Inventory::all();
+        $locations = Location::where('inventory_id', $inventories->first()->id)->get();
+        $towers = Tower::where('location_id', $locations->first()->id)->get();
+        $rows = Row::all();
+        
         if (auth()->user()->role == 'Surveyor') {
             $user = User::with('team')->find(auth()->user()->id);
             $inventories = Inventory::find($user->team->inventory_id);
-        }
-        $locations = Location::where('inventory_id', $inventories->first()->id)->get();
-        $towers = Tower::where('location_id', $locations->first()->id)->get();
-        if (auth()->user()->role == 'Surveyor') {
-            $user = User::with('team')->find(auth()->user()->id);
+            $locations = Location::where('inventory_id', $user->team->inventory_id)->get();
             $towers = Tower::join('locations', 'towers.location_id', '=', 'locations.id')
                 ->join('inventories', 'locations.inventory_id', '=', 'inventories.id')
                 ->where('inventories.id', '=', $user->team->inventory_id)
                 ->select('locations.id', 'inventories.*', 'towers.*')
                 ->get();
-        }
-        $rows = Row::all();
-        if (auth()->user()->role == 'Surveyor') {
-            $user = User::with('team')->find(auth()->user()->id);
             $rows = Row::join('locations', 'rows.location_id', '=', 'locations.id')
                 ->join('inventories', 'locations.inventory_id', '=', 'inventories.id')
                 ->where('inventories.id', '=', $user->team->inventory_id)
                 ->select('locations.id', 'inventories.*', 'rows.*')
                 ->get();
         }
+
         return view('listrow', [
             'title' => 'Data ROW',
             'rows' => $rows,
@@ -95,7 +92,7 @@ class RowController extends Controller
         $row->save();
 
         $tmprow = $row->where('id', $row->id)->get();
-        
+
         $hist = [
             'user_id' => auth()->user()->id,
             'row_id' => $tmprow->first()->id,
@@ -176,45 +173,45 @@ class RowController extends Controller
      */
     public function destroy(Row $row)
     {
-        DB::table('rows')->where('id', $row->id)->delete();
+        DB::table('rows')
+            ->where('id', $row->id)
+            ->delete();
         return redirect('/row')->with('message', 'Hapus Data RoW Berhasil');
     }
 
     public function print(Row $row)
     {
-        
         $lands = $row->lands;
 
         $villages = [];
         $districts = [];
         $regencies = [];
-        
+
         foreach ($lands as $land) {
             $village = $land->owner->village;
             $district = $land->owner->district;
             $regency = $land->owner->regency;
             if (is_numeric($village) && is_numeric($district) && is_numeric($regency)) {
                 $village_api = Http::get('https://muhammadrafi121.github.io/api-wilayah-indonesia/api/village/' . $village . '.json');
-        
-                $village = json_decode($village_api->body())->name;
-        
-                $district_api = Http::get('https://muhammadrafi121.github.io/api-wilayah-indonesia/api/district/' . $district . '.json');
-        
-                $district = json_decode($district_api->body())->name;
-        
-                $regency_api = Http::get('https://muhammadrafi121.github.io/api-wilayah-indonesia/api/regency/' . $regency . '.json');
-        
-                $regency = json_decode($regency_api->body())->name;
 
+                $village = json_decode($village_api->body())->name;
+
+                $district_api = Http::get('https://muhammadrafi121.github.io/api-wilayah-indonesia/api/district/' . $district . '.json');
+
+                $district = json_decode($district_api->body())->name;
+
+                $regency_api = Http::get('https://muhammadrafi121.github.io/api-wilayah-indonesia/api/regency/' . $regency . '.json');
+
+                $regency = json_decode($regency_api->body())->name;
             }
             array_push($villages, $village);
             array_push($districts, $district);
             array_push($regencies, $regency);
         }
 
-		$pln = base64_encode(file_get_contents(public_path('/img/pln-logo.png')));
-		$ptsi = base64_encode(file_get_contents(public_path('/img/logo_ptsi.png')));
-        
+        $pln = base64_encode(file_get_contents(public_path('/img/pln-logo.png')));
+        $ptsi = base64_encode(file_get_contents(public_path('/img/logo_ptsi.png')));
+
         $pdf = Pdf::loadView('pdfdatarow', [
             'lands' => $lands,
             'row' => $row,
@@ -233,18 +230,18 @@ class RowController extends Controller
     public function upload(Request $request, Row $row)
     {
         $request->validate([
-            'file' => "required|mimes:pdf|max:60000"
+            'file' => 'required|mimes:pdf|max:60000',
         ]);
 
         $file = $request->file('file');
         $name = $file->hashName();
-        
-        $row->update(["attachment" => $name]);
+
+        $row->update(['attachment' => $name]);
 
         $file->move('attachments', $name);
 
         $tmprow = $row->where('id', $row->id)->get();
-        
+
         $hist = [
             'user_id' => auth()->user()->id,
             'row_id' => $tmprow->first()->id,
@@ -259,18 +256,15 @@ class RowController extends Controller
     public function download(Row $row)
     {
         //how to download file on laravel?
-        
+
         //PDF file is stored under project/public/attachments
         $filesource = $row->attachment;
-        $file = public_path(). "/attachments/" . $filesource;
-        $filename = "Lampiran RoW " . $row->firsttower->no . "-" . $row->secondtower->no . ".pdf";
+        $file = public_path() . '/attachments/' . $filesource;
+        $filename = 'Lampiran RoW ' . $row->firsttower->no . '-' . $row->secondtower->no . '.pdf';
 
-        $headers = array(
-                'Content-Type: application/pdf',
-                );
+        $headers = ['Content-Type: application/pdf'];
 
         return response()->download($file, $filename, $headers);
-
     }
 
     public function export(Request $request)
@@ -331,12 +325,14 @@ class RowController extends Controller
 
         foreach ($rows as $row) {
             $sheet->setCellValue('A' . $rownum, $num);
-            $sheet->setCellValue('B' . $rownum, $row->firsttower->no . " - " . $row->secondtower->no);
+            $sheet->setCellValue('B' . $rownum, $row->firsttower->no . ' - ' . $row->secondtower->no);
             $sheet->setCellValue('C' . $rownum, $row->location->name);
 
             $currLand = null;
 
-            if ($row->lands->isEmpty()) $rownum++;
+            if ($row->lands->isEmpty()) {
+                $rownum++;
+            }
             foreach ($row->lands as $land) {
                 $prevLand = $land;
 
@@ -349,7 +345,9 @@ class RowController extends Controller
                 }
                 $sheet->setCellValue('F' . $rownum, $land->area);
 
-                if ($land->plants->isEmpty()) $rownum++;
+                if ($land->plants->isEmpty()) {
+                    $rownum++;
+                }
                 foreach ($land->plants as $plant) {
                     $sheet->setCellValue('G' . $rownum, $plant->name);
                     $sheet->setCellValue('H' . $rownum, $plant->age);
