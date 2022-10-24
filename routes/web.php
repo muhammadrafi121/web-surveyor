@@ -42,6 +42,7 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('aut
 Route::get('/report', [DashboardController::class, 'report'])->middleware('auth');
 
 // route user
+Route::get('profile', [UserController::class, 'profile'])->middleware('auth');
 Route::resource('user', UserController::class)->middleware('auth');
 
 // route tower
@@ -96,3 +97,4 @@ Route::get('/ajax/rowloc', [AjaxController::class, 'rowsByLoc'])->middleware('au
 Route::get('/ajax/towerloc', [AjaxController::class, 'towersByLoc'])->middleware('auth');
 Route::get('/ajax/rowteam', [AjaxController::class, 'rowsByTeam'])->middleware('auth');
 Route::get('/ajax/towerteam', [AjaxController::class, 'towersByTeam'])->middleware('auth');
+Route::get('/ajax/team', [AjaxController::class, 'team'])->middleware('auth');

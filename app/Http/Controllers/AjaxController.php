@@ -7,6 +7,7 @@ use App\Models\Inventory;
 use App\Models\Land;
 use App\Models\Location;
 use App\Models\Row;
+use App\Models\Team;
 use App\Models\Tower;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -232,5 +233,10 @@ class AjaxController extends Controller
         }
 
         return $data;
+    }
+
+    public function team()
+    {
+        return Team::with(['users', 'inventory'])->get();
     }
 }

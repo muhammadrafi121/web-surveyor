@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Auth\Access\Gate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redis;
 
@@ -16,12 +18,14 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
-        return [
+        if (auth()->user()->role != 'Administrator') abort(404);        
+        $users = User::orderBy('role')->get();
+
+        return view('listuser', [
             'title' => 'List Akun',
             'users' => $users,
-            'token' => csrf_token()
-        ];
+            'script' => 'user',
+        ]);
     }
 
     /**
@@ -42,22 +46,33 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $rules = [
             'name' => 'required',
             'username' => 'required|unique:users',
             'email' => 'required|email',
             'role' => 'required',
             'password' => 'required|confirmed',
-        ]);
+        ];
+
+        if ($request->role == 'Surveyor') {
+            $rules['role'] = 'required';
+        }
+
+        $request->validate($rules);
 
         $user = new User();
         $user->name = $request->name;
         $user->username = $request->username;
         $user->email = $request->email;
         $user->role = $request->role;
+
+        if ($request->role == 'Surveyor') {
+            $user->team_id = $request->team;
+        }
+
         $user->password = Hash::make($request->password);
         $user->save();
-        return redirect('/user');
+        return redirect('/user')->with('message', 'Input Data User Berhasil');
     }
 
     /**
@@ -69,7 +84,7 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-        return $user;
+        //
     }
 
     /**
@@ -80,7 +95,7 @@ class UserController extends Controller
      */
     public function edit(User $user, Request $request)
     {
-        return $user->find($request->id);
+        //
     }
 
     /**
@@ -92,20 +107,48 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $request->validate([
-            'name' => 'required',
-            'username' => 'required',
-            'email' => 'required|email',
-            'role' => 'required',
-        ]);
-        
-        $user->where('id', $request->id)->update([
-            'name' => $request->name,
-            'username' => $request->username,
-            'email' => $request->email,
-        ]);
+        $rules = [];
+        if ($request->has('name')) {
+            $rules = [
+                'name' => 'required',
+                'username' => 'required',
+                'email' => 'required|email',
+                'role' => 'required',
+            ];
+            if (filled($request->username) && $request->username != $user->username) $rules['username'] = 'required|unique:users';
+    
+            if ($request->role == 'Surveyor') $rules['team'] = 'required';
+        }
 
-        return redirect('/user');
+        if (filled($request->password)) $rules['password'] = 'confirmed';
+
+        $request->validate($rules);
+
+        $userData = [];
+
+        if ($request->has('name')) {
+            $userData = [
+                'name' => $request->name,
+                'username' => $request->username,
+                'email' => $request->email,
+                'role' => $request->role,
+            ];
+            if (filled($request->team)) $userData['team_id'] = $request->team;
+        }
+
+        if (filled($request->password)) $userData['password'] = Hash::make($request->password);
+
+        $user->update($userData);
+
+        $msg = 'Ganti Password Berhasil';
+        $url = '/profile';
+
+        if ($request->has('name')) {
+            $msg = 'Update Data User Berhasil';
+            $url = '/user';
+        }
+
+        return redirect($url)->with('message', $msg);
     }
 
     /**
@@ -114,10 +157,20 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
+    public function destroy(User $user)
     {
-        $user = User::find($request->id);
-        $user->delete();
-        return redirect('/user');
+        DB::table('users')
+            ->where('id', $user->id)
+            ->delete();
+        return redirect('/user')->with('message', 'Hapus Data User Berhasil');
+    }
+
+    public function profile()
+    {
+        return view('datauser', [
+            'title' => 'Profile',
+            'user' => auth()->user(),
+            'script' => 'user'
+        ]);
     }
 }

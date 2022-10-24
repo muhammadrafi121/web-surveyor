@@ -20,8 +20,9 @@
 
     @canany(['isAdmin', 'isSurveyor'])
         <li class="nav-item">
-            <a class="nav-link collapsed {{ (Request::is('inventory*') || Request::is('location*') || Request::is('tower*') || Request::is('row*') || Request::is('land*') || Request::is('dailyreport*')) ? 'active' : '' }}" href="" data-toggle="collapse" data-target="#collapseThree"
-                aria-expanded="true" aria-controls="collapseThree">
+            <a class="nav-link collapsed {{ Request::is('inventory*') || Request::is('location*') || Request::is('tower*') || Request::is('row*') || Request::is('land*') || Request::is('dailyreport*') ? 'active' : '' }}"
+                href="" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true"
+                aria-controls="collapseThree">
                 <i class="fas fa-fw fa-database"></i>
                 <span>Data</span>
             </a>
@@ -34,7 +35,8 @@
                     <a class="collapse-item {{ Request::is('tower*') ? 'active' : '' }}" href="/tower">Tapak Tower</a>
                     <a class="collapse-item {{ Request::is('row*') ? 'active' : '' }}" href="/row">ROW</a>
                     <a class="collapse-item {{ Request::is('land*') ? 'active' : '' }}" href="/land">Lahan</a>
-                    <a class="collapse-item {{ Request::is('dailyreport*') ? 'active' : '' }}" href="/dailyreport">Daily Report</a>
+                    <a class="collapse-item {{ Request::is('dailyreport*') ? 'active' : '' }}" href="/dailyreport">Daily
+                        Report</a>
                 </div>
             </div>
         </li>
@@ -59,7 +61,7 @@
 
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
+        <a class="nav-link collapsed {{ Request::is('user*') || Request::is('team*') || Request::is('profile') ? 'active' : '' }}" href="#" data-toggle="collapse" data-target="#collapsePages"
             aria-expanded="true" aria-controls="collapsePages">
             <i class="fas fa-fw fa-cog"></i>
             <span>Pengaturan</span>
@@ -67,10 +69,11 @@
         <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-green-blue py-2 collapse-inner">
                 @can('isAdmin')
-                    <a class="collapse-item" href="login.html">Tambah Akun</a>
-                    <a class="collapse-item" href="forgot-password.html">List User</a>
+                    {{-- <a class="collapse-item {{ Request::is('team*') ? 'active' : '' }}" href="/team">Tim Surveyor</a> --}}
+                    <a class="collapse-item {{ Request::is('user*') ? 'active' : '' }}" href="/user">Akun</a>
                 @endcan
-                <a class="collapse-item" href="register.html">Profil</a>
+                <a class="collapse-item {{ Request::is('profile') ? 'active' : '' }}"
+                    href="/profile">Profile</a>
             </div>
         </div>
     </li>
