@@ -65,9 +65,16 @@ class FeedbackController extends Controller
         Feedback::create($feedback);
 
         if ($request->filled('url')) {
-            return redirect($request->url);
+            return redirect($request->url)->with('message', 'Pesan Telah terkirim');
         }
-        return redirect('/feedback');
+
+        if ($request->target == 'admin') {
+            return redirect('/feedback/admin')->with('message', 'Pesan Telah terkirim');
+        }
+
+        if ($request->target == 'all') {
+            return redirect('/feedback/all')->with('message', 'Pesan Telah terkirim');
+        }
     }
 
     public function showAdminMsg()
