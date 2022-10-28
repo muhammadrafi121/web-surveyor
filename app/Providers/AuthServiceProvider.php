@@ -32,5 +32,9 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('isSurveyor', function() {
             return auth()->user()->role == "Surveyor";
         });
+
+        Gate::define('isClient', function() {
+            return auth()->user()->role == "Client";
+        });
     }
 }

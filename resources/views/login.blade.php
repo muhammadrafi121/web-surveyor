@@ -45,7 +45,7 @@
                     </form>
                     <hr />
                     <div class="text-center">
-                      <a class="h3 text-gray-900" href="register.html">Aplikasi Monitoring SI</a>
+                      <a class="h3 text-gray-900" href="/">Aplikasi Monitoring SI</a>
                     </div>
                   </div>
                 </div>

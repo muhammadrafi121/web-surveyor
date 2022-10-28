@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\Rules\File;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class LandController extends Controller
 {
@@ -132,7 +133,7 @@ class LandController extends Controller
         }
 
         $tmpland = $land->where('id', $land->id)->get();
-        
+
         $hist = [
             'user_id' => auth()->user()->id,
             'land_id' => $tmpland->first()->id,
@@ -210,7 +211,7 @@ class LandController extends Controller
         $land->where('id', $request->id)->update($land_input);
 
         $tmpland = $land->where('id', $land->id)->get();
-        
+
         $hist = [
             'user_id' => auth()->user()->id,
             'land_id' => $tmpland->first()->id,
@@ -250,21 +251,20 @@ class LandController extends Controller
 
         if (is_numeric($village) && is_numeric($district) && is_numeric($regency)) {
             $village_api = Http::get('https://muhammadrafi121.github.io/api-wilayah-indonesia/api/village/' . $land->owner->village . '.json');
-    
-            $village = json_decode($village_api->body())->name;
-    
-            $district_api = Http::get('https://muhammadrafi121.github.io/api-wilayah-indonesia/api/district/' . $land->owner->district . '.json');
-    
-            $district = json_decode($district_api->body())->name;
-    
-            $regency_api = Http::get('https://muhammadrafi121.github.io/api-wilayah-indonesia/api/regency/' . $land->owner->regency . '.json');
-    
-            $regency = json_decode($regency_api->body())->name;
 
+            $village = json_decode($village_api->body())->name;
+
+            $district_api = Http::get('https://muhammadrafi121.github.io/api-wilayah-indonesia/api/district/' . $land->owner->district . '.json');
+
+            $district = json_decode($district_api->body())->name;
+
+            $regency_api = Http::get('https://muhammadrafi121.github.io/api-wilayah-indonesia/api/regency/' . $land->owner->regency . '.json');
+
+            $regency = json_decode($regency_api->body())->name;
         }
 
-		$pln = base64_encode(file_get_contents(public_path('/img/pln-logo.png')));
-		$ptsi = base64_encode(file_get_contents(public_path('/img/logo_ptsi.png')));
+        $pln = base64_encode(file_get_contents(public_path('/img/pln-logo.png')));
+        $ptsi = base64_encode(file_get_contents(public_path('/img/logo_ptsi.png')));
 
         $pdf = Pdf::loadView('pdfdatalahan', [
             'land' => $land,
@@ -274,7 +274,7 @@ class LandController extends Controller
             'district' => $district,
             'regency' => $regency,
             'pln' => $pln,
-            'ptsi' => $ptsi
+            'ptsi' => $ptsi,
         ]);
 
         $pdf->render();
@@ -296,7 +296,7 @@ class LandController extends Controller
         $file->move('attachments', $name);
 
         $tmpland = $land->where('id', $land->id)->get();
-        
+
         $hist = [
             'user_id' => auth()->user()->id,
             'land_id' => $tmpland->first()->id,
@@ -318,6 +318,17 @@ class LandController extends Controller
         $filename = 'Lampiran Lahan Milik ' . $land->owner->name . '.pdf';
 
         $headers = ['Content-Type: application/pdf'];
+
+        return response()->download($file, $filename, $headers);
+    }
+
+    public function format()
+    {
+        //how to download file on laravel?
+        $file = public_path() . '/format/land.xlsx';
+        $filename = 'Format Import Lahan.xlsx';
+
+        $headers = ['Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
 
         return response()->download($file, $filename, $headers);
     }
@@ -433,5 +444,156 @@ class LandController extends Controller
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment; filename="' . $fileName . '"');
         $writer->save('php://output');
+    }
+
+    public function import(Request $request)
+    {
+        $spreadsheet = IOFactory::load($request->file);
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $num = 5;
+
+        $lands = [];
+
+        $province_api = Http::get('https://muhammadrafi121.github.io/api-wilayah-indonesia/api/provinces.json');
+
+        $provinces = json_decode($province_api->body());
+
+        while ($sheet->getCell('B' . $num)->getValue() != null) {
+            $land = [];
+
+            $towers = explode(' - ', $sheet->getCell('B' . $num)->getValue());
+            $location = Location::where('name', $sheet->getCell('C' . $num)->getValue())->first();
+
+            $firsttower = Tower::where('no', $towers[0])
+                ->where('location_id', $location->id)
+                ->first();
+
+            // dd($firsttower['id']);
+
+            $land['tower_id'] = $firsttower->id;
+            $land['row_id'] = null;
+
+            if (count($towers) == 2) {
+                $secondtower = Tower::where('no', $towers[1])
+                    ->where('location_id', $location->id)
+                    ->first();
+                $row = Row::where('tower1_id', $firsttower->id)
+                    ->where('tower2_id', $secondtower->id)
+                    ->first();
+
+                $land['row_id'] = $row->id;
+                $land['tower_id'] = null;
+            }
+
+            $land['owner_name'] = $sheet->getCell('D' . $num)->getValue();
+
+            $owner_province = $sheet->getCell('H' . $num)->getValue();
+            $province_id = null;
+            foreach ($provinces as $province) {
+                if ($province->name == $owner_province) {
+                    $province_id = $province->id;
+                    break;
+                }
+            }
+
+            $regency_api = Http::get('https://muhammadrafi121.github.io/api-wilayah-indonesia/api/regencies/' . $province_id . '.json');
+
+            $regencies = json_decode($regency_api->body());
+
+            foreach ($regencies as $regency) {
+                if ($regency->name == $sheet->getCell('G' . $num)->getValue()) {
+                    $land['regency'] = $regency->id;
+                    break;
+                }
+            }
+
+            $district_api = Http::get('https://muhammadrafi121.github.io/api-wilayah-indonesia/api/districts/' . $land['regency'] . '.json');
+
+            $districts = json_decode($district_api->body());
+
+            foreach ($districts as $district) {
+                if ($district->name == $sheet->getCell('F' . $num)->getValue()) {
+                    $land['district'] = $district->id;
+                    break;
+                }
+            }
+
+            $village_api = Http::get('https://muhammadrafi121.github.io/api-wilayah-indonesia/api/villages/' . $land['district'] . '.json');
+
+            $villages = json_decode($village_api->body());
+
+            foreach ($villages as $village) {
+                if ($village->name == $sheet->getCell('E' . $num)->getValue()) {
+                    $land['village'] = $village->id;
+                    break;
+                }
+            }
+
+            $land['type'] = $sheet->getCell('I' . $num)->getValue();
+            $land['area'] = $sheet->getCell('J' . $num)->getValue();
+            $land['plant'] = $sheet->getCell('K' . $num)->getValue();
+            $land['age'] = $sheet->getCell('L' . $num)->getValue();
+            $land['height'] = $sheet->getCell('M' . $num)->getValue();
+            $land['diameter'] = $sheet->getCell('N' . $num)->getValue();
+            $land['total'] = $sheet->getCell('O' . $num)->getValue();
+            $land['user_id'] = auth()->user()->id;
+
+            array_push($lands, $land);
+
+            $num++;
+        }
+
+        foreach ($lands as $land) {
+            $owner = LandOwner::where('name', $land['owner_name'])
+                ->where('village', $land['village'])
+                ->where('district', $land['district'])
+                ->where('regency', $land['regency'])
+                ->get();
+
+            $owner = collect($owner);
+
+            $land_input = [
+                'row_id' => $land['row_id'],
+                'tower_id' => $land['tower_id'],
+                'type' => $land['type'],
+                'area' => $land['area'],
+                'user_id' => $land['user_id']
+            ];
+
+            if ($owner->isEmpty()) {
+                $owner_input = [
+                    'name' => $land['owner_name'],
+                    'village' => $land['village'],
+                    'district' => $land['district'],
+                    'regency' => $land['regency'],
+                ];
+                $owner = LandOwner::create($owner_input);
+                $landData = $owner->lands()->create($land_input);
+            } else {
+                $land_input['land_owner_id'] = $owner[0]['id'];
+
+                $tmpLand = Land::where('type', $land['type'])
+                    ->where('area', $land['area'])
+                    ->where('land_owner_id', $land_input['land_owner_id'])
+                    ->get();
+                
+                if ($tmpLand->isEmpty()) $landData = Land::create($land_input);
+            }
+
+            if ($land['plant']) {
+                $plant_input = [
+                    'name' => $land['plant'],
+                    'age' => $land['age'],
+                    'height' => $land['height'],
+                    'diameter' => $land['diameter'],
+                    'total' => $land['total']
+                ];
+
+                $landData->plants()->create($plant_input);
+            }
+        }
+
+        return redirect('/land')->with('message', 'Import Data Lahan Berhasil');
     }
 }

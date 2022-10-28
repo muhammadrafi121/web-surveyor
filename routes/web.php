@@ -10,6 +10,7 @@ use App\Http\Controllers\LocationController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PlantController;
 use App\Http\Controllers\RowController;
+use App\Http\Controllers\ToolController;
 use App\Http\Controllers\TowerController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Gate;
@@ -49,21 +50,27 @@ Route::resource('user', UserController::class)->middleware('auth');
 Route::get('tower/{tower}/print', [TowerController::class, 'print'])->middleware('auth');
 Route::put('tower/{tower}/upload', [TowerController::class, 'upload'])->middleware('auth');
 Route::get('tower/{tower}/download', [TowerController::class, 'download'])->middleware('auth');
+Route::get('tower/format', [TowerController::class, 'format'])->middleware('auth');
 Route::get('tower/export', [TowerController::class, 'export'])->middleware('auth');
+Route::post('tower/import', [TowerController::class, 'import'])->middleware('auth');
 Route::resource('tower', TowerController::class)->middleware('auth');
 
 // route ROW
 Route::get('row/{row}/print', [RowController::class, 'print'])->middleware('auth');
 Route::put('row/{row}/upload', [RowController::class, 'upload'])->middleware('auth');
 Route::get('row/{row}/download', [RowController::class, 'download'])->middleware('auth');
+Route::get('row/format', [RowController::class, 'format'])->middleware('auth');
 Route::get('row/export', [RowController::class, 'export'])->middleware('auth');
+Route::post('row/import', [RowController::class, 'import'])->middleware('auth');
 Route::resource('row', RowController::class)->middleware('auth');
 
 // route land
 Route::get('land/{land}/print', [LandController::class, 'print'])->middleware('auth');
 Route::put('land/{land}/upload', [LandController::class, 'upload'])->middleware('auth');
 Route::get('land/{land}/download', [LandController::class, 'download'])->middleware('auth');
+Route::get('land/format', [LandController::class, 'format'])->middleware('auth');
 Route::get('land/export', [LandController::class, 'export'])->middleware('auth');
+Route::post('land/import', [LandController::class, 'import'])->middleware('auth');
 Route::resource('land', LandController::class)->middleware('auth');
 
 // route plant
@@ -82,6 +89,11 @@ Route::resource('location', LocationController::class)->middleware('auth');
 Route::get('feedback/admin', [FeedbackController::class, 'showAdminMsg'])->middleware('auth');
 Route::get('feedback/forum', [FeedbackController::class, 'showForum'])->middleware('auth');
 Route::resource('feedback', FeedbackController::class)->middleware('auth');
+
+// route tool page
+Route::get('tool', [ToolController::class, 'index'])->middleware('can:isAdmin');
+Route::post('tool/import', [ToolController::class, 'import'])->middleware('can:isAdmin');
+Route::post('tool/export', [ToolController::class, 'export'])->middleware('can:isAdmin');
 
 // route ajax
 Route::get('/ajax/inventory', [AjaxController::class, 'inventory'])->middleware('auth');

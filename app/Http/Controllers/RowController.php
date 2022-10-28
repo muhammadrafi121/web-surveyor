@@ -14,6 +14,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class RowController extends Controller
 {
@@ -267,6 +268,17 @@ class RowController extends Controller
         return response()->download($file, $filename, $headers);
     }
 
+    public function format(Row $row)
+    {
+        //how to download file on laravel?
+        $file = public_path() . '/format/row.xlsx';
+        $filename = 'Format Import RoW.xlsx';
+
+        $headers = ['Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
+
+        return response()->download($file, $filename, $headers);
+    }
+
     public function export(Request $request)
     {
         $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
@@ -367,5 +379,40 @@ class RowController extends Controller
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment; filename="' . $fileName . '"');
         $writer->save('php://output');
+    }
+
+    public function import(Request $request)
+    {
+        $spreadsheet = IOFactory::load($request->file);
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $num = 5;
+
+        $rows = [];
+
+        while ($sheet->getCell('B' . $num)->getValue() != null) {
+            $row = [];
+
+            $towers = explode(' - ', $sheet->getCell('B' . $num)->getValue());
+            $location = Location::where('name', $sheet->getCell('C' . $num)->getValue())->get();
+
+            $firsttower = Tower::where('no', $towers[0])->where('location_id', $location[0]->id)->get();
+            $secondtower = Tower::where('no', $towers[1])->where('location_id', $location[0]->id)->get();
+            
+            $row['tower1_id'] = $firsttower[0]->id;
+            $row['tower2_id'] = $secondtower[0]->id;
+            $row['location_id'] = $location[0]->id;
+            $row['user_id'] = auth()->user()->id;
+
+            array_push($rows, $row);
+
+            $num++;
+        }
+
+        foreach($rows as $row) {
+            Row::create($row);
+        }
+
+        return redirect('/row')->with('message', 'Import Data RoW Berhasil');
     }
 }

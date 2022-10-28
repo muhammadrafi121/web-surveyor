@@ -16,6 +16,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Maatwebsite\Excel\Facades\Excel;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class TowerController extends Controller
 {
@@ -269,6 +270,17 @@ class TowerController extends Controller
         return response()->download($file, $filename, $headers);
     }
 
+    public function format(Tower $tower)
+    {
+        //how to download file on laravel?
+        $file = public_path() . '/format/tower.xlsx';
+        $filename = 'Format Import Tapak Tower.xlsx';
+
+        $headers = ['Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
+
+        return response()->download($file, $filename, $headers);
+    }
+
     public function export(Request $request)
     {
         $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
@@ -369,5 +381,37 @@ class TowerController extends Controller
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment; filename="' . $fileName . '"');
         $writer->save('php://output');
+    }
+    
+    public function import(Request $request)
+    {
+        $spreadsheet = IOFactory::load($request->file);
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $num = 5;
+
+        $towers = [];
+
+        while ($sheet->getCell('B' . $num)->getValue() != null) {
+            $tower = [];
+            
+            $tower['no'] = $sheet->getCell('B' . $num)->getValue();
+            $location = Location::where('name', $sheet->getCell('C' . $num)->getValue())->get();
+            $tower['location_id'] = $location[0]->id;
+            $tower['type'] = $sheet->getCell('D' . $num)->getValue();
+            $tower['lat'] = $sheet->getCell('E' . $num)->getValue();
+            $tower['long'] = $sheet->getCell('F' . $num)->getValue();
+            $tower['user_id'] = auth()->user()->id;
+
+            array_push($towers, $tower);
+
+            $num++;
+        }
+
+        foreach($towers as $tower) {
+            Tower::create($tower);
+        }
+
+        return redirect('/tower')->with('message', 'Import Data Tapak Tower Berhasil');
     }
 }

@@ -15,7 +15,7 @@
                             <h2 class="mx-auto mt-4 font-weight-bold">{{ session('message') }}</h2>
                             <div class="col-md-5 col-sm-12 d-flex justify-content-evenly mx-auto my-3">
                                 <a href="/tower" class="btn btn-primary mx-auto">Lihat Data</a>
-                                <a href="http://" class="btn btn-primary bg-blue mx-auto">Cetak</a>
+                                <a href="" class="btn btn-primary bg-blue mx-auto">Cetak</a>
                             </div>
                         </div>
                     </div>
@@ -40,7 +40,7 @@
                     </div>
                     <div class="col-md-3 col-sm-12">
                         <button class="btn btn-outline-primary font-weight-bold" data-bs-toggle="modal"
-                            data-bs-target="#exampleModal1" data-bs-whatever="@getbootstrap"><i
+                            data-bs-target="#importModal" data-bs-whatever="@getbootstrap"><i
                                 class="fas fa-download mr-2"></i>Import</button>
                     </div>
                     <div class="col-md-3 col-sm-12">
@@ -259,7 +259,8 @@
                 <div class="modal-content">
                     <div class="modal-header d-flex flex-column">
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        <h5 class="modal-title font-weight-bold" id="modalLabel{{ $tower->id }}">Detail Data Tapak Tower
+                        <h5 class="modal-title font-weight-bold" id="modalLabel{{ $tower->id }}">Detail Data Tapak
+                            Tower
                         </h5>
                     </div>
                     <div class="modal-body">
@@ -452,4 +453,34 @@
         </div>
         <!-- modal end 6 -->
     @endforeach
+
+    <!-- modal start 7 -->
+    <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="modalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <form class="modal-content" action="/tower/import" method="POST" id="import-form"
+                enctype="multipart/form-data">
+                <div class="modal-header d-flex flex-column">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title font-weight-bold" id="modalLabel">Upload File .xlsx
+                    </h5>
+                </div>
+                <div class="modal-body">
+                    @csrf
+                    <div class="form-group mb-4">
+                        <a href="/tower/format" class="btn btn-primary">Download Format File</a>
+                    </div>
+                    <div class="form-group mb-4">
+                        <h6 class="font-weight-light mt-n2">File ms-excel (.xlsx)</h6>
+                        <input type="file" class="form-control" id="file" name="file" placeholder="File ms-excel (.xlsx)"
+                            required />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Submit Data</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- modal end 7 -->
 @endsection

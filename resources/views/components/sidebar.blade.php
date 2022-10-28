@@ -42,7 +42,7 @@
         </li>
     @endcanany
 
-    @can('isAdmin')
+    @canany(['isAdmin', 'isClient'])
         <!-- Nav Item - laporan -->
         <li class="nav-item">
             <a class="nav-link {{ Request::is('report') ? 'active' : '' }}" href="/report">
@@ -57,7 +57,7 @@
                 <i class="fas fa-fw fa-map-location-dot"></i>
                 <span>Peta</span></a>
         </li>
-    @endcan
+    @endcanany
 
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
@@ -88,7 +88,7 @@
     @can('isAdmin')
         <!-- Nav Item - Charts -->
         <li class="nav-item">
-            <a class="nav-link" href="charts.html">
+            <a class="nav-link {{ Request::is('tool') ? 'active' : '' }}" href="/tool">
                 <i class="fas fa-fw fa-wrench"></i>
                 <span>Alat</span></a>
         </li>
