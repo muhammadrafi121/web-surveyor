@@ -579,6 +579,7 @@ class LandController extends Controller
                     ->get();
                 
                 if ($tmpLand->isEmpty()) $landData = Land::create($land_input);
+                else $landData = $tmpLand->first();
             }
 
             if ($land['plant']) {
