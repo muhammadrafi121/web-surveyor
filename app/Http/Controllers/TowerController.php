@@ -29,7 +29,7 @@ class TowerController extends Controller
     {
         $inventories = Inventory::all();
         $locations = Location::where('inventory_id', $inventories->first()->id)->get();
-        $towers = Tower::all();
+        $towers = Tower::paginate(10);
         
         if (auth()->user()->role == 'Surveyor') {
             $user = User::with('team')->find(auth()->user()->id);
@@ -39,7 +39,7 @@ class TowerController extends Controller
                 ->join('inventories', 'locations.inventory_id', '=', 'inventories.id')
                 ->where('inventories.id', '=', $user->team->inventory_id)
                 ->select('locations.id', 'inventories.*', 'towers.*')
-                ->get();
+                ->paginate(10);
         }
         return view('listtower', [
             'title' => 'Data Tapak Tower',

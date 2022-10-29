@@ -30,9 +30,14 @@
         <!-- Page Heading -->
         <div class="d-sm-flex flex-column justify-content-between mb-4 px-lg-4">
             <h2 class="h2 mb-3 font-weight-bold">{{ $title }}</h2>
-            {{-- <p class="font-weight-light mt-lg-3 d-none d-xl-block d-lg-block d-md-block d-xl-none">Berikut adalah data
-                lengkap jalur yang telah berhasil disi oleh petugas lapangan. Dari sini admin dapat mengubah , mengedit,
-                menambah dan menghapus data yang sudah diinputkan</p> --}}
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn border border-dark text text-dark" data-toggle="modal"
+                        data-target="#exampleModal"><i class="fas fa-plus mr-2"></i><b>Tambah</b>
+                    </button>
+                </div>
+            </div>
         </div>
         <!-- page card -->
 
@@ -40,49 +45,44 @@
             <!-- DataTales Example -->
             <div class="shadow mb-4">
                 <div class="card-body">
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <!-- Button trigger modal -->
-                            <button type="button" class="btn border border-dark text text-dark" data-toggle="modal"
-                                data-target="#exampleModal"><i class="fas fa-plus mr-2"></i><b>Tambah</b>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="table-responsive">
-                    <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
-                        <thead>
-                            <tr>
-                                <th>Inventory</th>
-                                <th>Ruas Jalur</th>
-                                <th>Waktu</th>
-                                <th>Tindakan</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            @foreach ($locations as $location)
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
                                 <tr>
-                                    <td>{{ $location->inventory->name }}</td>
-                                    <td>{{ $location->name }}</td>
-                                    <td>{{ $location->created_at }}</td>
-                                    <td>
-                                        <form action="/location/{{ $location->id }}" method="POST">
-                                            @method('delete')
-                                            @csrf
-                                            <a href="">Cetak</a> |
-                                            <a href="" data-bs-toggle="modal"
-                                                data-bs-target="#modal-{{ $location->id }}"
-                                                data-bs-whatever="@getbootstrap">Lihat</a> |
-                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#exampleModal2"
-                                                onclick="edit({{ $location }})">Edit</a> |
-                                            <button type="submit" class="link">Hapus</button>
-                                        </form>
-                                    </td>
+                                    <th>Inventory</th>
+                                    <th>Ruas Jalur</th>
+                                    <th>Waktu</th>
+                                    <th>Tindakan</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+    
+                            <tbody>
+                                @foreach ($locations as $location)
+                                    <tr>
+                                        <td>{{ $location->inventory->name }}</td>
+                                        <td>{{ $location->name }}</td>
+                                        <td>{{ $location->created_at }}</td>
+                                        <td>
+                                            <form action="/location/{{ $location->id }}" method="POST">
+                                                @method('delete')
+                                                @csrf
+                                                <a href="">Cetak</a> |
+                                                <a href="" data-bs-toggle="modal"
+                                                    data-bs-target="#modal-{{ $location->id }}"
+                                                    data-bs-whatever="@getbootstrap">Lihat</a> |
+                                                <a href="javascript:void(0)" data-toggle="modal" data-target="#exampleModal2"
+                                                    onclick="edit({{ $location }})">Edit</a> |
+                                                <button type="submit" class="link">Hapus</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="paginator">
+                        {{ $locations->links('pagination::bootstrap-4') }}
+                    </div>
                 </div>
             </div>
         </div>

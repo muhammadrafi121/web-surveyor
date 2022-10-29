@@ -19,7 +19,7 @@ class UserController extends Controller
     public function index()
     {
         if (auth()->user()->role != 'Administrator') abort(404);        
-        $users = User::orderBy('role')->get();
+        $users = User::orderBy('role')->paginate(10);
 
         return view('listuser', [
             'title' => 'List Akun',

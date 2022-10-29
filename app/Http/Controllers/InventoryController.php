@@ -17,7 +17,7 @@ class InventoryController extends Controller
     {
         return view('listinv', [
             'title' => 'Data Inventory',
-            'inventories' => Inventory::all(),
+            'inventories' => Inventory::paginate(10),
             'script' => 'inventory'
         ]);
     }

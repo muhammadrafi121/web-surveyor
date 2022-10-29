@@ -111,6 +111,9 @@
                             </tbody>
                         </table>
                     </div>
+                    <div class="paginator">
+                        {{ $towers->links('pagination::bootstrap-4') }}
+                    </div>
                 </div>
             </div>
         </div>
@@ -455,8 +458,7 @@
     @endforeach
 
     <!-- modal start 7 -->
-    <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="modalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <form class="modal-content" action="/tower/import" method="POST" id="import-form"
                 enctype="multipart/form-data">
@@ -472,8 +474,8 @@
                     </div>
                     <div class="form-group mb-4">
                         <h6 class="font-weight-light mt-n2">File ms-excel (.xlsx)</h6>
-                        <input type="file" class="form-control" id="file" name="file" placeholder="File ms-excel (.xlsx)"
-                            required />
+                        <input type="file" class="form-control" id="file" name="file"
+                            placeholder="File ms-excel (.xlsx)" required />
                     </div>
                 </div>
                 <div class="modal-footer">

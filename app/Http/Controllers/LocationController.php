@@ -19,7 +19,7 @@ class LocationController extends Controller
         return view('listlocation', [
             'title' => 'Data Jalur',
             'inventories' => Inventory::all(),
-            'locations' => Location::all(),
+            'locations' => Location::paginate(10),
             'script' => 'location',
         ]);
     }

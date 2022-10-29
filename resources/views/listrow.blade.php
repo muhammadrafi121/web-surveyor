@@ -111,6 +111,9 @@
                             </tbody>
                         </table>
                     </div>
+                    <div class="paginator">
+                        {{ $rows->links('pagination::bootstrap-4') }}
+                    </div>
                 </div>
             </div>
         </div>

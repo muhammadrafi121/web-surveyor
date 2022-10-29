@@ -28,7 +28,7 @@ class RowController extends Controller
         $inventories = Inventory::all();
         $locations = Location::where('inventory_id', $inventories->first()->id)->get();
         $towers = Tower::where('location_id', $locations->first()->id)->get();
-        $rows = Row::all();
+        $rows = Row::paginate(10);
         
         if (auth()->user()->role == 'Surveyor') {
             $user = User::with('team')->find(auth()->user()->id);
@@ -43,7 +43,7 @@ class RowController extends Controller
                 ->join('inventories', 'locations.inventory_id', '=', 'inventories.id')
                 ->where('inventories.id', '=', $user->team->inventory_id)
                 ->select('locations.id', 'inventories.*', 'rows.*')
-                ->get();
+                ->paginate(10);
         }
 
         return view('listrow', [

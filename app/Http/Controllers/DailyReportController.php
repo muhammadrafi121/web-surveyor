@@ -25,14 +25,14 @@ class DailyReportController extends Controller
         $inventories = Inventory::all();
         $locations = Location::where('inventory_id', $inventories->first()->id)->get();
         $teams = Team::where('inventory_id', $inventories->first()->id)->get();
-        $reports = DailyReport::all();
+        $reports = DailyReport::paginate(10);
 
         if (auth()->user()->role == 'Surveyor') {
             $user = User::with('team')->find(auth()->user()->id);
             $inventories = Inventory::find($user->team->inventory_id);
             $locations = Location::where('inventory_id', $user->team->inventory_id)->get();
             $teams = $user->team;
-            $reports = DailyReport::where('team_id', $user->team->id)->get();
+            $reports = DailyReport::where('team_id', $user->team->id)->paginate(10);
         }
 
         return view('listreport', [

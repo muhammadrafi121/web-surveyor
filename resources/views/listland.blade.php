@@ -114,6 +114,9 @@
                             </tbody>
                         </table>
                     </div>
+                    <div class="paginator">
+                        {{ $lands->links('pagination::bootstrap-4') }}
+                    </div>
                 </div>
             </div>
         </div>

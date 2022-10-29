@@ -88,6 +88,9 @@
                             </tbody>
                         </table>
                     </div>
+                    <div class="paginator">
+                        {{ $reports->links('pagination::bootstrap-4') }}
+                    </div>
                 </div>
             </div>
         </div>

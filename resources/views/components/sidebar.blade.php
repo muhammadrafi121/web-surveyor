@@ -50,19 +50,22 @@
                 <span>Laporan</span>
             </a>
         </li>
+    @endcanany
 
+    @can('isAdmin')
         <!-- Nav Item - Peta -->
         <li class="nav-item">
             <a class="nav-link {{ Request::is('map') ? 'active' : '' }}" href="/map">
                 <i class="fas fa-fw fa-map-location-dot"></i>
                 <span>Peta</span></a>
         </li>
-    @endcanany
+    @endcan
 
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link collapsed {{ Request::is('user*') || Request::is('team*') || Request::is('profile') ? 'active' : '' }}" href="#" data-toggle="collapse" data-target="#collapsePages"
-            aria-expanded="true" aria-controls="collapsePages">
+        <a class="nav-link collapsed {{ Request::is('user*') || Request::is('team*') || Request::is('profile') ? 'active' : '' }}"
+            href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
+            aria-controls="collapsePages">
             <i class="fas fa-fw fa-cog"></i>
             <span>Pengaturan</span>
         </a>
@@ -72,8 +75,7 @@
                     {{-- <a class="collapse-item {{ Request::is('team*') ? 'active' : '' }}" href="/team">Tim Surveyor</a> --}}
                     <a class="collapse-item {{ Request::is('user*') ? 'active' : '' }}" href="/user">Akun</a>
                 @endcan
-                <a class="collapse-item {{ Request::is('profile') ? 'active' : '' }}"
-                    href="/profile">Profile</a>
+                <a class="collapse-item {{ Request::is('profile') ? 'active' : '' }}" href="/profile">Profile</a>
             </div>
         </div>
     </li>

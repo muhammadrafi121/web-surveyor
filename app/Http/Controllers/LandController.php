@@ -14,6 +14,9 @@ use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
@@ -27,8 +30,11 @@ class LandController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $page = $request->get('page', 1);
+        $paginate = 10;
+
         $inventories = Inventory::all();
         if (auth()->user()->role == 'Surveyor') {
             $user = User::with('team')->find(auth()->user()->id);
@@ -38,7 +44,7 @@ class LandController extends Controller
         $locations = Location::where('inventory_id', $inventories->first()->id)->get();
         $towers = Tower::where('location_id', $locations->first()->id)->get();
         $rows = Row::where('location_id', $locations->first()->id)->get();
-        $lands = Land::all();
+        $lands = Land::paginate(10);
         if (auth()->user()->role == 'Surveyor') {
             $user = User::with('team')->find(auth()->user()->id);
             $towerlands = Land::join('towers', 'lands.tower_id', '=', 'towers.id')
@@ -52,7 +58,10 @@ class LandController extends Controller
                 ->where('inventories.id', '=', $user->team->inventory_id)
                 ->select('locations.id', 'inventories.*', 'lands.*');
             // dd($towerlands->get(), $rowlands->get());
-            $lands = $towerlands->union($rowlands)->get();
+
+            $allLands = $towerlands->union($rowlands)->get();
+            $lands = $this->paginate($allLands);
+            $lands->withPath('/land');
         }
         return view('listland', [
             'title' => 'Data Lahan',
@@ -63,6 +72,13 @@ class LandController extends Controller
             'rows' => $rows,
             'script' => 'land',
         ]);
+    }
+
+    public function paginate($items, $perPage = 10, $page = null, $options = [])
+    {
+        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+        $items = $items instanceof Collection ? $items : Collection::make($items);
+        return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
     }
 
     /**
