@@ -5,13 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Activity;
 use App\Models\DailyReport;
 use App\Models\DailyReportHistory;
+use App\Models\DailyReportImage;
 use App\Models\Facility;
 use App\Models\Inventory;
 use App\Models\Location;
 use App\Models\ManPower;
 use App\Models\Team;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Image;
 
 class DailyReportController extends Controller
 {
@@ -375,10 +379,6 @@ class DailyReportController extends Controller
 
         $dailyreport->where('id', $request->id)->update($dataReport);
 
-        $dailyreport->activities()->create([
-            'activity' => $request->kegiatan,
-        ]);
-
         $tmpdailyreport = $dailyreport->where('id', $dailyreport->id)->get();
 
         $hist = [
@@ -402,5 +402,80 @@ class DailyReportController extends Controller
     {
         $dailyreport->delete();
         return redirect('/dailyreport')->with('message', 'Hapus Data Daily Report Berhasil');
+    }
+
+    public function print(DailyReport $dailyreport)
+    {
+        $pln = base64_encode(file_get_contents(public_path('/img/Logo_PLN.png')));
+        $ptsi = base64_encode(file_get_contents(public_path('/img/logo_ptsi.png')));
+
+        $img1 = null;
+        $img2 = null;
+        if (File::exists(public_path('report-imgs/' . $dailyreport->images[0]->name))) {
+            $img1 = base64_encode(file_get_contents(public_path('/report-imgs/' . $dailyreport->images[0]->name)));
+        }
+        if (File::exists(public_path('report-imgs/' . $dailyreport->images[1]->name))) {
+            $img2 = base64_encode(file_get_contents(public_path('/report-imgs/' . $dailyreport->images[1]->name)));
+        }
+
+        $inv = $dailyreport->location->inventory->name;
+        $pieces = explode(' ', $inv);
+        $no_inv = array_pop($pieces);
+
+        $pdf = Pdf::loadView('pdfdatareport', [
+            'pln' => $pln,
+            'ptsi' => $ptsi,
+            'img1' => $img1,
+            'img2' => $img2,
+            'report' => $dailyreport,
+            'no_inv' => $no_inv,
+        ]);
+
+        $pdf->render();
+
+        return $pdf->stream();
+    }
+
+    public function upload(Request $request, DailyReport $dailyreport)
+    {
+        $this->validate($request, [
+            'foto1' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
+            'foto2' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
+        ]);
+
+        $image1 = $request->file('foto1');
+        $image1Name = $image1->hashName();
+
+        $destinationPath = public_path('/report-imgs');
+        $img = Image::make($image1->path());
+        $img->resize(800, 800, function ($constraint) {
+            $constraint->aspectRatio();
+        })->save($destinationPath . '/' . $image1Name);
+
+        $image2 = $request->file('foto2');
+        $image2Name = $image2->hashName();
+
+        $destinationPath = public_path('/report-imgs');
+        $img = Image::make($image2->path());
+        $img->resize(800, 800, function ($constraint) {
+            $constraint->aspectRatio();
+        })->save($destinationPath . '/' . $image2Name);
+
+        if ($dailyreport->images->isEmpty()) {
+            $dailyreport->images()->create(['name' => $image1Name]);
+            $dailyreport->images()->create(['name' => $image2Name]);
+        } else {
+            if (File::exists(public_path('report-imgs/' . $dailyreport->images[0]->name))) {
+                File::delete(public_path('report-imgs/' . $dailyreport->images[0]->name));
+            }
+            if (File::exists(public_path('report-imgs/' . $dailyreport->images[1]->name))) {
+                File::delete(public_path('report-imgs/' . $dailyreport->images[1]->name));
+            }
+
+            DailyReportImage::where('id', $dailyreport->images[0]->id)->update(['name' => $image1Name]);
+            DailyReportImage::where('id', $dailyreport->images[1]->id)->update(['name' => $image2Name]);
+        }
+
+        return redirect('/dailyreport')->with('message', 'Upload Lampiran Daily Report Berhasil');
     }
 }

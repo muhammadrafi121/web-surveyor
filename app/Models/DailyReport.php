@@ -50,4 +50,9 @@ class DailyReport extends Model
     {
         return $this->hasMany(DailyReportHistory::class)->orderBy('updated', 'desc');
     }
+
+    public function images()
+    {
+        return $this->hasMany(DailyReportImage::class);
+    }
 }

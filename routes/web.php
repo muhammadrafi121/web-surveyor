@@ -77,6 +77,8 @@ Route::resource('land', LandController::class)->middleware('auth');
 Route::resource('plant', PlantController::class)->middleware('auth');
 
 // route daily report
+Route::get('dailyreport/{dailyreport}/print', [DailyReportController::class, 'print'])->middleware('auth');
+Route::put('dailyreport/{dailyreport}/upload', [DailyReportController::class, 'upload'])->middleware('auth');
 Route::resource('dailyreport', DailyReportController::class)->middleware('auth');
 
 // route inventory

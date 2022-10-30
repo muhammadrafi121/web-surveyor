@@ -62,6 +62,7 @@
                                     <th>Penginput</th>
                                     <th>Last Update</th>
                                     <th class="text-center">Tindakan</th>
+                                    <th class="text-center">Lampiran</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -75,13 +76,20 @@
                                             <form action="/dailyreport/{{ $report->id }}" method="POST">
                                                 @method('DELETE')
                                                 @csrf
-                                                <a href="">Cetak</a>|
+                                                <a href="/dailyreport/{{ $report->id }}/print">Cetak</a>|
                                                 <a href="javascript:void(0)" data-bs-toggle="modal"
                                                     data-bs-target="#report-modal-{{ $report->id }}"
                                                     data-bs-whatever="@getbootstrap">Lihat</a>|
                                                 <a href="javascript:void(0)" onclick="edit({{ $report }})">Edit</a>|
                                                 <button class="link" type="submit">Hapus</button>
                                             </form>
+                                        </td>
+                                        <td>
+                                            <a href="" class="btn btn-primary" style="border: 2px solid black"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#attachment-modal-{{ $report->id }}"
+                                                data-bs-whatever="@getbootstrap"><i
+                                                    class="fas fa-file fa-sm fa-fw mr-2"></i>Browse File</a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -495,6 +503,44 @@
                 </div>
             </div>
             <!-- modal end 6 -->
+
+            <!-- modal start 5 -->
+            <div class="modal fade" id="attachment-modal-{{ $report->id }}" tabindex="-1"
+                aria-labelledby="modalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <form class="modal-content" action="/dailyreport/{{ $report->id }}/upload" method="POST"
+                        id="attachment-form" enctype="multipart/form-data">
+                        <div class="modal-header d-flex flex-column">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                            <h5 class="modal-title font-weight-bold" id="modalLabel">Upload File Lampiran
+                            </h5>
+                        </div>
+                        <div class="modal-body">
+                            @method('PUT')
+                            @csrf
+                            <input type="hidden" name="report_id" id="report-id" value="{{ $report->id }}">
+                            <div class="form-group mb-4">
+                                <h5 class="h5 font-weight-bold">Upload Gambar dengan Posisi Landscape</h5>
+                            </div>
+                            <div class="form-group mb-4">
+                                <h6 class="font-weight-light mt-n2">Foto 1</h6>
+                                <input type="file" class="form-control" id="foto1" name="foto1"
+                                    placeholder="Foto 1" required />
+                            </div>
+                            <div class="form-group mb-4">
+                                <h6 class="font-weight-light mt-n2">Foto 2</h6>
+                                <input type="file" class="form-control" id="foto2" name="foto2"
+                                    placeholder="Foto 2" required />
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Submit Data</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- modal end 5 -->
         @endforeach
         <!-- modal end -->
     </div>
