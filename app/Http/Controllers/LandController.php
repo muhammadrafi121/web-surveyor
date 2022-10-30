@@ -44,25 +44,44 @@ class LandController extends Controller
         $locations = Location::where('inventory_id', $inventories->first()->id)->get();
         $towers = Tower::where('location_id', $locations->first()->id)->get();
         $rows = Row::where('location_id', $locations->first()->id)->get();
-        $lands = Land::paginate(10);
+
+        $towerlands = Land::with([
+            'tower' => function ($q) {
+                $q->orderBy('no', 'asc');
+            },
+        ]);
+        $rowlands = Land::with([
+            'row.firsttower' => function ($q) {
+                $q->orderBy('no', 'asc');
+            },
+        ]);
+
         if (auth()->user()->role == 'Surveyor') {
             $user = User::with('team')->find(auth()->user()->id);
             $towerlands = Land::join('towers', 'lands.tower_id', '=', 'towers.id')
                 ->join('locations', 'towers.location_id', '=', 'locations.id')
                 ->join('inventories', 'locations.inventory_id', '=', 'inventories.id')
                 ->where('inventories.id', '=', $user->team->inventory_id)
-                ->select('locations.id', 'inventories.*', 'lands.*');
+                ->select('locations.id', 'inventories.*', 'lands.*')
+                ->orderBy('towers.no', 'asc');
             $rowlands = Land::join('rows', 'lands.row_id', '=', 'rows.id')
                 ->join('locations', 'rows.location_id', '=', 'locations.id')
                 ->join('inventories', 'locations.inventory_id', '=', 'inventories.id')
                 ->where('inventories.id', '=', $user->team->inventory_id)
-                ->select('locations.id', 'inventories.*', 'lands.*');
+                ->select('locations.id', 'inventories.*', 'lands.*')
+                ->with([
+                    'rows.firsttower' => function ($q) {
+                        $q->orderBy('no', 'asc');
+                    },
+                ]);
             // dd($towerlands->get(), $rowlands->get());
 
-            $allLands = $towerlands->union($rowlands)->get();
-            $lands = $this->paginate($allLands);
-            $lands->withPath('/land');
         }
+        
+        $allLands = $towerlands->union($rowlands)->get();
+        $lands = $this->paginate($allLands);
+        $lands->withPath('/land');
+
         return view('listland', [
             'title' => 'Data Lahan',
             'lands' => $lands,
@@ -574,7 +593,7 @@ class LandController extends Controller
                 'tower_id' => $land['tower_id'],
                 'type' => $land['type'],
                 'area' => $land['area'],
-                'user_id' => $land['user_id']
+                'user_id' => $land['user_id'],
             ];
 
             if ($owner->isEmpty()) {
@@ -593,9 +612,12 @@ class LandController extends Controller
                     ->where('area', $land['area'])
                     ->where('land_owner_id', $land_input['land_owner_id'])
                     ->get();
-                
-                if ($tmpLand->isEmpty()) $landData = Land::create($land_input);
-                else $landData = $tmpLand->first();
+
+                if ($tmpLand->isEmpty()) {
+                    $landData = Land::create($land_input);
+                } else {
+                    $landData = $tmpLand->first();
+                }
             }
 
             if ($land['plant']) {
@@ -604,7 +626,7 @@ class LandController extends Controller
                     'age' => $land['age'],
                     'height' => $land['height'],
                     'diameter' => $land['diameter'],
-                    'total' => $land['total']
+                    'total' => $land['total'],
                 ];
 
                 $landData->plants()->create($plant_input);

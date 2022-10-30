@@ -29,8 +29,8 @@ class TowerController extends Controller
     {
         $inventories = Inventory::all();
         $locations = Location::where('inventory_id', $inventories->first()->id)->get();
-        $towers = Tower::paginate(10);
-        
+        $towers = Tower::orderBy('no', 'asc')->paginate(10);
+
         if (auth()->user()->role == 'Surveyor') {
             $user = User::with('team')->find(auth()->user()->id);
             $inventories = Inventory::find($user->team->inventory_id);
@@ -39,6 +39,7 @@ class TowerController extends Controller
                 ->join('inventories', 'locations.inventory_id', '=', 'inventories.id')
                 ->where('inventories.id', '=', $user->team->inventory_id)
                 ->select('locations.id', 'inventories.*', 'towers.*')
+                ->orderBy('no', 'asc')
                 ->paginate(10);
         }
         return view('listtower', [
@@ -382,7 +383,7 @@ class TowerController extends Controller
         header('Content-Disposition: attachment; filename="' . $fileName . '"');
         $writer->save('php://output');
     }
-    
+
     public function import(Request $request)
     {
         $spreadsheet = IOFactory::load($request->file);
@@ -394,7 +395,7 @@ class TowerController extends Controller
 
         while ($sheet->getCell('B' . $num)->getValue() != null) {
             $tower = [];
-            
+
             $tower['no'] = $sheet->getCell('B' . $num)->getValue();
             $location = Location::where('name', $sheet->getCell('C' . $num)->getValue())->get();
             $tower['location_id'] = $location[0]->id;
@@ -408,7 +409,7 @@ class TowerController extends Controller
             $num++;
         }
 
-        foreach($towers as $tower) {
+        foreach ($towers as $tower) {
             Tower::create($tower);
         }
 

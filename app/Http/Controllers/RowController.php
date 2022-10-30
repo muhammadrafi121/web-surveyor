@@ -28,8 +28,12 @@ class RowController extends Controller
         $inventories = Inventory::all();
         $locations = Location::where('inventory_id', $inventories->first()->id)->get();
         $towers = Tower::where('location_id', $locations->first()->id)->get();
-        $rows = Row::paginate(10);
-        
+        $rows = Row::with([
+            'firsttower' => function ($q) {
+                $q->orderBy('no', 'asc');
+            },
+        ])->paginate(10);
+
         if (auth()->user()->role == 'Surveyor') {
             $user = User::with('team')->find(auth()->user()->id);
             $inventories = Inventory::find($user->team->inventory_id);
@@ -43,6 +47,11 @@ class RowController extends Controller
                 ->join('inventories', 'locations.inventory_id', '=', 'inventories.id')
                 ->where('inventories.id', '=', $user->team->inventory_id)
                 ->select('locations.id', 'inventories.*', 'rows.*')
+                ->with([
+                    'firsttower' => function ($q) {
+                        $q->orderBy('no', 'asc');
+                    },
+                ])
                 ->paginate(10);
         }
 
@@ -396,9 +405,13 @@ class RowController extends Controller
             $towers = explode(' - ', $sheet->getCell('B' . $num)->getValue());
             $location = Location::where('name', $sheet->getCell('C' . $num)->getValue())->get();
 
-            $firsttower = Tower::where('no', $towers[0])->where('location_id', $location[0]->id)->get();
-            $secondtower = Tower::where('no', $towers[1])->where('location_id', $location[0]->id)->get();
-            
+            $firsttower = Tower::where('no', $towers[0])
+                ->where('location_id', $location[0]->id)
+                ->get();
+            $secondtower = Tower::where('no', $towers[1])
+                ->where('location_id', $location[0]->id)
+                ->get();
+
             $row['tower1_id'] = $firsttower[0]->id;
             $row['tower2_id'] = $secondtower[0]->id;
             $row['location_id'] = $location[0]->id;
@@ -409,7 +422,7 @@ class RowController extends Controller
             $num++;
         }
 
-        foreach($rows as $row) {
+        foreach ($rows as $row) {
             Row::create($row);
         }
 
