@@ -16,7 +16,9 @@
                     <h4 class="col-md-3 px-0">Pemutakhiran Data :</h4>
                     <div class="col-md-2 dropdown p-0">
                         <select class="form-select bg-yellow btn-sm border-0" id="wilayah">
-                            <option selected value="all">Semua Wilayah</option>
+                            @if ($inventories->count() > 1)
+                                <option selected value="all">Semua Wilayah</option>
+                            @endif
                             @foreach ($inventories as $inventory)
                                 <option value="{{ $inventory->id }}">{{ $inventory->name }}</option>
                             @endforeach
@@ -71,7 +73,7 @@
                         <span class="d-flex">
                             {{-- <h1>50</h1> --}}
                             <a href="/dailyreport">
-                                <h6>>> LIHAT DI SINI <<</h6>
+                                <h6>>> LIHAT DI SINI << </h6>
                             </a>
                         </span>
                     </div>

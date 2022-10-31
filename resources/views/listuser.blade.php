@@ -54,6 +54,7 @@
                                     <th>Nama</th>
                                     <th>Role</th>
                                     <th>Tim</th>
+                                    <th>Wilayah</th>
                                     <th>Tindakan</th>
                                 </tr>
                             </thead>
@@ -64,7 +65,8 @@
                                         <td>{{ $user->username }}</td>
                                         <td>{{ $user->name }}</td>
                                         <td>{{ $user->role }}</td>
-                                        <td>{{ $user->team ? $user->team->name . ' / ' . $user->team->inventory->name : '' }}
+                                        <td>{{ $user->team ? $user->team->name : '' }}
+                                        <td>{{ $user->inventory ? $user->inventory->name : ($user->team ? $user->team->inventory->name : '') }}
                                         </td>
                                         <td>
                                             <form action="/user/{{ $user->id }}" method="POST">
@@ -129,6 +131,7 @@
                             </select>
                         </div>
                         <div class="form-group mb-4" id="team-container"></div>
+                        <div class="form-group mb-4" id="inv-container"></div>
                         <div class="form-group mb-4">
                             <label class="h6 font-weight-bold" for="password">Password</label>
                             <input type="password" class="form-control" id="password" name="password">
@@ -180,7 +183,12 @@
                         <div class="form-group mb-4" id="team">
                             <label class="h5 font-weight-bold" for="team-detail-{{ $user->id }}">Tim</label>
                             <input type="text" class="form-control" id="team-detail-{{ $user->id }}"
-                                value="{{ $user->team ? $user->team->name . ' / ' . $user->team->inventory->name : '' }}"
+                                value="{{ $user->team ? $user->team->name : '' }}" readonly>
+                        </div>
+                        <div class="form-group mb-4" id="inv">
+                            <label class="h5 font-weight-bold" for="inv-detail-{{ $user->id }}">Wilayah</label>
+                            <input type="text" class="form-control" id="inv-detail-{{ $user->id }}"
+                                value="{{ $user->inventory ? $user->inventory->name : ($user->team ? $user->team->inventory->name : '') }}"
                                 readonly>
                         </div>
                     </div>

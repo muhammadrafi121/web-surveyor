@@ -21,6 +21,11 @@ class AjaxController extends Controller
             ->get();
     }
 
+    public function inventories()
+    {
+        return Inventory::all();
+    }
+
     public function location(Request $request)
     {
         return Location::with(['towers', 'rows.firsttower', 'rows.secondtower'])
@@ -77,6 +82,26 @@ class AjaxController extends Controller
             ->orderBy('inventories.name')
             ->get();
 
+        if (auth()->user()->role == 'Client') {
+            $filled = DB::table('towers')
+                ->select('inventories.name', DB::raw('IFNULL(COUNT(DISTINCT(towers.id)), 0) as filled'))
+                ->join('lands', 'towers.id', '=', 'lands.tower_id')
+                ->join('locations', 'towers.location_id', '=', 'locations.id')
+                ->rightJoin('inventories', 'locations.inventory_id', '=', 'inventories.id')
+                ->where('inventories.id', auth()->user()->inventory->id)
+                ->groupBy('inventories.name')
+                ->orderBy('inventories.name')
+                ->get();
+            $total = DB::table('towers')
+                ->select('inventories.name', DB::raw('COUNT(towers.id) as total'))
+                ->join('locations', 'towers.location_id', '=', 'locations.id')
+                ->rightJoin('inventories', 'locations.inventory_id', '=', 'inventories.id')
+                ->where('inventories.id', auth()->user()->inventory->id)
+                ->groupBy('inventories.name')
+                ->orderBy('inventories.name')
+                ->get();
+        }
+
         $data = [];
         for ($i = 0; $i < sizeof($filled); $i++) {
             array_push($data, [
@@ -107,6 +132,26 @@ class AjaxController extends Controller
             ->orderBy('inventories.name')
             ->get();
 
+        if (auth()->user()->role == 'Client') {
+            $filled = DB::table('rows')
+                ->select('inventories.name', DB::raw('IFNULL(COUNT(DISTINCT(rows.id)), 0) as filled'))
+                ->join('lands', 'rows.id', '=', 'lands.row_id')
+                ->join('locations', 'rows.location_id', '=', 'locations.id')
+                ->rightJoin('inventories', 'locations.inventory_id', '=', 'inventories.id')
+                ->where('inventories.id', auth()->user()->inventory->id)
+                ->groupBy('inventories.name')
+                ->orderBy('inventories.name')
+                ->get();
+            $total = DB::table('rows')
+                ->select('inventories.name', DB::raw('COUNT(rows.id) as total'))
+                ->join('locations', 'rows.location_id', '=', 'locations.id')
+                ->rightJoin('inventories', 'locations.inventory_id', '=', 'inventories.id')
+                ->where('inventories.id', auth()->user()->inventory->id)
+                ->groupBy('inventories.name')
+                ->orderBy('inventories.name')
+                ->get();
+        }
+
         $data = [];
         for ($i = 0; $i < sizeof($filled); $i++) {
             array_push($data, [
@@ -134,6 +179,26 @@ class AjaxController extends Controller
             ->groupBy('locations.name')
             ->orderBy('locations.name')
             ->get();
+
+        if (auth()->user()->role == 'Client') {
+            $filled = DB::table('towers')
+                ->select('locations.name', DB::raw('IFNULL(COUNT(DISTINCT(towers.id)), 0) as filled'))
+                ->join('lands', 'towers.id', '=', 'lands.tower_id')
+                ->rightJoin('locations', 'towers.location_id', '=', 'locations.id')
+                ->join('inventories', 'locations.inventory_id', '=', 'inventories.id')
+                ->where('inventories.id', auth()->user()->inventory->id)
+                ->groupBy('locations.name')
+                ->orderBy('locations.name')
+                ->get();
+            $total = DB::table('towers')
+                ->select('locations.name', DB::raw('COUNT(towers.id) as total'))
+                ->rightJoin('locations', 'towers.location_id', '=', 'locations.id')
+                ->join('inventories', 'locations.inventory_id', '=', 'inventories.id')
+                ->where('inventories.id', auth()->user()->inventory->id)
+                ->groupBy('locations.name')
+                ->orderBy('locations.name')
+                ->get();
+        }
 
         $data = [];
         for ($i = 0; $i < sizeof($filled); $i++) {
@@ -163,6 +228,26 @@ class AjaxController extends Controller
             ->orderBy('locations.name')
             ->get();
 
+        if (auth()->user()->role == 'Client') {
+            $filled = DB::table('rows')
+                ->select('locations.name', DB::raw('IFNULL(COUNT(DISTINCT(rows.id)), 0) as filled'))
+                ->join('lands', 'rows.id', '=', 'lands.row_id')
+                ->rightJoin('locations', 'rows.location_id', '=', 'locations.id')
+                ->join('inventories', 'locations.inventory_id', '=', 'inventories.id')
+                ->where('inventories.id', auth()->user()->inventory->id)
+                ->groupBy('locations.name')
+                ->orderBy('locations.name')
+                ->get();
+            $total = DB::table('rows')
+                ->select('locations.name', DB::raw('COUNT(rows.id) as total'))
+                ->rightJoin('locations', 'rows.location_id', '=', 'locations.id')
+                ->join('inventories', 'locations.inventory_id', '=', 'inventories.id')
+                ->where('inventories.id', auth()->user()->inventory->id)
+                ->groupBy('locations.name')
+                ->orderBy('locations.name')
+                ->get();
+        }
+
         $data = [];
         for ($i = 0; $i < sizeof($filled); $i++) {
             array_push($data, [
@@ -182,6 +267,8 @@ class AjaxController extends Controller
             ->join('lands', 'towers.id', '=', 'lands.tower_id')
             ->join('locations', 'towers.location_id', '=', 'locations.id')
             ->rightJoin('users', 'towers.user_id', '=', 'users.id')
+            ->where('users.role', 'Administrator')
+            ->orWhere('users.role', 'Surveyor')
             ->groupBy('users.name')
             ->orderBy('users.id')
             ->get();
@@ -189,9 +276,37 @@ class AjaxController extends Controller
             ->select('users.name', DB::raw('COUNT(towers.id) as total'))
             ->join('locations', 'towers.location_id', '=', 'locations.id')
             ->rightJoin('users', 'towers.user_id', '=', 'users.id')
+            ->where('users.role', 'Administrator')
+            ->orWhere('users.role', 'Surveyor')
             ->groupBy('users.name')
             ->orderBy('users.id')
             ->get();
+
+        if (auth()->user()->role == 'Client') {
+            $filled = DB::table('towers')
+                ->select('users.name', DB::raw('IFNULL(COUNT(DISTINCT(towers.id)), 0) as filled'))
+                ->join('lands', 'towers.id', '=', 'lands.tower_id')
+                ->join('locations', 'towers.location_id', '=', 'locations.id')
+                ->join('inventories', 'locations.inventory_id', '=', 'inventories.id')
+                ->where('inventories.id', auth()->user()->inventory->id)
+                ->where('users.role', 'Administrator')
+                ->orWhere('users.role', 'Surveyor')
+                ->rightJoin('users', 'towers.user_id', '=', 'users.id')
+                ->groupBy('users.name')
+                ->orderBy('users.id')
+                ->get();
+            $total = DB::table('towers')
+                ->select('users.name', DB::raw('COUNT(towers.id) as total'))
+                ->join('locations', 'towers.location_id', '=', 'locations.id')
+                ->join('inventories', 'locations.inventory_id', '=', 'inventories.id')
+                ->where('inventories.id', auth()->user()->inventory->id)
+                ->where('users.role', 'Administrator')
+                ->orWhere('users.role', 'Surveyor')
+                ->rightJoin('users', 'towers.user_id', '=', 'users.id')
+                ->groupBy('users.name')
+                ->orderBy('users.id')
+                ->get();
+        }
 
         $data = [];
         for ($i = 0; $i < sizeof($filled); $i++) {
@@ -226,6 +341,32 @@ class AjaxController extends Controller
             ->groupBy('users.name')
             ->orderBy('users.id')
             ->get();
+
+        if (auth()->user()->role == 'Client') {
+            $filled = DB::table('rows')
+                ->select('users.name', DB::raw('IFNULL(COUNT(DISTINCT(rows.id)), 0) as filled'))
+                ->join('lands', 'rows.id', '=', 'lands.row_id')
+                ->join('locations', 'rows.location_id', '=', 'locations.id')
+                ->join('inventories', 'locations.inventory_id', '=', 'inventories.id')
+                ->rightJoin('users', 'rows.user_id', '=', 'users.id')
+                ->where('inventories.id', auth()->user()->inventory->id)
+                ->where('users.role', 'Administrator')
+                ->orWhere('users.role', 'Surveyor')
+                ->groupBy('users.name')
+                ->orderBy('users.id')
+                ->get();
+            $total = DB::table('rows')
+                ->select('users.name', DB::raw('COUNT(rows.id) as total'))
+                ->join('locations', 'rows.location_id', '=', 'locations.id')
+                ->join('inventories', 'locations.inventory_id', '=', 'inventories.id')
+                ->rightJoin('users', 'rows.user_id', '=', 'users.id')
+                ->where('inventories.id', auth()->user()->inventory->id)
+                ->where('users.role', 'Administrator')
+                ->orWhere('users.role', 'Surveyor')
+                ->groupBy('users.name')
+                ->orderBy('users.id')
+                ->get();
+        }
 
         $data = [];
         for ($i = 0; $i < sizeof($filled); $i++) {

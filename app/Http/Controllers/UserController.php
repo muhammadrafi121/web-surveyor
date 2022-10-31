@@ -18,7 +18,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        if (auth()->user()->role != 'Administrator') abort(404);        
+        if (auth()->user()->role != 'Administrator') {
+            abort(404);
+        }
         $users = User::orderBy('role')->paginate(10);
 
         return view('listuser', [
@@ -55,7 +57,11 @@ class UserController extends Controller
         ];
 
         if ($request->role == 'Surveyor') {
-            $rules['role'] = 'required';
+            $rules['team'] = 'required';
+        }
+
+        if ($request->role == 'Client') {
+            $rules['inv'] = 'required';
         }
 
         $request->validate($rules);
@@ -68,6 +74,10 @@ class UserController extends Controller
 
         if ($request->role == 'Surveyor') {
             $user->team_id = $request->team;
+        }
+
+        if ($request->role == 'Client') {
+            $user->inventory_id = $request->inv;
         }
 
         $user->password = Hash::make($request->password);
@@ -115,12 +125,22 @@ class UserController extends Controller
                 'email' => 'required|email',
                 'role' => 'required',
             ];
-            if (filled($request->username) && $request->username != $user->username) $rules['username'] = 'required|unique:users';
-    
-            if ($request->role == 'Surveyor') $rules['team'] = 'required';
+            if (filled($request->username) && $request->username != $user->username) {
+                $rules['username'] = 'required|unique:users';
+            }
+
+            if ($request->role == 'Surveyor') {
+                $rules['team'] = 'required';
+            }
+
+            if ($request->role == 'Client') {
+                $rules['inv'] = 'required';
+            }
         }
 
-        if (filled($request->password)) $rules['password'] = 'confirmed';
+        if (filled($request->password)) {
+            $rules['password'] = 'confirmed';
+        }
 
         $request->validate($rules);
 
@@ -133,11 +153,21 @@ class UserController extends Controller
                 'email' => $request->email,
                 'role' => $request->role,
             ];
-            if (filled($request->team)) $userData['team_id'] = $request->team;
+
+            if (filled($request->team)) {
+                $userData['team_id'] = $request->team;
+            }
+
+            if (filled($request->inv)) {
+                $userData['inventory_id'] = $request->inv;
+            }
         }
 
-        if (filled($request->password)) $userData['password'] = Hash::make($request->password);
-
+        
+        if (filled($request->password)) {
+            $userData['password'] = Hash::make($request->password);
+        }
+        
         $user->update($userData);
 
         $msg = 'Ganti Password Berhasil';
@@ -170,7 +200,7 @@ class UserController extends Controller
         return view('datauser', [
             'title' => 'Profile',
             'user' => auth()->user(),
-            'script' => 'user'
+            'script' => 'user',
         ]);
     }
 }

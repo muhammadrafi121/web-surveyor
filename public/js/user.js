@@ -3,9 +3,7 @@ $(document).ready(function() {
         if ($(this).val() == 'Surveyor') {
             $.ajax({
                 url: APP_URL + '/ajax/team/',
-                data: {
-                    id: $(this).val()
-                },
+                data: { },
                 success: function(d) {
                     var html = `<select name="team" id="team" class="form-select form-control">`;
                     for (var i = 0; i < d.length; i++) {
@@ -17,6 +15,23 @@ $(document).ready(function() {
             });
         } else {
             $('#team-container').html('');
+        }
+
+        if ($(this).val() == 'Client') {
+            $.ajax({
+                url: APP_URL + '/ajax/inventories/',
+                data: { },
+                success: function(d) {
+                    var html = `<select name="inv" id="inv" class="form-select form-control">`;
+                    for (var i = 0; i < d.length; i++) {
+                        html += '<option value="' + d[i].id + '">' + d[i].name + '</option>'
+                    }
+                    html += `</select>`;
+                    $('#inv-container').html(html);
+                }
+            });
+        } else {
+            $('#inv-container').html('');
         }
     });
 });
@@ -58,5 +73,26 @@ function edit(data) {
         });
     } else {
         $('#team-container').html('');
+    }
+
+    if (data.role == 'Client') {
+        $.ajax({
+            url: APP_URL + '/ajax/inventories/',
+            data: {
+                id: $('#role').val()
+            },
+            success: function(d) {
+                var html = `<select name="inv" id="inv" class="form-select form-control">`;
+                for (var i = 0; i < d.length; i++) {
+                    html += '<option value="' + d[i].id + '">' + d[i].name + '</option>'
+                }
+                html += `</select>`;
+                $('#inv-container').html(html);
+
+                $('#inv').val(data.inventory_id)
+            }
+        });
+    } else {
+        $('#inv-container').html('');
     }
 }
