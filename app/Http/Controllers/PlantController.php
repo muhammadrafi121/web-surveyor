@@ -53,6 +53,7 @@ class PlantController extends Controller
                         'height' => $request->tinggitanaman[$i] != null ? (int)$request->tinggitanaman[$i] : null,
                         'diameter' => $request->diametertanaman[$i] != null ? (int)$request->diametertanaman[$i] : null,
                         'total' => $request->jumlahtanaman[$i] != null ? (int)$request->jumlahtanaman[$i] : null,
+                        'description' => $request->kettanaman[$i] != null ? $request->kettanaman[$i] : null,
                     ];
                 } else {
                     $plantDataEdit[] = [
@@ -63,6 +64,7 @@ class PlantController extends Controller
                         'height' => $request->tinggitanaman[$i] != null ? (int)$request->tinggitanaman[$i] : null,
                         'diameter' => $request->diametertanaman[$i] != null ? (int)$request->diametertanaman[$i] : null,
                         'total' => $request->jumlahtanaman[$i] != null ? (int)$request->jumlahtanaman[$i] : null,
+                        'description' => $request->kettanaman[$i] != null ? $request->kettanaman[$i] : null,
                     ];
                 }
             } else if ($request->idtanaman[$i] != null) {

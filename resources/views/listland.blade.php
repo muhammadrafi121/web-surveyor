@@ -243,7 +243,7 @@
         @foreach ($lands as $land)
             <div class="modal fade" id="modal-{{ $land->id }}" tabindex="-1"
                 aria-labelledby="modalLabel{{ $land->id }}" aria-hidden="true">
-                <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                <div class="modal-dialog modal-xl modal-dialog-scrollable">
                     <div class="modal-content">
                         <div class="modal-header d-flex flex-column">
                             <button type="button" class="btn-close" data-bs-dismiss="modal"
@@ -292,7 +292,7 @@
                                             <tr style="text-align: center">
                                                 <th rowspan="2">NO</th>
                                                 <th colspan="2">TANAH</th>
-                                                <th colspan="5">TANAM TUMBUH</th>
+                                                <th colspan="6">TANAM TUMBUH</th>
                                             </tr>
                                             <tr>
                                                 <th>Jenis Tanah</th>
@@ -302,6 +302,7 @@
                                                 <th>Tinggi (m)</th>
                                                 <th>Diameter (cm)</th>
                                                 <th>Jumlah</th>
+                                                <th>Keterangan</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -327,6 +328,7 @@
                                                         <td>{{ $plant->height }}</td>
                                                         <td>{{ $plant->diameter }}</td>
                                                         <td>{{ $plant->total }}</td>
+                                                        <td>{{ $plant->description }}</td>
                                                     </tr>
                                                     @php
                                                         $currLand = $prevLand;
@@ -337,6 +339,7 @@
                                                     <td>1</td>
                                                     <td>{{ $land->type }}</td>
                                                     <td>{{ $land->area }}</td>
+                                                    <td>-</td>
                                                     <td>-</td>
                                                     <td>-</td>
                                                     <td>-</td>
@@ -394,6 +397,7 @@
                                             <th>Tinggi (m)</th>
                                             <th>Diameter (cm)</th>
                                             <th>Jumlah</th>
+                                            <th>Keterangan</th>
                                         </tr>
                                     </thead>
                                     <tbody id="tabel-tanaman">
@@ -439,6 +443,11 @@
                                                     name="jumlahtanaman[]"
                                                     id="jumlah-{{ $i }}-{{ $land->id }}"
                                                     value="{{ $land->plants[$i]->total }}">
+                                                <td class="data-tanaman" contenteditable="true"
+                                                    id="ket-tanaman-{{ $i }}-{{ $land->id }}">
+                                                    {{ $land->plants[$i]->description }}</td><input type="hidden"
+                                                    name="kettanaman[]" id="ket-{{ $i }}-{{ $land->id }}"
+                                                    value="{{ $land->plants[$i]->description }}">
                                             </tr>
                                             @php
                                                 $count++;
@@ -470,6 +479,10 @@
                                                     id="jumlah-tanaman-{{ $count }}-{{ $land->id }}"></td>
                                                 <input type="hidden" name="jumlahtanaman[]"
                                                     id="jumlah-{{ $count }}-{{ $land->id }}">
+                                                <td class="data-tanaman" contenteditable="true"
+                                                    id="ket-tanaman-{{ $count }}-{{ $land->id }}"></td>
+                                                <input type="hidden" name="kettanaman[]"
+                                                    id="ket-{{ $count }}-{{ $land->id }}">
                                             </tr>
                                             @php
                                                 $count++;

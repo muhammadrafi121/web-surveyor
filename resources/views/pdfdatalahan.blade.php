@@ -296,6 +296,15 @@
             </table>
         </div>
 
+        <div class="row">
+            <div class="col-6"></div>
+            <div class="col-6">
+                <h6>Note: TBD&nbsp;&nbsp;&nbsp;&nbsp;: Tanaman Baru Ditanam</h6>
+                <h6>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TBM&nbsp;&nbsp;&nbsp;: Tanaman Belum Menghasilkan</h6>
+                <h6>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: Tanaman Menghasilkan</h6>
+            </div>
+        </div>
+
         @if ($land->tower)
             <div class="row" style="margin-top: 10px">
                 <div class="col-3 rect"></div>
