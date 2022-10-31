@@ -212,6 +212,8 @@ class AjaxController extends Controller
             ->join('lands', 'rows.id', '=', 'lands.row_id')
             ->join('locations', 'rows.location_id', '=', 'locations.id')
             ->rightJoin('users', 'rows.user_id', '=', 'users.id')
+            ->where('users.role', 'Administrator')
+            ->orWhere('users.role', 'Surveyor')
             ->groupBy('users.name')
             ->orderBy('users.id')
             ->get();
@@ -219,6 +221,8 @@ class AjaxController extends Controller
             ->select('users.name', DB::raw('COUNT(rows.id) as total'))
             ->join('locations', 'rows.location_id', '=', 'locations.id')
             ->rightJoin('users', 'rows.user_id', '=', 'users.id')
+            ->where('users.role', 'Administrator')
+            ->orWhere('users.role', 'Surveyor')
             ->groupBy('users.name')
             ->orderBy('users.id')
             ->get();
@@ -238,5 +242,48 @@ class AjaxController extends Controller
     public function team()
     {
         return Team::with(['users', 'inventory'])->get();
+    }
+
+    public function summary(Request $request)
+    {
+        $filled_row = Row::join('lands', 'rows.id', '=', 'lands.row_id')
+            ->distinct('rows.id')
+            ->groupBy('rows.id')
+            ->count();
+        $row = Row::all()->count();
+        $filled_tower = Tower::join('lands', 'towers.id', '=', 'lands.tower_id')
+            ->distinct('towers.id')
+            ->groupBy('towers.id')
+            ->count();
+        $tower = Tower::all()->count();
+
+        if ($request->inv != 'all') {
+            $filled_row = Row::join('lands', 'rows.id', '=', 'lands.row_id')
+                ->join('locations', 'locations.id', '=', 'rows.location_id')
+                ->where('locations.inventory_id', $request->inv)
+                ->distinct('rows.id')
+                ->groupBy('rows.id')
+                ->count();
+
+            $row = Row::join('locations', 'locations.id', '=', 'rows.location_id')
+                ->where('locations.inventory_id', $request->inv)
+                ->count();
+            $filled_tower = Tower::join('lands', 'towers.id', '=', 'lands.tower_id')
+                ->join('locations', 'locations.id', '=', 'towers.location_id')
+                ->where('locations.inventory_id', $request->inv)
+                ->distinct('towers.id')
+                ->groupBy('towers.id')
+                ->count();
+
+            $tower = Tower::join('locations', 'locations.id', '=', 'towers.location_id')
+                ->where('locations.inventory_id', $request->inv)
+                ->count();
+            // dd($filled_row, $row, $filled_tower, $tower);
+        }
+
+        $row_perc = is_int(($filled_row * 100) / $row) ? ($filled_row * 100) / $row : number_format((float) (($filled_row * 100) / $row), 2, '.', '');
+        $tower_perc = is_int(($filled_tower * 100) / $tower) ? ($filled_tower * 100) / $tower : number_format((float) (($filled_tower * 100) / $tower), 2, '.', '');
+
+        return ['row' => $row_perc, 'tower' => $tower_perc];
     }
 }

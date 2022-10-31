@@ -112,3 +112,4 @@ Route::get('/ajax/towerloc', [AjaxController::class, 'towersByLoc'])->middleware
 Route::get('/ajax/rowteam', [AjaxController::class, 'rowsByTeam'])->middleware('auth');
 Route::get('/ajax/towerteam', [AjaxController::class, 'towersByTeam'])->middleware('auth');
 Route::get('/ajax/team', [AjaxController::class, 'team'])->middleware('auth');
+Route::get('/ajax/datasummary', [AjaxController::class, 'summary'])->middleware('auth');

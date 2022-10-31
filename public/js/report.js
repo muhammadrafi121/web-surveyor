@@ -1,10 +1,18 @@
 $(document).ready(function() {
 
-    var xValues = ["INV SUMSEL 1", "INV SUMSEL 2", "INV SUMSEL 3"];
-    var yValues = [[8, 10, 15], [12, 11, 16]];
-    var barColors = ["red", "green","blue","yellow"];
-
-
+    $('#wilayah').on('change', function() {
+        $.ajax({
+            url: APP_URL + '/ajax/datasummary',
+            data: {
+                inv : $(this).val()
+            },
+            success: function(d) {
+                $('#row-data').html(d.row);
+                $('#tower-data').html(d.tower);
+            }
+        });
+    });
+    
     // Grafik per wilayah
     $.ajax({
         url: APP_URL + '/ajax/towerinv/',

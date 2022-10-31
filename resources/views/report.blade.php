@@ -8,6 +8,24 @@
                 perkembangan atau input data monitoring SI melalui laporan ini. Melalui halaman anda dapat melihat laporan
                 acara umum, mengambil aksi cepat untuk melakukan input data atau melakukan tindakan lainnya.</p>
         </div>
+
+        <!-- page data filter -->
+        <div class="row px-lg-4 mb-5">
+            <div class="col-xl-8 col-lg-8">
+                <div class="row">
+                    <h4 class="col-md-3 px-0">Pemutakhiran Data :</h4>
+                    <div class="col-md-2 dropdown p-0">
+                        <select class="form-select bg-yellow btn-sm border-0" id="wilayah">
+                            <option selected value="all">Semua Wilayah</option>
+                            @foreach ($inventories as $inventory)
+                                <option value="{{ $inventory->id }}">{{ $inventory->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- page card -->
         <div class="row">
             <div class="col-xl-4 col-lg-6 mb-4">
@@ -17,7 +35,7 @@
                             <h5>Progres RoW</h5>
                         </span>
                         <span class="d-flex">
-                            <h1>{{ $row }}</h1>
+                            <h1 id="row-data">{{ $row }}</h1>
                             <h6>%</h6>
                         </span>
                         <span>
@@ -34,7 +52,7 @@
                             <h5>Progres Tapak Tower</h5>
                         </span>
                         <span class="d-flex">
-                            <h1>{{ $tower }}</h1>
+                            <h1 id="tower-data">{{ $tower }}</h1>
                             <h6>%</h6>
                         </span>
                         <span>
